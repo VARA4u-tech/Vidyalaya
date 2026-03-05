@@ -1,82 +1,204 @@
 import { motion } from "framer-motion";
+import { Upload, Cpu, Sparkles } from "lucide-react";
 
 const steps = [
-  { number: "01", title: "Upload", description: "Drop your notes, PDFs, or images into Vidyalaya." },
-  { number: "02", title: "Analyze", description: "AI processes and understands your study material." },
-  { number: "03", title: "Learn", description: "Get summaries, quizzes, and a personalized study plan." },
+  {
+    number: "01",
+    icon: Upload,
+    title: "Upload",
+    description:
+      "Drop your notes, PDFs, or images into Vidyalaya. We support handwritten pages, typed documents, and scanned files.",
+    color: "hsl(185, 48%, 50%)",
+  },
+  {
+    number: "02",
+    icon: Cpu,
+    title: "Analyze",
+    description:
+      "Our AI reads, processes, and deeply understands your study material — identifying key concepts, definitions, and relationships.",
+    color: "hsl(9, 70%, 54%)",
+  },
+  {
+    number: "03",
+    icon: Sparkles,
+    title: "Learn",
+    description:
+      "Receive tailored summaries, adaptive quizzes, and a personalized study plan that evolves with your progress.",
+    color: "hsl(34, 30%, 72%)",
+  },
 ];
+
+const VintageGrain = ({ zBase = 2 }: { zBase?: number }) => (
+  <>
+    <div
+      className="absolute inset-0 pointer-events-none grain-coarse"
+      style={{ opacity: 0.34, mixBlendMode: "multiply", zIndex: zBase }}
+    />
+    <div
+      className="absolute inset-0 pointer-events-none grain-fine"
+      style={{ opacity: 0.2, mixBlendMode: "multiply", zIndex: zBase + 1 }}
+    />
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        background:
+          "linear-gradient(160deg,hsla(34,60%,55%,0.09) 0%,hsla(28,55%,50%,0.05) 50%,hsla(34,60%,45%,0.11) 100%)",
+        zIndex: zBase + 2,
+      }}
+    />
+  </>
+);
 
 const HowItWorksSection = () => {
   return (
-    <section className="relative py-32 overflow-hidden bg-teal">
-      {/* Paper grain */}
+    <section
+      id="how-it-works"
+      className="relative py-32 overflow-hidden"
+      style={{ backgroundColor: "hsl(210, 48%, 22%)" }}
+    >
+      <VintageGrain zBase={1} />
+
+      {/* Vignette */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.1] mix-blend-soft-light"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: "256px 256px",
+          background:
+            "radial-gradient(ellipse at center, transparent 50%, hsla(210,60%,6%,0.30) 100%)",
+          zIndex: 5,
         }}
       />
 
-      {/* Decorative coral diagonal */}
+      {/* Left diagonal bands */}
       <motion.div
-        className="absolute bg-coral opacity-25"
+        className="absolute"
         style={{
-          width: "20vw",
-          height: "140vh",
-          top: "-20vh",
-          left: "-5vw",
-          transform: "rotate(15deg)",
+          backgroundColor: "hsl(9, 70%, 54%)",
+          opacity: 0.14,
+          width: "30vw",
+          height: "160vh",
+          top: "-30vh",
+          left: "-8vw",
+          transform: "rotate(22deg)",
+          zIndex: 0,
         }}
-        animate={{ rotate: [15, 18, 15] }}
+        animate={{ rotate: [22, 19, 22] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
-
-      {/* Decorative cyan circle */}
       <motion.div
-        className="absolute rounded-full bg-cyan opacity-20"
-        style={{ width: "45vmin", height: "45vmin", bottom: "-10%", right: "10%" }}
-        animate={{ y: [0, -12, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute"
+        style={{
+          backgroundColor: "hsl(185, 48%, 50%)",
+          opacity: 0.11,
+          width: "9vw",
+          height: "160vh",
+          top: "-30vh",
+          left: "18vw",
+          transform: "rotate(22deg)",
+          zIndex: 0,
+        }}
+        animate={{ rotate: [22, 18, 22] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-8">
-        <motion.h2
-          className="text-5xl sm:text-6xl md:text-7xl font-black text-primary-foreground tracking-tight mb-4"
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+        {/* Header */}
+        <motion.div
+          className="mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7 }}
         >
-          How It Works
-        </motion.h2>
-        <motion.p
-          className="text-lg text-primary-foreground/60 mb-20 max-w-xl"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-        >
-          Three simple steps to transform your study routine.
-        </motion.p>
+          <p
+            className="font-sans font-medium uppercase mb-4"
+            style={{
+              color: "hsl(185, 45%, 58%)",
+              fontSize: "0.72rem",
+              letterSpacing: "0.26em",
+            }}
+          >
+            The Process
+          </p>
+          <h2
+            className="font-serif font-bold leading-[0.95] tracking-tight"
+            style={{
+              color: "hsl(36, 25%, 91%)",
+              fontSize: "clamp(3rem, 7vw, 6rem)",
+            }}
+          >
+            How It Works
+          </h2>
+          <p
+            className="mt-4 font-sans max-w-lg"
+            style={{
+              color: "hsl(36, 20%, 62%)",
+              fontSize: "clamp(1rem, 1.5vw, 1.12rem)",
+            }}
+          >
+            Three simple steps to transform your study routine.
+          </p>
+          <motion.div
+            className="mt-6 h-1 rounded-full"
+            style={{ backgroundColor: "hsl(185, 48%, 52%)", width: "0%" }}
+            whileInView={{ width: "80px" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          />
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        {/* Steps */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14">
           {steps.map((step, i) => (
             <motion.div
               key={step.number}
-              className="relative"
-              initial={{ opacity: 0, y: 40 }}
+              className="relative group"
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
+              transition={{ duration: 0.6, delay: i * 0.18 }}
             >
-              <span className="text-8xl font-black text-coral/30 leading-none block">
+              {/* Ghost big number */}
+              <div
+                className="font-serif font-black leading-none mb-3"
+                style={{
+                  color: step.color,
+                  opacity: 0.22,
+                  fontSize: "clamp(5rem, 10vw, 8rem)",
+                  lineHeight: 1,
+                }}
+              >
                 {step.number}
-              </span>
-              <h3 className="text-3xl font-bold text-primary-foreground mt-2 mb-3">
+              </div>
+
+              {/* Icon badge */}
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 -mt-5"
+                style={{ backgroundColor: step.color }}
+              >
+                <step.icon
+                  className="w-7 h-7"
+                  style={{ color: "hsl(210, 48%, 16%)" }}
+                  strokeWidth={1.8}
+                />
+              </div>
+
+              <h3
+                className="font-serif font-bold mb-3"
+                style={{
+                  color: "hsl(36, 25%, 91%)",
+                  fontSize: "clamp(1.5rem, 2.5vw, 2rem)",
+                }}
+              >
                 {step.title}
               </h3>
-              <p className="text-primary-foreground/60 text-lg leading-relaxed">
+
+              <p
+                className="font-sans leading-relaxed"
+                style={{
+                  color: "hsl(36, 18%, 60%)",
+                  fontSize: "clamp(0.9rem, 1.2vw, 1rem)",
+                }}
+              >
                 {step.description}
               </p>
             </motion.div>

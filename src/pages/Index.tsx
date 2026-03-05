@@ -2,159 +2,341 @@ import { motion } from "framer-motion";
 import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import FooterSection from "@/components/FooterSection";
+import NavBar from "@/components/NavBar";
+
+/* Inline grain overlay component — reused in every section */
+const GrainOverlay = ({
+  opacity1 = 0.35,
+  opacity2 = 0.22,
+  zIndex = 20,
+}: {
+  opacity1?: number;
+  opacity2?: number;
+  zIndex?: number;
+}) => (
+  <>
+    {/* Coarse fibre layer */}
+    <div
+      className="absolute inset-0 pointer-events-none grain-coarse"
+      style={{
+        opacity: opacity1,
+        mixBlendMode: "multiply",
+        zIndex,
+      }}
+    />
+    {/* Fine surface dust layer */}
+    <div
+      className="absolute inset-0 pointer-events-none grain-fine"
+      style={{
+        opacity: opacity2,
+        mixBlendMode: "multiply",
+        zIndex: zIndex + 1,
+      }}
+    />
+    {/* Warm amber tint wash */}
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        background:
+          "linear-gradient(160deg, hsla(34,60%,55%,0.10) 0%, hsla(28,55%,50%,0.06) 50%, hsla(34,60%,45%,0.13) 100%)",
+        zIndex: zIndex + 2,
+      }}
+    />
+  </>
+);
 
 const Index = () => {
   return (
-    <div className="bg-beige">
-      {/* === HERO SECTION === */}
-      <section className="relative min-h-screen overflow-hidden flex items-center">
-        {/* Paper grain overlay */}
+    <div style={{ backgroundColor: "hsl(34, 35%, 82%)" }}>
+      <NavBar />
+
+      {/* ═══════════════════════════════════════
+          HERO SECTION
+      ═══════════════════════════════════════ */}
+      <section
+        id="home"
+        className="relative min-h-screen overflow-hidden"
+        style={{ backgroundColor: "hsl(210, 48%, 26%)" }}
+      >
+        {/* ── GRAIN LAYERS ── */}
+        <GrainOverlay opacity1={0.38} opacity2={0.24} zIndex={30} />
+
+        {/* Radial vignette */}
         <div
-          className="absolute inset-0 z-30 pointer-events-none opacity-[0.15] mix-blend-multiply"
+          className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-            backgroundSize: "256px 256px",
+            background:
+              "radial-gradient(ellipse at center, transparent 45%, hsla(210,60%,8%,0.35) 100%)",
+            zIndex: 35,
           }}
         />
 
-        {/* Cyan diagonal bands — behind everything */}
+        {/* ── RIGHT SIDE DIAGONAL BANDS ── */}
+
+        {/* Coral / Red main band */}
         <motion.div
-          className="absolute bg-cyan"
+          className="absolute"
           style={{
-            width: "55vw",
-            height: "160vh",
-            top: "-30vh",
-            right: "-10vw",
+            backgroundColor: "hsl(9, 70%, 54%)",
+            width: "52vw",
+            height: "180vh",
+            top: "-40vh",
+            right: "-8vw",
             transform: "rotate(-22deg)",
+            transformOrigin: "top right",
+            zIndex: 2,
           }}
-          animate={{ rotate: [-22, -19, -22] }}
+          animate={{ rotate: [-22, -19.5, -22] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
         />
+
+        {/* Cyan band — on top of coral */}
         <motion.div
-          className="absolute bg-cyan opacity-80"
+          className="absolute"
           style={{
-            width: "15vw",
-            height: "130vh",
-            top: "-15vh",
-            right: "25vw",
+            backgroundColor: "hsl(185, 48%, 50%)",
+            width: "18vw",
+            height: "180vh",
+            top: "-40vh",
+            right: "28vw",
             transform: "rotate(-22deg)",
+            transformOrigin: "top right",
+            zIndex: 3,
           }}
-          animate={{ rotate: [-22, -18, -22] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ rotate: [-22, -18.5, -22] }}
+          transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Coral circle — right side */}
+        {/* Slate / gray thin strip */}
         <motion.div
-          className="absolute rounded-full bg-coral"
+          className="absolute"
           style={{
-            width: "55vmin",
-            height: "55vmin",
-            bottom: "-8%",
-            right: "-2%",
+            backgroundColor: "hsl(210, 12%, 60%)",
+            width: "9vw",
+            height: "180vh",
+            top: "-40vh",
+            right: "44vw",
+            transform: "rotate(-22deg)",
+            transformOrigin: "top right",
+            zIndex: 4,
           }}
-          animate={{ x: [0, -5, 0], y: [0, 6, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ rotate: [-22, -20, -22] }}
+          transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Main teal organic shape — SVG with smooth curves */}
-        <div className="absolute inset-0 z-[5]">
-          <svg
-            viewBox="0 0 1440 900"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="absolute inset-0 w-full h-full"
-            preserveAspectRatio="none"
+        {/* Grain on right bands too */}
+        <div
+          className="absolute inset-0 pointer-events-none grain-coarse"
+          style={{ opacity: 0.28, mixBlendMode: "multiply", zIndex: 5 }}
+        />
+
+        {/* ── MAIN TEAL BLOB (left side) ── */}
+        <div className="absolute inset-0 z-10 flex items-center">
+          <motion.div
+            className="relative flex flex-col justify-center"
+            style={{
+              backgroundColor: "hsl(210, 48%, 26%)",
+              width: "62%",
+              minHeight: "76vh",
+              borderRadius: "0 38% 38% 0 / 0 45% 45% 0",
+              paddingLeft: "clamp(2rem, 6vw, 7rem)",
+              paddingRight: "clamp(2rem, 5vw, 5rem)",
+              paddingTop: "3rem",
+              paddingBottom: "3rem",
+            }}
+            initial={{ opacity: 0, x: -60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
           >
-            <motion.path
-              d="M -50,-50
-                 C 350,-50 100,100 80,200
-                 C 50,340 80,500 120,600
-                 C 170,720 250,850 -50,950
-                 L -50,950
-                 Z"
-              fill="hsl(193, 57%, 29%)"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
+            {/* Grain inside blob */}
+            <div
+              className="absolute inset-0 pointer-events-none grain-coarse"
+              style={{
+                borderRadius: "inherit",
+                opacity: 0.3,
+                mixBlendMode: "multiply",
+                zIndex: 1,
+              }}
             />
-            <motion.path
-              d="M -50,-50
-                 L 1200,-50
-                 C 950,50 880,180 860,300
-                 C 830,460 870,600 1050,750
-                 C 1100,790 1200,850 1200,950
-                 L -50,950
-                 C 250,850 170,720 120,600
-                 C 80,500 50,340 80,200
-                 C 100,100 350,-50 -50,-50
-                 Z"
-              fill="hsl(193, 57%, 29%)"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
+            <div
+              className="absolute inset-0 pointer-events-none grain-fine"
+              style={{
+                borderRadius: "inherit",
+                opacity: 0.18,
+                mixBlendMode: "multiply",
+                zIndex: 2,
+              }}
             />
-          </svg>
+            {/* Warm amber wash on blob */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                borderRadius: "inherit",
+                background:
+                  "linear-gradient(140deg, hsla(34,55%,50%,0.09) 0%, hsla(28,50%,45%,0.05) 60%, hsla(34,55%,40%,0.10) 100%)",
+                zIndex: 3,
+              }}
+            />
+
+            {/* ── Text content ── */}
+            <div className="relative" style={{ zIndex: 10 }}>
+              {/* Big serif title */}
+              <motion.h1
+                className="font-serif font-bold leading-[0.92] tracking-tight"
+                style={{
+                  color: "hsl(36, 28%, 90%)",
+                  fontSize: "clamp(4rem, 10vw, 9rem)",
+                  textShadow: "2px 4px 20px hsla(210,60%,8%,0.4)",
+                }}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.25, ease: "easeOut" }}
+              >
+                Vidyalaya
+              </motion.h1>
+
+              {/* Two-column subtitle row */}
+              <motion.div
+                className="mt-8 flex flex-col sm:flex-row gap-4 sm:gap-10 font-sans"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+              >
+                <span
+                  style={{
+                    color: "hsl(36, 25%, 82%)",
+                    fontSize: "clamp(0.9rem, 2vw, 1.15rem)",
+                    fontWeight: 500,
+                    letterSpacing: "0.03em",
+                  }}
+                >
+                  AI Powered Study Platform
+                </span>
+                <span
+                  style={{
+                    color: "hsl(36, 25%, 82%)",
+                    fontSize: "clamp(0.9rem, 2vw, 1.15rem)",
+                    fontWeight: 500,
+                    letterSpacing: "0.03em",
+                  }}
+                >
+                  Smart Learning
+                </span>
+              </motion.div>
+
+              {/* Feature tags */}
+              <motion.p
+                className="mt-5 font-sans font-medium uppercase"
+                style={{
+                  color: "hsl(36, 20%, 62%)",
+                  fontSize: "clamp(0.62rem, 1.1vw, 0.74rem)",
+                  letterSpacing: "0.22em",
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.75 }}
+              >
+                Upload Notes &bull; AI Summaries &bull; Smart Quizzes &bull;
+                Exam Planner
+              </motion.p>
+
+              {/* CTA buttons */}
+              <motion.div
+                className="mt-10 flex flex-wrap gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.9 }}
+              >
+                <a
+                  href="#features"
+                  id="hero-cta-primary"
+                  className="inline-flex items-center font-sans font-semibold rounded-full transition-all duration-300"
+                  style={{
+                    backgroundColor: "hsl(36, 28%, 90%)",
+                    color: "hsl(210, 48%, 22%)",
+                    padding: "0.85rem 2.2rem",
+                    fontSize: "0.95rem",
+                    boxShadow: "0 4px 20px hsla(210,60%,8%,0.25)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = "hsl(9, 70%, 54%)";
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "white";
+                  }}
+                  onMouseLeave={(e) => {
+                    (
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = "hsl(36, 28%, 90%)";
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "hsl(210, 48%, 22%)";
+                  }}
+                >
+                  Explore Features
+                </a>
+                <a
+                  href="#how-it-works"
+                  id="hero-cta-secondary"
+                  className="inline-flex items-center font-sans font-semibold rounded-full border-2 transition-all duration-300"
+                  style={{
+                    borderColor: "hsl(36, 28%, 80%)",
+                    color: "hsl(36, 28%, 88%)",
+                    padding: "0.85rem 2.2rem",
+                    fontSize: "0.95rem",
+                  }}
+                  onMouseEnter={(e) => {
+                    (
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = "hsl(36, 28%, 88%)";
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "hsl(210, 48%, 22%)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = "transparent";
+                    (e.currentTarget as HTMLAnchorElement).style.color =
+                      "hsl(36, 28%, 88%)";
+                  }}
+                >
+                  How It Works
+                </a>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
 
-        {/* Beige cutout — top-left organic curve */}
+        {/* Scroll indicator */}
         <motion.div
-          className="absolute bg-beige z-[6] rounded-full"
-          style={{
-            width: "35vmin",
-            height: "35vmin",
-            top: "-10%",
-            left: "-8%",
-          }}
-          animate={{ x: [0, 4, 0], y: [0, 4, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Beige cutout — right side peek */}
-        <motion.div
-          className="absolute bg-beige z-[6]"
-          style={{
-            width: "22vw",
-            height: "55vh",
-            top: "5%",
-            right: "-5%",
-            borderRadius: "50% 0 0 50%",
-          }}
-          animate={{ x: [0, 3, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Content */}
-        <div className="relative z-10 px-8 md:px-16 lg:px-24 max-w-4xl">
-          <motion.h1
-            className="text-7xl sm:text-8xl md:text-[9rem] font-black tracking-tight text-primary-foreground leading-[0.9]"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          style={{ zIndex: 40 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4, duration: 0.8 }}
+        >
+          <span
+            className="font-sans font-medium uppercase"
+            style={{
+              color: "hsl(36, 20%, 68%)",
+              fontSize: "0.65rem",
+              letterSpacing: "0.25em",
+            }}
           >
-            Vidyalaya
-          </motion.h1>
-
-          <motion.p
-            className="mt-10 text-lg sm:text-xl font-medium tracking-wide text-primary-foreground/80"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          >
-            AI Powered Study Platform
-          </motion.p>
-
-          <motion.p
-            className="mt-4 text-sm sm:text-base text-primary-foreground/60 tracking-widest font-medium uppercase"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-          >
-            Upload Notes &bull; AI Summaries &bull; Smart Quizzes &bull; Exam Planner
-          </motion.p>
-        </div>
+            Scroll
+          </span>
+          <motion.div
+            className="w-px h-12 rounded-full"
+            style={{ backgroundColor: "hsl(36, 20%, 68%)" }}
+            animate={{ scaleY: [1, 0.3, 1], opacity: [1, 0.2, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
       </section>
 
-      {/* === ADDITIONAL SECTIONS === */}
+      {/* ═══════════════════════════════════════
+          REMAINING SECTIONS
+      ═══════════════════════════════════════ */}
       <FeaturesSection />
       <HowItWorksSection />
       <FooterSection />

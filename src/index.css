@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,22 +7,22 @@
 @layer base {
   :root {
     --background: 36 23% 87%;
-    --foreground: 193 57% 29%;
+    --foreground: 210 55% 15%;
 
     --card: 36 23% 90%;
-    --card-foreground: 193 57% 29%;
+    --card-foreground: 210 55% 15%;
 
     --popover: 36 23% 90%;
-    --popover-foreground: 193 57% 29%;
+    --popover-foreground: 210 55% 15%;
 
-    --primary: 193 57% 29%;
-    --primary-foreground: 36 23% 87%;
+    --primary: 210 55% 25%;
+    --primary-foreground: 36 23% 93%;
 
     --secondary: 185 50% 52%;
-    --secondary-foreground: 193 57% 15%;
+    --secondary-foreground: 210 55% 10%;
 
     --muted: 36 15% 80%;
-    --muted-foreground: 193 30% 40%;
+    --muted-foreground: 210 30% 40%;
 
     --accent: 9 73% 56%;
     --accent-foreground: 36 23% 95%;
@@ -30,71 +30,136 @@
     --destructive: 9 73% 56%;
     --destructive-foreground: 36 23% 95%;
 
-    --border: 36 15% 75%;
-    --input: 36 15% 75%;
-    --ring: 193 57% 29%;
-
+    --border: 36 20% 70%;
+    --input: 36 20% 70%;
+    --ring: 210 55% 25%;
     --radius: 0.5rem;
 
-    --sidebar-background: 36 23% 85%;
-    --sidebar-foreground: 193 57% 29%;
-    --sidebar-primary: 193 57% 29%;
-    --sidebar-primary-foreground: 36 23% 87%;
-    --sidebar-accent: 36 15% 80%;
-    --sidebar-accent-foreground: 193 57% 29%;
-    --sidebar-border: 36 15% 75%;
-    --sidebar-ring: 193 57% 29%;
-
-    --teal: 193 57% 29%;
+    /* Brand Palette */
+    --teal: 210 55% 28%;
+    --teal-deep: 210 60% 20%;
     --coral: 9 73% 56%;
+    --coral-dark: 9 68% 48%;
     --cyan: 185 50% 52%;
+    --slate-gray: 210 12% 58%;
     --beige: 36 23% 87%;
-  }
+    --paper: 34 30% 83%;
 
-  .dark {
-    --background: 193 57% 10%;
-    --foreground: 36 23% 87%;
-    --card: 193 57% 12%;
-    --card-foreground: 36 23% 87%;
-    --popover: 193 57% 12%;
-    --popover-foreground: 36 23% 87%;
-    --primary: 36 23% 87%;
-    --primary-foreground: 193 57% 10%;
-    --secondary: 185 50% 30%;
-    --secondary-foreground: 36 23% 87%;
-    --muted: 193 40% 18%;
-    --muted-foreground: 36 15% 65%;
-    --accent: 9 73% 50%;
-    --accent-foreground: 36 23% 95%;
-    --destructive: 9 73% 50%;
-    --destructive-foreground: 36 23% 95%;
-    --border: 193 40% 18%;
-    --input: 193 40% 18%;
-    --ring: 36 23% 87%;
-    --sidebar-background: 193 57% 10%;
-    --sidebar-foreground: 36 23% 87%;
-    --sidebar-primary: 36 23% 87%;
-    --sidebar-primary-foreground: 193 57% 10%;
-    --sidebar-accent: 193 40% 18%;
-    --sidebar-accent-foreground: 36 23% 87%;
-    --sidebar-border: 193 40% 18%;
-    --sidebar-ring: 36 23% 87%;
+    /* Vintage paper base — warm amber/kraft */
+    --vintage-bg: 34 35% 82%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
-
+  html {
+    scroll-behavior: smooth;
+  }
   body {
-    @apply bg-background text-foreground font-sans;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
+    background-color: hsl(34, 35%, 82%);
+    color: hsl(210, 55%, 15%);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: "Playfair Display", serif;
   }
 }
 
+/* ─────────────────────────────────────────
+   VINTAGE PAPER TEXTURE SYSTEM
+   Three layers stacked via pseudo-elements
+   + a warm amber colour wash
+────────────────────────────────────────── */
+
+/* Coarse fibrous grain — looks like cardboard / newsprint */
 @layer utilities {
-  .paper-grain {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  /* Main paper section wrapper — adds all layers */
+  .vintage-paper {
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Layer 1: Coarse low-frequency grain (big fibres) */
+  .vintage-paper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.32;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='coarse'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='4' seed='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23coarse)'/%3E%3C/svg%3E");
+    background-size: 300px 300px;
+  }
+
+  /* Layer 2: Fine high-frequency grain (surface texture) */
+  .vintage-paper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 11;
+    opacity: 0.2;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fine'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.90' numOctaves='8' seed='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fine)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  /* Warm amber wash on top of grain layers — the "aged" tint */
+  .vintage-amber-wash {
+    position: relative;
+  }
+  .vintage-amber-wash::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 12;
+    background: linear-gradient(
+      160deg,
+      hsla(34, 60%, 55%, 0.1) 0%,
+      hsla(28, 55%, 50%, 0.06) 50%,
+      hsla(34, 60%, 45%, 0.12) 100%
+    );
+  }
+
+  /* Radial vignette that darkens edges — classic aged look */
+  .vintage-vignette::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 15;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 55%,
+      hsla(210, 40%, 8%, 0.25) 100%
+    );
+  }
+
+  /* Inline grain for elements that can't use pseudo-elements */
+  .grain-coarse {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='4' seed='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+    background-size: 300px 300px;
+  }
+
+  .grain-fine {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.90' numOctaves='8' seed='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  .font-serif {
+    font-family: "Playfair Display", serif;
+  }
+  .font-sans {
+    font-family: "Inter", sans-serif;
   }
 }
