@@ -74,12 +74,9 @@
 }
 
 /* ─────────────────────────────────────────
-   VINTAGE PAPER TEXTURE SYSTEM
-   Three layers stacked via pseudo-elements
-   + a warm amber colour wash
+   SUBTLE POSTER TEXTURE SYSTEM
 ────────────────────────────────────────── */
 
-/* Coarse fibrous grain — looks like cardboard / newsprint */
 @layer utilities {
   /* Main paper section wrapper — adds all layers */
   .vintage-paper {
@@ -87,28 +84,28 @@
     isolation: isolate;
   }
 
-  /* Layer 1: Coarse low-frequency grain (big fibres) */
+  /* Layer 1: Coarse low-frequency grain */
   .vintage-paper::before {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 10;
-    opacity: 0.32;
-    mix-blend-mode: multiply;
+    opacity: 0.08; /* Much lighter! Was 0.32 */
+    mix-blend-mode: color-burn; /* Less muddy than multiply */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='coarse'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='4' seed='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23coarse)'/%3E%3C/svg%3E");
     background-size: 300px 300px;
   }
 
-  /* Layer 2: Fine high-frequency grain (surface texture) */
+  /* Layer 2: Fine high-frequency grain */
   .vintage-paper::after {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 11;
-    opacity: 0.2;
-    mix-blend-mode: multiply;
+    opacity: 0.12; /* Was 0.20 */
+    mix-blend-mode: soft-light; /* Doesn't darken as aggressively */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fine'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.90' numOctaves='8' seed='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fine)'/%3E%3C/svg%3E");
     background-size: 180px 180px;
   }
@@ -117,6 +114,7 @@
   .vintage-amber-wash {
     position: relative;
   }
+  /* Lightened amber wash */
   .vintage-amber-wash::before {
     content: "";
     position: absolute;
@@ -125,9 +123,9 @@
     z-index: 12;
     background: linear-gradient(
       160deg,
-      hsla(34, 60%, 55%, 0.1) 0%,
-      hsla(28, 55%, 50%, 0.06) 50%,
-      hsla(34, 60%, 45%, 0.12) 100%
+      hsla(34, 60%, 55%, 0.04) 0%,
+      transparent 50%,
+      hsla(34, 60%, 45%, 0.06) 100%
     );
   }
 

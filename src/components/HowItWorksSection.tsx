@@ -32,17 +32,17 @@ const VintageGrain = ({ zBase = 2 }: { zBase?: number }) => (
   <>
     <div
       className="absolute inset-0 pointer-events-none grain-coarse"
-      style={{ opacity: 0.34, mixBlendMode: "multiply", zIndex: zBase }}
+      style={{ opacity: 0.08, mixBlendMode: "color-burn", zIndex: zBase }}
     />
     <div
       className="absolute inset-0 pointer-events-none grain-fine"
-      style={{ opacity: 0.2, mixBlendMode: "multiply", zIndex: zBase + 1 }}
+      style={{ opacity: 0.12, mixBlendMode: "soft-light", zIndex: zBase + 1 }}
     />
     <div
       className="absolute inset-0 pointer-events-none"
       style={{
         background:
-          "linear-gradient(160deg,hsla(34,60%,55%,0.09) 0%,hsla(28,55%,50%,0.05) 50%,hsla(34,60%,45%,0.11) 100%)",
+          "linear-gradient(160deg,hsla(34,60%,55%,0.04) 0%,transparent 50%,hsla(34,60%,45%,0.05) 100%)",
         zIndex: zBase + 2,
       }}
     />
@@ -63,7 +63,7 @@ const HowItWorksSection = () => {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 50%, hsla(210,60%,6%,0.30) 100%)",
+            "radial-gradient(ellipse at center, transparent 50%, hsla(210,60%,6%,0.12) 100%)",
           zIndex: 5,
         }}
       />

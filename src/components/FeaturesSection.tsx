@@ -37,17 +37,17 @@ const VintageGrain = ({ zBase = 2 }: { zBase?: number }) => (
   <>
     <div
       className="absolute inset-0 pointer-events-none grain-coarse"
-      style={{ opacity: 0.34, mixBlendMode: "multiply", zIndex: zBase }}
+      style={{ opacity: 0.08, mixBlendMode: "color-burn", zIndex: zBase }}
     />
     <div
       className="absolute inset-0 pointer-events-none grain-fine"
-      style={{ opacity: 0.2, mixBlendMode: "multiply", zIndex: zBase + 1 }}
+      style={{ opacity: 0.12, mixBlendMode: "soft-light", zIndex: zBase + 1 }}
     />
     <div
       className="absolute inset-0 pointer-events-none"
       style={{
         background:
-          "linear-gradient(160deg,hsla(34,60%,55%,0.10) 0%,hsla(28,55%,50%,0.06) 50%,hsla(34,60%,45%,0.12) 100%)",
+          "linear-gradient(160deg,hsla(34,60%,55%,0.04) 0%,transparent 50%,hsla(34,60%,45%,0.05) 100%)",
         zIndex: zBase + 2,
       }}
     />
@@ -68,7 +68,7 @@ const FeaturesSection = () => {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 55%, hsla(30,25%,12%,0.18) 100%)",
+            "radial-gradient(ellipse at center, transparent 55%, hsla(30,25%,12%,0.08) 100%)",
           zIndex: 5,
         }}
       />
@@ -167,17 +167,17 @@ const FeaturesSection = () => {
               {/* Grain on each card */}
               <div
                 className="absolute inset-0 pointer-events-none grain-coarse rounded-3xl"
-                style={{ opacity: 0.3, mixBlendMode: "multiply", zIndex: 1 }}
+                style={{ opacity: 0.12, mixBlendMode: "color-burn", zIndex: 1 }}
               />
               <div
                 className="absolute inset-0 pointer-events-none grain-fine rounded-3xl"
-                style={{ opacity: 0.18, mixBlendMode: "multiply", zIndex: 2 }}
+                style={{ opacity: 0.1, mixBlendMode: "soft-light", zIndex: 2 }}
               />
               <div
                 className="absolute inset-0 pointer-events-none rounded-3xl"
                 style={{
                   background:
-                    "linear-gradient(145deg,hsla(34,55%,50%,0.09) 0%,transparent 60%)",
+                    "linear-gradient(145deg,hsla(34,55%,50%,0.04) 0%,transparent 60%)",
                   zIndex: 3,
                 }}
               />

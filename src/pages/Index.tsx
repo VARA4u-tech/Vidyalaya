@@ -6,8 +6,8 @@ import NavBar from "@/components/NavBar";
 
 /* Inline grain overlay component — reused in every section */
 const GrainOverlay = ({
-  opacity1 = 0.35,
-  opacity2 = 0.22,
+  opacity1 = 0.08,
+  opacity2 = 0.12,
   zIndex = 20,
 }: {
   opacity1?: number;
@@ -20,7 +20,7 @@ const GrainOverlay = ({
       className="absolute inset-0 pointer-events-none grain-coarse"
       style={{
         opacity: opacity1,
-        mixBlendMode: "multiply",
+        mixBlendMode: "color-burn",
         zIndex,
       }}
     />
@@ -29,16 +29,16 @@ const GrainOverlay = ({
       className="absolute inset-0 pointer-events-none grain-fine"
       style={{
         opacity: opacity2,
-        mixBlendMode: "multiply",
+        mixBlendMode: "soft-light",
         zIndex: zIndex + 1,
       }}
     />
-    {/* Warm amber tint wash */}
+    {/* Extremely light amber tint wash */}
     <div
       className="absolute inset-0 pointer-events-none"
       style={{
         background:
-          "linear-gradient(160deg, hsla(34,60%,55%,0.10) 0%, hsla(28,55%,50%,0.06) 50%, hsla(34,60%,45%,0.13) 100%)",
+          "linear-gradient(160deg, hsla(34,60%,55%,0.04) 0%, transparent 50%, hsla(34,60%,45%,0.05) 100%)",
         zIndex: zIndex + 2,
       }}
     />
@@ -66,7 +66,7 @@ const Index = () => {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at center, transparent 45%, hsla(210,60%,8%,0.35) 100%)",
+              "radial-gradient(ellipse at center, transparent 45%, hsla(210,60%,8%,0.15) 100%)",
             zIndex: 35,
           }}
         />
@@ -75,13 +75,9 @@ const Index = () => {
 
         {/* Coral / Red main band */}
         <motion.div
-          className="absolute"
+          className="absolute w-[180vw] md:w-[70vw] lg:w-[52vw] h-[150vh] md:h-[180vh] -top-[10vh] md:-top-[40vh] -right-[60vw] md:-right-[8vw]"
           style={{
             backgroundColor: "hsl(9, 70%, 54%)",
-            width: "52vw",
-            height: "180vh",
-            top: "-40vh",
-            right: "-8vw",
             transform: "rotate(-22deg)",
             transformOrigin: "top right",
             zIndex: 2,
@@ -92,13 +88,9 @@ const Index = () => {
 
         {/* Cyan band — on top of coral */}
         <motion.div
-          className="absolute"
+          className="absolute w-[60vw] md:w-[30vw] lg:w-[18vw] h-[150vh] md:h-[180vh] -top-[10vh] md:-top-[40vh] right-[10vw] md:right-[28vw]"
           style={{
             backgroundColor: "hsl(185, 48%, 50%)",
-            width: "18vw",
-            height: "180vh",
-            top: "-40vh",
-            right: "28vw",
             transform: "rotate(-22deg)",
             transformOrigin: "top right",
             zIndex: 3,
@@ -109,13 +101,9 @@ const Index = () => {
 
         {/* Slate / gray thin strip */}
         <motion.div
-          className="absolute"
+          className="absolute w-[25vw] md:w-[15vw] lg:w-[9vw] h-[150vh] md:h-[180vh] -top-[10vh] md:-top-[40vh] right-[65vw] md:right-[44vw]"
           style={{
             backgroundColor: "hsl(210, 12%, 60%)",
-            width: "9vw",
-            height: "180vh",
-            top: "-40vh",
-            right: "44vw",
             transform: "rotate(-22deg)",
             transformOrigin: "top right",
             zIndex: 4,
@@ -127,22 +115,20 @@ const Index = () => {
         {/* Grain on right bands too */}
         <div
           className="absolute inset-0 pointer-events-none grain-coarse"
-          style={{ opacity: 0.28, mixBlendMode: "multiply", zIndex: 5 }}
+          style={{ opacity: 0.1, mixBlendMode: "color-burn", zIndex: 5 }}
         />
 
         {/* ── MAIN TEAL BLOB (left side) ── */}
-        <div className="absolute inset-0 z-10 flex items-center">
+        <div className="absolute inset-0 z-10 flex items-center md:items-center items-start pt-28 md:pt-0">
           <motion.div
-            className="relative flex flex-col justify-center"
+            className="relative flex flex-col justify-center w-[94%] sm:w-[85%] md:w-[75%] lg:w-[62%] min-h-[60vh] md:min-h-[76vh]"
             style={{
               backgroundColor: "hsl(210, 48%, 26%)",
-              width: "62%",
-              minHeight: "76vh",
-              borderRadius: "0 38% 38% 0 / 0 45% 45% 0",
-              paddingLeft: "clamp(2rem, 6vw, 7rem)",
-              paddingRight: "clamp(2rem, 5vw, 5rem)",
+              borderRadius: "0 3rem 3rem 0",
+              paddingLeft: "clamp(1.5rem, 6vw, 7rem)",
+              paddingRight: "clamp(1.5rem, 5vw, 5rem)",
               paddingTop: "3rem",
-              paddingBottom: "3rem",
+              paddingBottom: "4rem",
             }}
             initial={{ opacity: 0, x: -60 }}
             animate={{ opacity: 1, x: 0 }}
@@ -153,8 +139,8 @@ const Index = () => {
               className="absolute inset-0 pointer-events-none grain-coarse"
               style={{
                 borderRadius: "inherit",
-                opacity: 0.3,
-                mixBlendMode: "multiply",
+                opacity: 0.12,
+                mixBlendMode: "color-burn",
                 zIndex: 1,
               }}
             />
@@ -162,8 +148,8 @@ const Index = () => {
               className="absolute inset-0 pointer-events-none grain-fine"
               style={{
                 borderRadius: "inherit",
-                opacity: 0.18,
-                mixBlendMode: "multiply",
+                opacity: 0.1,
+                mixBlendMode: "soft-light",
                 zIndex: 2,
               }}
             />
@@ -173,7 +159,7 @@ const Index = () => {
               style={{
                 borderRadius: "inherit",
                 background:
-                  "linear-gradient(140deg, hsla(34,55%,50%,0.09) 0%, hsla(28,50%,45%,0.05) 60%, hsla(34,55%,40%,0.10) 100%)",
+                  "linear-gradient(140deg, hsla(34,55%,50%,0.04) 0%, hsla(28,50%,45%,0.02) 60%, hsla(34,55%,40%,0.05) 100%)",
                 zIndex: 3,
               }}
             />
@@ -182,11 +168,11 @@ const Index = () => {
             <div className="relative" style={{ zIndex: 10 }}>
               {/* Big serif title */}
               <motion.h1
-                className="font-serif font-bold leading-[0.92] tracking-tight"
+                className="font-serif font-bold leading-[1.05] tracking-tight"
                 style={{
-                  color: "hsl(36, 28%, 90%)",
-                  fontSize: "clamp(4rem, 10vw, 9rem)",
-                  textShadow: "2px 4px 20px hsla(210,60%,8%,0.4)",
+                  color: "hsl(36, 28%, 95%)",
+                  fontSize: "clamp(3rem, 12vw, 9rem)",
+                  textShadow: "2px 4px 12px hsla(210,60%,8%,0.2)",
                 }}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -226,11 +212,11 @@ const Index = () => {
 
               {/* Feature tags */}
               <motion.p
-                className="mt-5 font-sans font-medium uppercase"
+                className="mt-5 font-sans font-medium uppercase leading-relaxed"
                 style={{
                   color: "hsl(36, 20%, 62%)",
-                  fontSize: "clamp(0.62rem, 1.1vw, 0.74rem)",
-                  letterSpacing: "0.22em",
+                  fontSize: "clamp(0.6rem, 2.5vw, 0.74rem)",
+                  letterSpacing: "0.15em",
                 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -242,7 +228,7 @@ const Index = () => {
 
               {/* CTA buttons */}
               <motion.div
-                className="mt-10 flex flex-wrap gap-4"
+                className="mt-8 flex flex-wrap gap-3 sm:gap-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.9 }}
@@ -250,11 +236,11 @@ const Index = () => {
                 <a
                   href="#features"
                   id="hero-cta-primary"
-                  className="inline-flex items-center font-sans font-semibold rounded-full transition-all duration-300"
+                  className="inline-flex items-center font-sans font-semibold rounded-full transition-all duration-300 w-full sm:w-auto justify-center"
                   style={{
                     backgroundColor: "hsl(36, 28%, 90%)",
                     color: "hsl(210, 48%, 22%)",
-                    padding: "0.85rem 2.2rem",
+                    padding: "0.85rem 1.8rem",
                     fontSize: "0.95rem",
                     boxShadow: "0 4px 20px hsla(210,60%,8%,0.25)",
                   }}
@@ -278,11 +264,11 @@ const Index = () => {
                 <a
                   href="#how-it-works"
                   id="hero-cta-secondary"
-                  className="inline-flex items-center font-sans font-semibold rounded-full border-2 transition-all duration-300"
+                  className="inline-flex items-center font-sans font-semibold rounded-full border-2 transition-all duration-300 w-full sm:w-auto justify-center"
                   style={{
                     borderColor: "hsl(36, 28%, 80%)",
                     color: "hsl(36, 28%, 88%)",
-                    padding: "0.85rem 2.2rem",
+                    padding: "0.85rem 1.8rem",
                     fontSize: "0.95rem",
                   }}
                   onMouseEnter={(e) => {
