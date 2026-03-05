@@ -4,6 +4,10 @@ import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import FooterSection from "@/components/FooterSection";
 import NavBar from "@/components/NavBar";
+import StatsSection from "@/components/StatsSection";
+import TechStackSection from "@/components/TechStackSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import TeamSection from "@/components/TeamSection";
 
 /* Inline grain overlay component — reused in every section */
 const GrainOverlay = ({
@@ -350,7 +354,11 @@ const Index = () => {
           REMAINING SECTIONS
       ═══════════════════════════════════════ */}
       <FeaturesSection />
+      <StatsSection />
       <HowItWorksSection />
+      <TestimonialsSection />
+      <TechStackSection />
+      <TeamSection />
       <FooterSection />
     </div>
   );
