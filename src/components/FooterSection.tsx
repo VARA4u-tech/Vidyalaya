@@ -91,10 +91,10 @@ const FooterSection = () => {
               </h6>
             </div>
             <p
-              className="font-sans leading-relaxed mb-6"
+              className="font-sans font-medium leading-relaxed mb-6"
               style={{
-                color: "hsl(210, 28%, 38%)",
-                fontSize: "0.94rem",
+                color: "hsl(210, 48%, 22%)",
+                fontSize: "1rem",
                 lineHeight: 1.7,
               }}
             >
@@ -126,10 +126,10 @@ const FooterSection = () => {
           {Object.entries(links).map(([category, items]) => (
             <div key={category}>
               <h4
-                className="font-sans font-semibold uppercase mb-5"
+                className="font-sans font-bold uppercase mb-5"
                 style={{
-                  color: "hsl(210, 48%, 24%)",
-                  fontSize: "0.68rem",
+                  color: "hsl(210, 48%, 20%)",
+                  fontSize: "0.75rem",
                   letterSpacing: "0.22em",
                 }}
               >
@@ -140,10 +140,10 @@ const FooterSection = () => {
                   <li key={item}>
                     <a
                       href="#"
-                      className="font-sans transition-colors duration-200"
+                      className="font-sans font-semibold transition-colors duration-200"
                       style={{
-                        color: "hsl(210, 25%, 42%)",
-                        fontSize: "0.92rem",
+                        color: "hsl(210, 48%, 28%)",
+                        fontSize: "0.95rem",
                       }}
                       onMouseEnter={(e) =>
                         ((e.currentTarget as HTMLAnchorElement).style.color =
@@ -151,7 +151,7 @@ const FooterSection = () => {
                       }
                       onMouseLeave={(e) =>
                         ((e.currentTarget as HTMLAnchorElement).style.color =
-                          "hsl(210, 25%, 42%)")
+                          "hsl(210, 48%, 28%)")
                       }
                     >
                       {item}
@@ -178,8 +178,8 @@ const FooterSection = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <p
-            className="font-sans text-sm"
-            style={{ color: "hsl(210, 20%, 50%)" }}
+            className="font-sans font-bold text-sm"
+            style={{ color: "hsl(210, 48%, 22%)" }}
           >
             &copy; 2026 Vidyalaya. All rights reserved.
           </p>
@@ -192,9 +192,9 @@ const FooterSection = () => {
               Vidyalaya
             </span>
             <span
-              className="font-sans text-xs uppercase"
+              className="font-sans font-bold text-xs uppercase"
               style={{
-                color: "hsl(210, 18%, 50%)",
+                color: "hsl(210, 48%, 30%)",
                 letterSpacing: "0.15em",
               }}
             >
