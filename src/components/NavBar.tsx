@@ -32,16 +32,24 @@ const NavBar = () => {
       transition={{ duration: 0.7, ease: "easeOut" }}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-20">
-        {/* Logo */}
         <a
           href="#home"
-          className="font-serif font-bold tracking-tight"
-          style={{
-            color: "hsl(36, 23%, 93%)",
-            fontSize: "clamp(1.3rem, 3vw, 1.75rem)",
-          }}
+          className="flex items-center gap-3 transition-transform duration-300 hover:scale-[1.02]"
         >
-          Vidyalaya
+          <img
+            src="/logo.png"
+            alt="Vidyalaya Logo"
+            className="w-10 h-10 md:w-12 md:h-12 object-contain"
+          />
+          <span
+            className="font-serif font-bold tracking-tight"
+            style={{
+              color: "hsl(36, 23%, 93%)",
+              fontSize: "clamp(1.3rem, 3vw, 1.75rem)",
+            }}
+          >
+            Vidyalaya
+          </span>
         </a>
 
         {/* Desktop nav */}

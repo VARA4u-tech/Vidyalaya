@@ -73,16 +73,23 @@ const FooterSection = () => {
           transition={{ duration: 0.7 }}
         >
           {/* Brand column */}
-          <div>
-            <h3
-              className="font-serif font-bold mb-3"
-              style={{
-                color: "hsl(210, 48%, 22%)",
-                fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
-              }}
-            >
-              Vidyalaya
-            </h3>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo.png"
+                alt="Vidyalaya Logo"
+                className="w-12 h-12 object-contain"
+              />
+              <h3
+                className="font-serif font-bold"
+                style={{
+                  color: "hsl(210, 48%, 22%)",
+                  fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+                }}
+              >
+                Vidyalaya
+              </h3>
+            </div>
             <p
               className="font-sans leading-relaxed mb-6"
               style={{
@@ -176,7 +183,8 @@ const FooterSection = () => {
           >
             &copy; 2026 Vidyalaya. All rights reserved.
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="" className="w-6 h-6 object-contain" />
             <span
               className="font-serif font-bold"
               style={{ color: "hsl(210, 48%, 25%)", fontSize: "1rem" }}
