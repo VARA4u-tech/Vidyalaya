@@ -39,17 +39,8 @@ const NavBar = () => {
           <img
             src="/logo.png"
             alt="Vidyalaya Logo"
-            className="w-10 h-10 md:w-12 md:h-12 object-contain"
+            className="w-24 h-24 md:w-24 md:h-24 object-contain"
           />
-          <span
-            className="font-serif font-bold tracking-tight"
-            style={{
-              color: "hsl(36, 23%, 93%)",
-              fontSize: "clamp(1.3rem, 3vw, 1.75rem)",
-            }}
-          >
-            Vidyalaya
-          </span>
         </a>
 
         {/* Desktop nav */}
