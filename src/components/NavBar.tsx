@@ -44,7 +44,7 @@ const NavBar = () => {
         </a>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-8">
           {links.map((link) => (
             <a
               key={link.label}
@@ -86,7 +86,7 @@ const NavBar = () => {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden flex flex-col gap-1.5 p-2"
+          className="lg:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -114,7 +114,7 @@ const NavBar = () => {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="md:hidden flex flex-col gap-4 px-6 pb-8 pt-4"
+            className="lg:hidden flex flex-col gap-4 px-6 pb-8 pt-4"
             style={{ backgroundColor: "hsla(210, 55%, 18%, 0.97)" }}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
