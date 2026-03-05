@@ -35,11 +35,11 @@ const VintageGrain = ({ zBase = 2 }: { zBase?: number }) => (
   <>
     <div
       className="absolute inset-0 pointer-events-none grain-coarse"
-      style={{ opacity: 0.1, mixBlendMode: "color-burn", zIndex: zBase }}
+      style={{ opacity: 0.1, mixBlendMode: "multiply", zIndex: zBase }}
     />
     <div
       className="absolute inset-0 pointer-events-none grain-fine"
-      style={{ opacity: 0.15, mixBlendMode: "soft-light", zIndex: zBase + 1 }}
+      style={{ opacity: 0.15, mixBlendMode: "overlay", zIndex: zBase + 1 }}
     />
     {/* Texture paper overlay */}
     <div

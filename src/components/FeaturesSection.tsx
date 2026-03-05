@@ -37,11 +37,11 @@ const VintageGrain = ({ zBase = 2 }: { zBase?: number }) => (
   <>
     <div
       className="absolute inset-0 pointer-events-none grain-coarse"
-      style={{ opacity: 0.08, mixBlendMode: "color-burn", zIndex: zBase }}
+      style={{ opacity: 0.08, mixBlendMode: "multiply", zIndex: zBase }}
     />
     <div
       className="absolute inset-0 pointer-events-none grain-fine"
-      style={{ opacity: 0.12, mixBlendMode: "soft-light", zIndex: zBase + 1 }}
+      style={{ opacity: 0.12, mixBlendMode: "overlay", zIndex: zBase + 1 }}
     />
     <div
       className="absolute inset-0 pointer-events-none"
@@ -167,11 +167,11 @@ const FeaturesSection = () => {
               {/* Grain on each card */}
               <div
                 className="absolute inset-0 pointer-events-none grain-coarse rounded-3xl"
-                style={{ opacity: 0.12, mixBlendMode: "color-burn", zIndex: 1 }}
+                style={{ opacity: 0.12, mixBlendMode: "multiply", zIndex: 1 }}
               />
               <div
                 className="absolute inset-0 pointer-events-none grain-fine rounded-3xl"
-                style={{ opacity: 0.1, mixBlendMode: "soft-light", zIndex: 2 }}
+                style={{ opacity: 0.1, mixBlendMode: "overlay", zIndex: 2 }}
               />
               <div
                 className="absolute inset-0 pointer-events-none rounded-3xl"
