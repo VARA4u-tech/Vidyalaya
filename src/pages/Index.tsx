@@ -2,53 +2,90 @@ import { motion } from "framer-motion";
 
 const Index = () => {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background paper-grain flex items-center">
-      {/* Geometric shapes */}
-      
-      {/* Large teal circle - top right */}
-      <motion.div
-        className="absolute w-[600px] h-[600px] rounded-full bg-teal opacity-90"
-        style={{ top: "-10%", right: "-5%" }}
-        animate={{ x: [0, 20, 0], y: [0, -15, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+    <div className="relative min-h-screen overflow-hidden bg-beige flex items-center">
+      {/* Paper grain overlay */}
+      <div
+        className="absolute inset-0 z-20 pointer-events-none opacity-[0.12] mix-blend-multiply"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: "256px 256px",
+        }}
       />
 
-      {/* Coral red circle - bottom left */}
+      {/* Large teal shape - fills most of the left/center like a rounded diamond */}
       <motion.div
-        className="absolute w-[500px] h-[500px] rounded-full bg-coral opacity-85"
-        style={{ bottom: "-15%", left: "10%" }}
-        animate={{ x: [0, -15, 0], y: [0, 20, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Cyan diagonal shape - center right */}
-      <motion.div
-        className="absolute w-[400px] h-[400px] bg-cyan opacity-70"
-        style={{ top: "20%", right: "15%", transform: "rotate(45deg)" }}
-        animate={{ rotate: [45, 50, 45], x: [0, 10, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Small teal circle - mid left */}
-      <motion.div
-        className="absolute w-[200px] h-[200px] rounded-full bg-teal opacity-50"
-        style={{ top: "60%", left: "35%" }}
-        animate={{ y: [0, -25, 0], x: [0, 10, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Cyan triangle-ish shape top left */}
-      <motion.div
-        className="absolute w-[300px] h-[300px] bg-cyan opacity-40"
-        style={{ top: "-5%", left: "5%", transform: "rotate(-15deg)", borderRadius: "0 0 100% 0" }}
-        animate={{ rotate: [-15, -10, -15] }}
+        className="absolute bg-teal"
+        style={{
+          width: "85vw",
+          height: "120vh",
+          top: "-10vh",
+          left: "-10vw",
+          borderRadius: "0 40% 0 40%",
+          transform: "rotate(-5deg)",
+        }}
+        animate={{ rotate: [-5, -3, -5] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Content */}
+      {/* Coral red circle - right side, partially clipped */}
+      <motion.div
+        className="absolute rounded-full bg-coral"
+        style={{
+          width: "55vmin",
+          height: "55vmin",
+          bottom: "-5%",
+          right: "2%",
+        }}
+        animate={{ x: [0, -8, 0], y: [0, 10, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Cyan diagonal shape - top right */}
+      <motion.div
+        className="absolute bg-cyan"
+        style={{
+          width: "45vmin",
+          height: "80vmin",
+          top: "-15%",
+          right: "-2%",
+          transform: "rotate(-25deg)",
+          borderRadius: "8px",
+        }}
+        animate={{ rotate: [-25, -22, -25] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Second cyan sliver - lower right area */}
+      <motion.div
+        className="absolute bg-cyan opacity-80"
+        style={{
+          width: "20vmin",
+          height: "60vmin",
+          bottom: "5%",
+          right: "18%",
+          transform: "rotate(-25deg)",
+          borderRadius: "8px",
+        }}
+        animate={{ rotate: [-25, -20, -25] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Beige peek-through on the far right edge */}
+      <div
+        className="absolute bg-beige"
+        style={{
+          width: "15vw",
+          height: "40vh",
+          top: "10%",
+          right: "-2%",
+          borderRadius: "50% 0 0 50%",
+        }}
+      />
+
+      {/* Content - white text on teal */}
       <div className="relative z-10 px-8 md:px-16 lg:px-24 max-w-4xl">
         <motion.h1
-          className="text-7xl sm:text-8xl md:text-9xl font-black tracking-tight text-foreground leading-none"
+          className="text-7xl sm:text-8xl md:text-[9rem] font-black tracking-tight text-primary-foreground leading-[0.9]"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -56,20 +93,22 @@ const Index = () => {
           Vidyalaya
         </motion.h1>
 
-        <motion.p
-          className="mt-6 text-2xl sm:text-3xl md:text-4xl font-bold text-foreground/80 tracking-tight"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-        >
-          AI Powered Study Platform
-        </motion.p>
-
-        <motion.p
-          className="mt-6 text-base sm:text-lg text-muted-foreground tracking-wide font-medium"
+        <motion.div
+          className="mt-10 flex gap-12 text-primary-foreground/80"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+        >
+          <p className="text-lg sm:text-xl font-medium tracking-wide">
+            AI Powered Study Platform
+          </p>
+        </motion.div>
+
+        <motion.p
+          className="mt-4 text-sm sm:text-base text-primary-foreground/60 tracking-widest font-medium uppercase"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
         >
           Upload Notes &bull; AI Summaries &bull; Smart Quizzes &bull; Exam Planner
         </motion.p>
