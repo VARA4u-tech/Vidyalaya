@@ -78,9 +78,9 @@ const FooterSection = () => {
               <img
                 src="/logo.png"
                 alt="Vidyalaya Logo"
-                className="w-12 h-12 object-contain"
+                className="w-24 h-24 object-contain"
               />
-              <h3
+              <h6
                 className="font-serif font-bold"
                 style={{
                   color: "hsl(210, 48%, 22%)",
@@ -88,7 +88,7 @@ const FooterSection = () => {
                 }}
               >
                 Vidyalaya
-              </h3>
+              </h6>
             </div>
             <p
               className="font-sans leading-relaxed mb-6"
@@ -184,7 +184,7 @@ const FooterSection = () => {
             &copy; 2026 Vidyalaya. All rights reserved.
           </p>
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="" className="w-6 h-6 object-contain" />
+            <img src="/logo.png" alt="" className="w-12 h-12 object-contain" />
             <span
               className="font-serif font-bold"
               style={{ color: "hsl(210, 48%, 25%)", fontSize: "1rem" }}
