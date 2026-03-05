@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import FooterSection from "@/components/FooterSection";
@@ -46,6 +47,7 @@ const GrainOverlay = ({
 );
 
 const Index = () => {
+  const navigate = useNavigate();
   return (
     <div style={{ backgroundColor: "hsl(34, 35%, 82%)" }}>
       <NavBar />
@@ -288,6 +290,30 @@ const Index = () => {
                 >
                   How It Works
                 </a>
+                <button
+                  id="hero-cta-launch"
+                  onClick={() => navigate("/app")}
+                  className="inline-flex items-center font-sans font-bold rounded-full transition-all duration-300 w-full sm:w-auto justify-center"
+                  style={{
+                    backgroundColor: "hsl(9, 70%, 54%)",
+                    color: "white",
+                    padding: "0.85rem 1.8rem",
+                    fontSize: "0.95rem",
+                    boxShadow: "0 4px 20px hsla(9,70%,54%,0.4)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (
+                      e.currentTarget as HTMLButtonElement
+                    ).style.backgroundColor = "hsl(9, 70%, 44%)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (
+                      e.currentTarget as HTMLButtonElement
+                    ).style.backgroundColor = "hsl(9, 70%, 54%)";
+                  }}
+                >
+                  🚀 Launch App
+                </button>
               </motion.div>
             </div>
           </motion.div>
