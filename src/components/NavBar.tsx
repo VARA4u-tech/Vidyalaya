@@ -49,15 +49,15 @@ const NavBar = () => {
             <a
               key={link.label}
               href={link.href}
-              className="font-sans font-medium uppercase tracking-widest text-xs transition-all duration-300"
-              style={{ color: "hsl(36, 23%, 75%)" }}
+              className="font-sans font-bold uppercase tracking-widest text-sm transition-all duration-300"
+              style={{ color: "hsl(36, 23%, 85%)" }}
               onMouseEnter={(e) =>
                 ((e.currentTarget as HTMLAnchorElement).style.color =
-                  "hsl(36, 23%, 95%)")
+                  "hsl(36, 23%, 100%)")
               }
               onMouseLeave={(e) =>
                 ((e.currentTarget as HTMLAnchorElement).style.color =
-                  "hsl(36, 23%, 75%)")
+                  "hsl(36, 23%, 85%)")
               }
             >
               {link.label}
@@ -125,8 +125,8 @@ const NavBar = () => {
               <a
                 key={link.label}
                 href={link.href}
-                className="font-sans font-medium uppercase tracking-widest text-xs"
-                style={{ color: "hsl(36, 23%, 80%)" }}
+                className="font-sans font-bold uppercase tracking-widest text-sm pt-2"
+                style={{ color: "hsl(36, 23%, 90%)" }}
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
