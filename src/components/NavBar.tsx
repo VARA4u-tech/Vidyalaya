@@ -12,11 +12,11 @@ const NavBar = () => {
   }, []);
 
   const links = [
-    { label: "Home", href: "#home" },
-    { label: "Features", href: "#features" },
-    { label: "How It Works", href: "#how-it-works" },
-    { label: "Team", href: "#team" },
-    { label: "Contact", href: "#contact" },
+    { label: "Home", href: "/#home" },
+    { label: "Features", href: "/#features" },
+    { label: "How It Works", href: "/#how-it-works" },
+    { label: "Team", href: "/#team" },
+    { label: "Contact", href: "/#contact" },
   ];
 
   return (
@@ -34,7 +34,7 @@ const NavBar = () => {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16 md:h-20">
         <a
-          href="#home"
+          href="/#home"
           className="flex items-center gap-3 transition-transform duration-300 hover:scale-[1.02]"
         >
           <img
