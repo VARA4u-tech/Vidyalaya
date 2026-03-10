@@ -18,7 +18,7 @@ const team = [
 const advisors = [
   { label: "Built with", value: "React + TypeScript" },
   { label: "Project type", value: "Academic / Personal Project" },
-  { label: "Duration", value: "3 weeks" },
+  { label: "Duration", value: "24 hrs" },
   { label: "Purpose", value: "Student Learning Platform" },
 ];
 
@@ -243,7 +243,7 @@ const TeamSection = () => (
           >
             <p
               className="font-serif italic leading-relaxed text-lg mb-4"
-              style={{ color: "hsl(36,25%,82%)" }}
+              style={{ color: "hsla(237, 80%, 40%, 1.00)" }}
             >
               "I built Vidyalaya because I wanted a smarter way to study — one
               that uses AI to do the heavy lifting so you can focus on

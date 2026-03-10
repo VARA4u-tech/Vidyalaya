@@ -3,20 +3,19 @@ import { motion, useInView } from "framer-motion";
 import { Zap, Users, BookOpen, Star, Code2, Clock } from "lucide-react";
 
 const stats = [
-  { icon: Zap, label: "AI-Powered Features", value: 15, suffix: "+" },
-  { icon: BookOpen, label: "Notes Processed", value: 500, suffix: "K+" },
-  { icon: Users, label: "Student Beta Users", value: 1200, suffix: "+" },
+  { icon: Zap, label: "AI-Driven Features", value: 15, suffix: "+" },
+  { icon: BookOpen, label: "Notes Analyzed", value: 500, suffix: "K+" },
+  { icon: Users, label: "Beta Users", value: 1200, suffix: "+" },
   {
     icon: Star,
-    label: "Avg User Rating",
+    label: "User Satisfaction Score",
     value: 4.9,
     suffix: "/5",
     decimals: 1,
   },
-  { icon: Code2, label: "Lines of Code", value: 12, suffix: "K+" },
-  { icon: Clock, label: "Built In", value: 3, suffix: " weeks" },
+  { icon: Code2, label: "Codebase Size", value: 12, suffix: "K+" },
+  { icon: Clock, label: "Development Duration", value: 3, suffix: " Weeks" },
 ];
-
 const AnimatedNumber = ({
   target,
   decimals = 0,
@@ -86,7 +85,7 @@ const StatsSection = () => {
           className="text-center font-sans font-bold uppercase tracking-widest mb-10 md:mb-14"
           style={{
             color: "hsl(185, 48%, 55%)",
-            fontSize: "0.72rem",
+            fontSize: "0.80rem",
             letterSpacing: "0.3em",
           }}
           initial={{ opacity: 0, y: 10 }}
@@ -146,7 +145,7 @@ const StatsSection = () => {
         {/* Bottom tagline */}
         <motion.p
           className="text-center mt-10 font-sans"
-          style={{ color: "hsl(36,15%,45%)", fontSize: "0.85rem" }}
+          style={{ color: "hsl(36,15%,45%)", fontSize: "1.33rem" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

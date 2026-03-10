@@ -65,7 +65,22 @@ const NavBar = () => {
             </a>
           ))}
           <a
-            href="#features"
+            href="/login"
+            className="font-sans font-bold uppercase tracking-widest text-sm transition-all duration-300"
+            style={{ color: "hsl(36, 23%, 85%)" }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.color =
+                "hsl(36, 23%, 100%)")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.color =
+                "hsl(36, 23%, 85%)")
+            }
+          >
+            Sign In
+          </a>
+          <a
+            href="/signup"
             className="font-sans font-semibold rounded-full transition-all duration-300 text-sm"
             style={{
               backgroundColor: "hsl(9, 73%, 56%)",
