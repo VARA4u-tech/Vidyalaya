@@ -9,6 +9,7 @@ import TechStackSection from "@/components/TechStackSection";
 import TeamSection from "@/components/TeamSection";
 import ProblemStatementSection from "@/components/ProblemStatementSection";
 import GitHubCTASection from "@/components/GitHubCTASection";
+import DynamicScrollBot from "@/components/DynamicScrollBot";
 
 /* Inline grain overlay component — reused in every section */
 const GrainOverlay = ({
@@ -362,6 +363,7 @@ const Index = () => {
       <TeamSection />
       <GitHubCTASection />
       <FooterSection />
+      <DynamicScrollBot />
     </div>
   );
 };
