@@ -79,8 +79,23 @@ const Dashboard = () => {
   }, []);
 
   const handleSignOut = async () => {
-    await insforge.auth.signOut();
-    navigate("/");
+    try {
+      await insforge.auth.signOut();
+    } catch (err) {
+      console.error("Unexpected error signing out:", err);
+    } finally {
+      // Clear front-end storage aggressively to 
+      // ensure we dump any stale auth tokens.
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.includes('auth') || key?.includes('insforge') || key?.includes('token')) {
+          localStorage.removeItem(key);
+        }
+      }
+      
+      // Full page reload to clear any in-memory user states in NavBar/App
+      window.location.href = "/";
+    }
   };
 
   const Sidebar = ({ mobile = false }: { mobile?: boolean }) => (
