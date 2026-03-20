@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -21,7 +21,9 @@ import {
   Menu,
   X,
   LucideIcon,
+  LogOut,
 } from "lucide-react";
+import { insforge, User } from "@/lib/insforge";
 
 // Feature pages
 import FlashcardPage from "./features/FlashcardPage";
@@ -65,7 +67,21 @@ const navItems: NavItem[] = [
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await insforge.auth.getCurrentUser();
+      if (data) setUser(data);
+    };
+    fetchUser();
+  }, []);
+
+  const handleSignOut = async () => {
+    await insforge.auth.signOut();
+    navigate("/");
+  };
 
   const Sidebar = ({ mobile = false }: { mobile?: boolean }) => (
     <aside
@@ -117,8 +133,47 @@ const Dashboard = () => {
         ))}
       </nav>
 
-      {/* Back to Home */}
-      <div className="p-3 border-t border-[hsla(36,25%,90%,0.07)]">
+      {/* User Info & Actions */}
+      <div className="p-3 border-t border-[hsla(36,25%,90%,0.07)] flex flex-col gap-2">
+        {user && (!collapsed || mobile) && (
+          <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 mb-1">
+            <div className="w-8 h-8 rounded-full bg-[hsl(9,70%,54%)] flex items-center justify-center text-white font-bold text-sm shadow-md flex-shrink-0">
+              {user.user_metadata?.full_name?.charAt(0) ||
+                user.user_metadata?.name?.charAt(0) ||
+                "U"}
+            </div>
+            <div className="flex flex-col min-w-0">
+              <span className="text-sm font-bold text-white truncate">
+                {user.user_metadata?.full_name?.split(" ")[0] ||
+                  user.user_metadata?.name ||
+                  "Student"}
+              </span>
+              <span className="text-[10px] text-[hsl(36,20%,65%)] truncate">
+                {user.email}
+              </span>
+            </div>
+          </div>
+        )}
+        {user && collapsed && !mobile && (
+          <div className="flex justify-center mb-1">
+            <div className="w-8 h-8 rounded-full bg-[hsl(9,70%,54%)] flex items-center justify-center text-white font-bold text-sm shadow-md flex-shrink-0">
+              {user.user_metadata?.full_name?.charAt(0) ||
+                user.user_metadata?.name?.charAt(0) ||
+                "U"}
+            </div>
+          </div>
+        )}
+        <button
+          onClick={handleSignOut}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[hsl(9,70%,64%)] hover:bg-[hsla(9,70%,54%,0.1)] transition-all"
+        >
+          <LogOut size={18} className="flex-shrink-0 text-[hsl(9,70%,54%)]" />
+          {(!collapsed || mobile) && (
+            <span className="font-semibold text-[hsl(9,70%,64%)]">
+              Sign Out
+            </span>
+          )}
+        </button>
         <button
           onClick={() => navigate("/")}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[hsl(36,20%,55%)] hover:text-[hsl(36,28%,90%)] hover:bg-[hsla(36,25%,90%,0.06)] transition-all"
