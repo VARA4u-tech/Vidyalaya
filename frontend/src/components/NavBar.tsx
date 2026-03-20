@@ -80,7 +80,22 @@ const NavBar = () => {
             Sign In
           </a>
           <a
-            href="/signup"
+            href="/login"
+            className="font-sans font-bold uppercase tracking-widest text-sm transition-all duration-300"
+            style={{ color: "hsl(36, 23%, 85%)" }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.color =
+                "hsl(36, 23%, 100%)")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.color =
+                "hsl(36, 23%, 85%)")
+            }
+          >
+            Sign In
+          </a>
+          <a
+            href="/app"
             className="font-sans font-semibold rounded-full transition-all duration-300 text-sm"
             style={{
               backgroundColor: "hsl(9, 73%, 56%)",
@@ -148,6 +163,21 @@ const NavBar = () => {
                 {link.label}
               </a>
             ))}
+            <a
+              href="/login"
+              className="font-sans font-bold uppercase tracking-widest text-sm pt-4 border-t border-white/10"
+              style={{ color: "hsl(36, 23%, 90%)" }}
+              onClick={() => setMenuOpen(false)}
+            >
+              Sign In
+            </a>
+            <a
+              href="/app"
+              className="font-sans font-bold uppercase tracking-widest text-sm text-[hsl(9,73%,56%)]"
+              onClick={() => setMenuOpen(false)}
+            >
+              Get Started
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
