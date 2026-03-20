@@ -9,6 +9,7 @@ import {
   CheckCircle,
   LucideIcon,
 } from "lucide-react";
+import { SmartSummarizer } from "../../components/SmartSummarizer";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -90,13 +91,18 @@ const DashboardHome = () => {
                     <s.icon size={18} style={{ color: s.color }} />
                   </div>
                   <p className="text-[hsl(36,28%,92%)] font-bold text-xl md:text-2xl font-serif">
-                    {s.value}
+                     {s.value}
                   </p>
                   <p className="text-[hsl(36,15%,55%)] text-xs mt-1">
                     {s.label}
                   </p>
                 </motion.div>
               ))}
+        </div>
+
+        {/* AI Summarizer Integration */}
+        <div className="mb-8">
+          <SmartSummarizer />
         </div>
 
         {/* Quick Links */}

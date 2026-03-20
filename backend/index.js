@@ -1,9 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const OpenAI = require("openai");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// OpenRouter configuration
+const openai = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
 
 // Middleware
 app.use(cors());
@@ -24,18 +31,41 @@ app.get("/api/stats", (req, res) => {
   ]);
 });
 
-// Mock Summarization Route
-app.post("/api/summarize", (req, res) => {
+// AI Summarization Route with OpenRouter
+app.post("/api/summarize", async (req, res) => {
   const { text } = req.body;
   if (!text) return res.status(400).json({ error: "No text provided" });
 
-  // Mocking AI processing delay
-  setTimeout(() => {
-    res.json({
-      summary: `This is a high-level AI summary of your notes: "${text.substring(0, 50)}...". The key concepts identified include effective study habits, temporal spacing, and active recall.`,
-      concepts: ["Active Recall", "Spaced Repetition", "Feynman Technique"],
+  try {
+    const completion = await openai.chat.completions.create({
+      model: process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-001",
+      messages: [
+        {
+          role: "system",
+          content: "You are a professional teaching assistant. Your goal is to provide a clear, educational summary of the provided text. Return your response in JSON format with two keys: 'summary' (a string) and 'concepts' (an array of strings).",
+        },
+        {
+          role: "user",
+          content: `Please summarize the following educational content and identify the key concepts:\n\n${text}`,
+        },
+      ],
+      response_format: { type: "json_object" }, // Many OpenRouter models support this
     });
-  }, 1000);
+
+    const responseContent = JSON.parse(completion.choices[0].message.content);
+    
+    // We expect the LLM to return a JSON with { summary, concepts }
+    res.json({
+      summary: responseContent.summary || "Summary generation failure.",
+      concepts: responseContent.concepts || [],
+    });
+  } catch (error) {
+    console.error("OpenRouter Error:", error);
+    res.status(500).json({ 
+      error: "AI summarization failed. Check your API key and quota.",
+      details: error.message 
+    });
+  }
 });
 
 // Health Check
