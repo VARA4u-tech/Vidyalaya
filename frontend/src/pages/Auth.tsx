@@ -43,83 +43,21 @@ const GrainOverlay = () => (
 
 const Auth = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  // Sync state with URL if needed, or just use state
-  useEffect(() => {
-    if (location.pathname === "/signup") {
-      setIsLogin(false);
-    } else {
-      setIsLogin(true);
-    }
-  }, [location.pathname]);
-
-  const [loginData, setLoginData] = useState({ email: "", password: "" });
-  const [signupData, setSignupData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const handleOAuthLogin = async (provider: 'google' | 'github') => {
+  const handleGoogleLogin = async () => {
     setLoading(true);
     try {
       const { data, error } = await insforge.auth.signInWithOAuth({
-        provider,
+        provider: 'google',
         redirectTo: window.location.origin + "/app",
       });
       if (error) throw error;
-      // In web mode, signInWithOAuth usually redirects the browser automatically.
     } catch (err: unknown) {
-      toast.error(`${provider} login failed: ${(err as Error).message}`);
+      toast.error(`Google login failed: ${(err as Error).message}`);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const { data, error } = await insforge.auth.signInWithPassword({
-        email: loginData.email,
-        password: loginData.password,
-      });
-      if (error) throw error;
-      toast.success("Welcome back!");
-      navigate("/app");
-    } catch (err: unknown) {
-      toast.error(`Login failed: ${(err as Error).message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSignupSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const { data, error } = await insforge.auth.signUp({
-        email: signupData.email,
-        password: signupData.password,
-        name: signupData.name,
-      });
-      if (error) throw error;
-      toast.success("Account created successfully!");
-      navigate("/app");
-    } catch (err: unknown) {
-      toast.error(`Signup failed: ${(err as Error).message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const toggleAuth = () => {
-    const nextState = !isLogin;
-    setIsLogin(nextState);
-    navigate(nextState ? "/login" : "/signup");
   };
 
   return (
@@ -129,39 +67,24 @@ const Auth = () => {
     >
       <GrainOverlay />
 
-      {/* Hero-like background bands - More vibrant for dark bg */}
+      {/* Hero-like background bands */}
       <motion.div
         className="absolute w-[180vw] md:w-[70vw] lg:w-[50vw] h-full -top-[10%] -right-[60vw] md:-right-[8vw]"
         style={{
-          backgroundColor: isLogin ? "hsl(9, 75%, 58%)" : "hsl(185, 55%, 55%)",
+          backgroundColor: "hsl(9, 75%, 58%)",
           transform: "rotate(-22deg)",
           transformOrigin: "top right",
           zIndex: 1,
         }}
         animate={{
           rotate: [-22, -19.5, -22],
-          backgroundColor: isLogin ? "hsl(9, 80%, 62%)" : "hsl(185, 65%, 60%)",
+          backgroundColor: "hsl(9, 80%, 62%)",
         }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <motion.div
-        className="absolute w-[60vw] md:w-[30vw] lg:w-[15vw] h-full -top-[10%] right-[10vw] md:right-[28vw]"
-        style={{
-          backgroundColor: isLogin ? "hsl(185, 55%, 55%)" : "hsl(9, 75%, 58%)",
-          transform: "rotate(-22deg)",
-          transformOrigin: "top right",
-          zIndex: 2,
-        }}
-        animate={{
-          rotate: [-22, -18.5, -22],
-          backgroundColor: isLogin ? "hsl(185, 65%, 60%)" : "hsl(9, 80%, 62%)",
-        }}
-        transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
-      />
-
       <div className="relative z-10 flex flex-col h-screen overflow-hidden">
-        {/* Simplified Header for Auth pages to save space */}
+        {/* Simplified Header */}
         <header className="flex-shrink-0 h-16 md:h-20 flex items-center justify-between px-6 md:px-12 max-w-[90rem] mx-auto w-full">
           <Link to="/" className="transition-transform hover:scale-110">
             <img
@@ -182,23 +105,23 @@ const Auth = () => {
           </Link>
         </header>
 
-        <div className="flex-grow flex items-center justify-center px-4 py-2 min-h-0">
-          <div className="w-full max-w-[90rem] flex items-center justify-between gap-8 h-full">
+        <div className="flex-grow flex items-center justify-center px-4 py-10">
+          <div className="w-full max-w-[90rem] flex items-center justify-center lg:justify-between gap-12 h-full">
             {/* Desktop Left Side: Features */}
-            <div className="hidden lg:flex flex-col gap-5 w-[22%]">
+            <div className="hidden lg:flex flex-col gap-6 w-[28%]">
               {[
                 {
-                  icon: <Mail className="w-5 h-5" />,
+                  icon: <Mail className="w-6 h-6" />,
                   title: "Instant Summaries",
                   desc: "Turn long notes into concise AI summaries in seconds.",
                 },
                 {
-                  icon: <Lock className="w-5 h-5" />,
+                  icon: <Lock className="w-6 h-6" />,
                   title: "Secure Storage",
                   desc: "Your study materials are encrypted and safe with us.",
                 },
                 {
-                  icon: <CheckCircle2 className="w-5 h-5" />,
+                  icon: <CheckCircle2 className="w-6 h-6" />,
                   title: "Smart Planner",
                   desc: "Let AI organize your revision schedule for maximum impact.",
                 },
@@ -208,17 +131,17 @@ const Auth = () => {
                   initial={{ x: -50, opacity: 0 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 + idx * 0.1, duration: 0.6 }}
-                  className="p-5 rounded-3xl border border-[hsla(36,25%,90%,0.1)] bg-white/5 backdrop-blur-md hover:bg-white/10 transition-colors"
+                  className="p-6 rounded-[2rem] border border-[hsla(36,25%,90%,0.1)] bg-white/5 backdrop-blur-md hover:bg-white/10 transition-colors"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-2xl bg-coral/20 text-coral flex-shrink-0">
+                    <div className="p-3.5 rounded-2xl bg-coral/20 text-coral flex-shrink-0">
                       {item.icon}
                     </div>
                     <div>
-                      <h3 className="font-sans font-bold text-[hsla(0, 31%, 94%, 1.00)] text-sm mb-1">
+                      <h3 className="font-sans font-bold text-[hsla(0, 31%, 94%, 1.00)] text-base mb-1">
                         {item.title}
                       </h3>
-                      <p className="font-sans text-[hsl(36,15%,65%)] text-xs leading-relaxed">
+                      <p className="font-sans text-[hsl(36,15%,65%)] text-sm leading-relaxed">
                         {item.desc}
                       </p>
                     </div>
@@ -229,14 +152,13 @@ const Auth = () => {
 
             {/* Main Auth Card */}
             <motion.div
-              layout
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6 }}
-              className="w-full max-w-md"
+              className="w-full max-w-md lg:max-w-lg"
             >
               <div
-                className="rounded-[2.5rem] shadow-2xl border border-[hsla(36,25%,90%,0.2)] relative overflow-hidden"
+                className="rounded-[3rem] shadow-2xl border border-[hsla(36,25%,90%,0.2)] relative overflow-hidden text-center"
                 style={{ backgroundColor: "hsl(210, 48%, 20%)" }}
               >
                 {/* Inner Grain */}
@@ -249,403 +171,98 @@ const Auth = () => {
                   }}
                 />
 
-                <div className="relative z-10 p-6 md:p-10 transition-all duration-500">
-                  <div className="text-center mb-6 overflow-hidden h-[90px] flex flex-col justify-center">
-                    <AnimatePresence mode="wait">
-                      {isLogin ? (
-                        <motion.div
-                          key="login-header"
-                          initial={{ y: 20, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          exit={{ y: -20, opacity: 0 }}
-                          transition={{ duration: 0.4 }}
-                        >
-                          <h1
-                            className="font-serif font-bold leading-tight tracking-tight mb-1"
-                            style={{
-                              color: "hsl(36, 28%, 95%)",
-                              fontSize: "clamp(2rem, 5vw, 2.8rem)",
-                            }}
-                          >
-                            Welcome Back
-                          </h1>
-                          <p
-                            className="font-sans font-medium uppercase tracking-[0.2em]"
-                            style={{
-                              color: "hsl(36, 20%, 62%)",
-                              fontSize: "0.65rem",
-                            }}
-                          >
-                            Enter into your learning space
-                          </p>
-                        </motion.div>
-                      ) : (
-                        <motion.div
-                          key="signup-header"
-                          initial={{ y: 20, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          exit={{ y: -20, opacity: 0 }}
-                          transition={{ duration: 0.4 }}
-                        >
-                          <h1
-                            className="font-serif font-bold leading-tight tracking-tight mb-1"
-                            style={{
-                              color: "hsl(36, 28%, 95%)",
-                              fontSize: "clamp(2rem, 5vw, 2.8rem)",
-                            }}
-                          >
-                            Join Vidyalaya
-                          </h1>
-                          <p
-                            className="font-sans font-medium uppercase tracking-[0.2em]"
-                            style={{
-                              color: "hsl(36, 20%, 62%)",
-                              fontSize: "0.65rem",
-                            }}
-                          >
-                            Start your smart learning journey
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  <div className="relative overflow-visible">
-                    <AnimatePresence mode="wait">
-                      {isLogin ? (
-                        <motion.div
-                          key="login-form"
-                          initial={{ x: 50, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          exit={{ x: -100, opacity: 0 }}
-                          transition={{ duration: 0.5, ease: "circOut" }}
-                        >
-                          <form
-                            onSubmit={handleLoginSubmit}
-                            className="space-y-4"
-                          >
-                            <div className="space-y-1.5">
-                              <Label
-                                htmlFor="login-email"
-                                style={{
-                                  color: "hsl(36, 25%, 82%)",
-                                  fontSize: "0.8rem",
-                                }}
-                              >
-                                Email Address
-                              </Label>
-                              <div className="relative">
-                                <Mail
-                                  className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4"
-                                  style={{ color: "hsl(36, 15%, 48%)" }}
-                                />
-                                <Input
-                                  id="login-email"
-                                  type="email"
-                                  placeholder="name@example.com"
-                                  autoComplete="email"
-                                  className="pl-12 bg-white/5 border-[hsla(36,25%,90%,0.15)] text-white h-12 rounded-xl focus:ring-coral/40 focus:border-coral/40 transition-all font-sans"
-                                  value={loginData.email}
-                                  onChange={(e) =>
-                                    setLoginData({
-                                      ...loginData,
-                                      email: e.target.value,
-                                    })
-                                  }
-                                  required
-                                />
-                              </div>
-                            </div>
-
-                            <div className="space-y-1.5">
-                              <div className="flex items-center justify-between">
-                                <Label
-                                  htmlFor="login-password"
-                                  style={{
-                                    color: "hsl(36, 25%, 82%)",
-                                    fontSize: "0.8rem",
-                                  }}
-                                >
-                                  Password
-                                </Label>
-                                <button
-                                  type="button"
-                                  className="text-[10px] font-semibold hover:text-white transition-colors"
-                                  style={{ color: "hsl(185, 48%, 50%)" }}
-                                >
-                                  Forgot password?
-                                </button>
-                              </div>
-                              <div className="relative">
-                                <Lock
-                                  className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4"
-                                  style={{ color: "hsl(36, 15%, 48%)" }}
-                                />
-                                <Input
-                                  id="login-password"
-                                  type="password"
-                                  placeholder="••••••••"
-                                  autoComplete="current-password"
-                                  className="pl-12 bg-white/5 border-[hsla(36,25%,90%,0.15)] text-white h-12 rounded-xl focus:ring-coral/40 focus:border-coral/40 transition-all font-sans"
-                                  value={loginData.password}
-                                  onChange={(e) =>
-                                    setLoginData({
-                                      ...loginData,
-                                      password: e.target.value,
-                                    })
-                                  }
-                                  required
-                                />
-                              </div>
-                            </div>
-
-                            <Button
-                              type="submit"
-                              disabled={loading}
-                              className="w-full h-12 font-sans font-bold uppercase tracking-widest rounded-full transition-all duration-300 shadow-xl mt-2"
-                              style={{
-                                backgroundColor: "hsl(9, 70%, 54%)",
-                                color: "white",
-                                fontSize: "0.85rem",
-                              }}
-                            >
-                              Sign In <ArrowRight className="ml-2 w-4 h-4" />
-                            </Button>
-                          </form>
-                        </motion.div>
-                      ) : (
-                        <motion.div
-                          key="signup-form"
-                          initial={{ x: -20, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          exit={{ x: 100, opacity: 0 }}
-                          transition={{ duration: 0.5, ease: "circOut" }}
-                        >
-                          <form
-                            onSubmit={handleSignupSubmit}
-                            className="space-y-3"
-                          >
-                            <div className="space-y-1">
-                              <Label
-                                htmlFor="signup-name"
-                                style={{
-                                  color: "hsl(36, 25%, 82%)",
-                                  fontSize: "0.8rem",
-                                }}
-                              >
-                                Full Name
-                              </Label>
-                              <div className="relative">
-                                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(36,15%,48%)] transition-colors" />
-                                <Input
-                                  id="signup-name"
-                                  type="text"
-                                  placeholder="John Doe"
-                                  autoComplete="name"
-                                  className="pl-12 bg-white/5 border-[hsla(36,25%,90%,0.15)] text-white h-11 rounded-xl focus:ring-coral/40 focus:border-coral/40 transition-all font-sans"
-                                  value={signupData.name}
-                                  onChange={(e) =>
-                                    setSignupData({
-                                      ...signupData,
-                                      name: e.target.value,
-                                    })
-                                  }
-                                  required
-                                />
-                              </div>
-                            </div>
-
-                            <div className="space-y-1">
-                              <Label
-                                htmlFor="signup-email"
-                                style={{
-                                  color: "hsl(36, 25%, 82%)",
-                                  fontSize: "0.8rem",
-                                }}
-                              >
-                                Email Address
-                              </Label>
-                              <div className="relative">
-                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(36,15%,48%)] transition-colors" />
-                                <Input
-                                  id="signup-email"
-                                  type="email"
-                                  placeholder="name@example.com"
-                                  autoComplete="email"
-                                  className="pl-12 bg-white/5 border-[hsla(36,25%,90%,0.15)] text-white h-11 rounded-xl focus:ring-coral/40 focus:border-coral/40 transition-all font-sans"
-                                  value={signupData.email}
-                                  onChange={(e) =>
-                                    setSignupData({
-                                      ...signupData,
-                                      email: e.target.value,
-                                    })
-                                  }
-                                  required
-                                />
-                              </div>
-                            </div>
-
-                            <div className="space-y-1">
-                              <Label
-                                htmlFor="signup-password"
-                                style={{
-                                  color: "hsl(36, 25%, 82%)",
-                                  fontSize: "0.8rem",
-                                }}
-                              >
-                                Password
-                              </Label>
-                              <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(36,15%,48%)] transition-colors" />
-                                <Input
-                                  id="signup-password"
-                                  type="password"
-                                  placeholder="••••••••"
-                                  autoComplete="new-password"
-                                  className="pl-12 bg-white/5 border-[hsla(36,25%,90%,0.15)] text-white h-11 rounded-xl focus:ring-coral/40 focus:border-coral/40 transition-all font-sans"
-                                  value={signupData.password}
-                                  onChange={(e) =>
-                                    setSignupData({
-                                      ...signupData,
-                                      password: e.target.value,
-                                    })
-                                  }
-                                  required
-                                />
-                              </div>
-                            </div>
-
-                            <div className="pt-1">
-                              <Button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full h-12 font-sans font-bold uppercase tracking-widest rounded-full transition-all duration-300 shadow-xl"
-                                style={{
-                                  backgroundColor: "hsl(185, 48%, 50%)",
-                                  color: "white",
-                                  fontSize: "0.85rem",
-                                }}
-                              >
-                                Create Account{" "}
-                                <ArrowRight className="ml-2 w-4 h-4" />
-                              </Button>
-                            </div>
-                          </form>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  <div className="mt-6">
-                    <div className="relative mb-6 flex items-center gap-4">
-                      <div
-                        className="h-px flex-1"
-                        style={{ backgroundColor: "hsla(36,25%,90%,0.1)" }}
-                      />
-                      <span
-                        className="font-sans font-medium uppercase tracking-widest text-[0.6rem]"
-                        style={{ color: "hsl(36, 15%, 48%)" }}
-                      >
-                        Or continue with
-                      </span>
-                      <div
-                        className="h-px flex-1"
-                        style={{ backgroundColor: "hsla(36,25%,90%,0.1)" }}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <Button
-                        variant="outline"
-                        disabled={loading}
-                        onClick={() => handleOAuthLogin('google')}
-                        className="h-10 border-[hsla(36,25%,90%,0.15)] bg-transparent text-[hsl(36,25%,85%)] hover:bg-white/5 rounded-xl transition-all text-xs"
-                      >
-                        <Chrome className="mr-2 w-4 h-4" /> Google
-                      </Button>
-                      <Button
-                        variant="outline"
-                        disabled={loading}
-                        onClick={() => handleOAuthLogin('github')}
-                        className="h-10 border-[hsla(36,25%,90%,0.15)] bg-transparent text-[hsl(36,25%,85%)] hover:bg-white/5 rounded-xl transition-all text-xs"
-                      >
-                        <Github className="mr-2 w-4 h-4" /> GitHub
-                      </Button>
-                    </div>
-                  </div>
-
-                  <p
-                    className="text-center mt-6 font-sans font-medium text-xs"
-                    style={{ color: "hsl(36, 15%, 55%)" }}
+                <div className="relative z-10 p-8 md:p-14 transition-all duration-500">
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-10"
                   >
-                    {isLogin ? "New here? " : "Already have an account? "}
-                    <button
-                      onClick={toggleAuth}
-                      className="font-bold transition-all hover:text-white"
+                    <h1
+                      className="font-serif font-bold leading-tight tracking-tight mb-2"
                       style={{
-                        color: isLogin
-                          ? "hsl(9, 70%, 54%)"
-                          : "hsl(185, 48%, 50%)",
+                        color: "hsl(36, 28%, 95%)",
+                        fontSize: "clamp(2.5rem, 6vw, 3.5rem)",
                       }}
                     >
-                      {isLogin ? "Create Account" : "Sign In"}
-                    </button>
+                      Welcome
+                    </h1>
+                    <p
+                      className="font-sans font-medium uppercase tracking-[0.3em]"
+                      style={{
+                        color: "hsl(36, 20%, 62%)",
+                        fontSize: "0.75rem",
+                      }}
+                    >
+                      Start your smart learning journey
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                  >
+                    <Button
+                      onClick={handleGoogleLogin}
+                      disabled={loading}
+                      className="w-full h-16 md:h-20 rounded-full bg-white text-black hover:bg-[hsl(36,28%,90%)] transition-all duration-500 shadow-[0_0_30px_rgba(255,255,255,0.15)] group relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                      
+                      <div className="flex items-center justify-center gap-4 relative z-10 w-full">
+                        {loading ? (
+                          <div className="w-6 h-6 border-4 border-black/20 border-t-black rounded-full animate-spin" />
+                        ) : (
+                          <>
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center shadow-md">
+                              <Chrome className="w-5 h-5 md:w-6 md:h-6 text-[#4285F4]" />
+                            </div>
+                            <span className="font-sans font-bold text-lg md:text-xl tracking-tight">
+                              Continue with Google
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </Button>
+                  </motion.div>
+
+                  <p
+                    className="mt-8 font-sans font-medium text-xs md:text-sm max-w-[280px] mx-auto leading-relaxed"
+                    style={{ color: "hsl(36, 15%, 55%)" }}
+                  >
+                    By signing in, you agree to our Terms of Service and Privacy Policy.
                   </p>
                 </div>
               </div>
             </motion.div>
 
             {/* Desktop Right Side: Stats/Social */}
-            <div className="hidden lg:flex flex-col gap-6 w-[22%]">
-              {/* Stats Card */}
+            <div className="hidden lg:flex flex-col gap-6 w-[28%]">
               <motion.div
                 initial={{ x: 50, opacity: 0 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
-                className="p-8 rounded-[3rem] border border-[hsla(36,25%,90%,0.1)] bg-coral/10 backdrop-blur-md relative overflow-hidden text-center group"
+                className="p-10 rounded-[3rem] border border-[hsla(36,25%,90%,0.1)] bg-coral/10 backdrop-blur-md relative overflow-hidden text-center group"
               >
-                <div className="absolute inset-0 bg-coral/5 group-hover:bg-coral/10 transition-colors" />
-
                 <div className="relative z-10">
-                  <h2 className="font-serif font-bold text-5xl text-black mb-2">
+                  <h2 className="font-serif font-bold text-6xl text-black mb-3">
                     12K+
                   </h2>
-
-                  <p className="font-sans font-bold uppercase tracking-[0.2em] text-[0.75rem] text-black">
-                    Students Tested
+                  <p className="font-sans font-bold uppercase tracking-[0.2em] text-[0.8rem] text-black">
+                    Active Learners
                   </p>
-
-                  <div className="mt-5 flex justify-center -space-x-2">
-                    {["A", "B", "C", "D"].map((letter, i) => (
-                      <div
-                        key={i}
-                        className="w-9 h-9 rounded-full border-2 border-[hsl(210,48%,20%)] bg-[hsl(210,48%,30%)] flex items-center justify-center text-xs text-white font-bold backdrop-blur-sm"
-                      >
-                        {letter}
-                      </div>
-                    ))}
-
-                    <div className="w-9 h-9 rounded-full border-2 border-[hsl(210,48%,20%)] bg-coral flex items-center justify-center text-xs text-white font-bold">
-                      +
-                    </div>
-                  </div>
                 </div>
               </motion.div>
 
-              {/* Testimonial Card */}
               <motion.div
                 initial={{ x: 50, opacity: 0 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.8, duration: 0.6 }}
-                className="p-8 rounded-[3rem] border border-[hsla(36,25%,90%,0.1)] bg-white/5 backdrop-blur-md relative"
+                className="p-10 rounded-[3rem] border border-[hsla(36,25%,90%,0.1)] bg-white/5 backdrop-blur-md relative"
               >
-                <p className="font-serif italic text-black text-[1.2rem] leading-relaxed text-center quote-mark">
-                  "Vidyans helps students organize their notes efficiently and
-                  revise key concepts quickly before exams."
-                </p>
-
-                <p className="text-center text-black font-bold text-sm mt-4 uppercase tracking-widest">
-                  — Student Beta Tester
+                <p className="font-serif italic text-black text-[1.4rem] leading-relaxed text-center quote-mark">
+                  "The smartest way to master your curriculum."
                 </p>
               </motion.div>
             </div>

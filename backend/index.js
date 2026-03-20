@@ -32,25 +32,15 @@ app.get("/api/stats", async (req, res) => {
       .select("*")
       .order("label", { ascending: true });
 
-    if (error || !stats || stats.length === 0) {
-      console.warn("Falling back to mock stats:", error?.message);
-      return res.json([
-        { label: "Study Streak", value: "8 days", color: "hsl(9,70%,54%)" },
-        { label: "Cards Reviewed", value: "256", color: "hsl(185,48%,50%)" },
-        { label: "Quiz Score Avg", value: "88%", color: "hsl(34,60%,55%)" },
-        { label: "Goals Met", value: "15", color: "hsl(142,60%,50%)" },
-      ]);
+    if (error) {
+      console.error("InsForge Stats Error:", error.message);
+      return res.status(500).json({ error: "Failed to fetch stats" });
     }
     
-    res.json(stats);
+    res.json(stats || []);
   } catch (err) {
     console.error("InsForge Stats Fetch Error:", err);
-    res.json([
-      { label: "Study Streak", value: "8 days", color: "hsl(9,70%,54%)" },
-      { label: "Cards Reviewed", value: "256", color: "hsl(185,48%,50%)" },
-      { label: "Quiz Score Avg", value: "88%", color: "hsl(34,60%,55%)" },
-      { label: "Goals Met", value: "15", color: "hsl(142,60%,50%)" },
-    ]);
+    res.status(500).json({ error: "Internal Server Error while fetching stats" });
   }
 });
 

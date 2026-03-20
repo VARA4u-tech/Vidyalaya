@@ -16,19 +16,7 @@ interface Card {
   back: string;
 }
 
-const sampleCards: Card[] = [
-  {
-    id: 1,
-    front: "What is the powerhouse of the cell?",
-    back: "The Mitochondria",
-  },
-  {
-    id: 2,
-    front: "What is Newton's Second Law of Motion?",
-    back: "F = ma (Force equals mass times acceleration)",
-  },
-  { id: 3, front: "What is the chemical formula for water?", back: "H₂O" },
-];
+const sampleCards: Card[] = [];
 
 const PageHeader = ({ title, desc }: { title: string; desc: string }) => (
   <div className="mb-6 md:mb-8">

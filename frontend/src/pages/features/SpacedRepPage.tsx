@@ -12,35 +12,7 @@ interface Card {
   repetitions: number;
 }
 
-const initialCards: Card[] = [
-  {
-    id: 1,
-    front: "Define osmosis",
-    back: "Movement of water molecules through a semipermeable membrane from a region of lower solute concentration to higher.",
-    due: "today",
-    interval: 1,
-    ease: 2.5,
-    repetitions: 0,
-  },
-  {
-    id: 2,
-    front: "What is the Krebs Cycle?",
-    back: "A series of biochemical reactions used by aerobic organisms to release stored energy through the oxidation of acetyl-CoA.",
-    due: "today",
-    interval: 1,
-    ease: 2.5,
-    repetitions: 0,
-  },
-  {
-    id: 3,
-    front: "Newton's First Law",
-    back: "An object at rest stays at rest, and an object in motion stays in motion with the same speed and direction unless acted upon by an unbalanced force.",
-    due: "today",
-    interval: 1,
-    ease: 2.5,
-    repetitions: 0,
-  },
-];
+const initialCards: Card[] = [];
 
 const RATINGS = [
   { label: "Again", color: "hsl(9,70%,54%)", days: 0 },

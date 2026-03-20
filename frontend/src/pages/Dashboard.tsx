@@ -27,7 +27,6 @@ import {
 import FlashcardPage from "./features/FlashcardPage";
 import ProgressPage from "./features/ProgressPage";
 import PomodoroPage from "./features/PomodoroPage";
-import YouTubePage from "./features/YouTubePage";
 import FoldersPage from "./features/FoldersPage";
 import SpacedRepPage from "./features/SpacedRepPage";
 import StudyGroupsPage from "./features/StudyGroupsPage";
@@ -51,7 +50,6 @@ const navItems: NavItem[] = [
   { label: "Flashcards", icon: BookOpen, path: "flashcards" },
   { label: "Progress", icon: Brain, path: "progress" },
   { label: "Pomodoro Timer", icon: Timer, path: "pomodoro" },
-  { label: "YouTube Summary", icon: Youtube, path: "youtube" },
   { label: "Folders", icon: FolderOpen, path: "folders" },
   { label: "Spaced Repetition", icon: Calendar, path: "spaced-rep" },
   { label: "Study Groups", icon: Users, path: "groups" },
@@ -193,7 +191,6 @@ const Dashboard = () => {
             <Route path="flashcards" element={<FlashcardPage />} />
             <Route path="progress" element={<ProgressPage />} />
             <Route path="pomodoro" element={<PomodoroPage />} />
-            <Route path="youtube" element={<YouTubePage />} />
             <Route path="folders" element={<FoldersPage />} />
             <Route path="spaced-rep" element={<SpacedRepPage />} />
             <Route path="groups" element={<StudyGroupsPage />} />

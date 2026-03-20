@@ -18,36 +18,7 @@ const COLORS = [
   "hsl(34,60%,55%)",
 ];
 
-const initialExams: Exam[] = [
-  {
-    id: 1,
-    subject: "Mathematics",
-    date: "2026-03-15",
-    color: "hsl(185,48%,50%)",
-    notes: "Focus on calculus and integration",
-  },
-  {
-    id: 2,
-    subject: "Physics",
-    date: "2026-03-18",
-    color: "hsl(9,70%,54%)",
-    notes: "Revise mechanics and thermodynamics",
-  },
-  {
-    id: 3,
-    subject: "Chemistry",
-    date: "2026-03-22",
-    color: "hsl(265,60%,60%)",
-    notes: "Organic reactions and periodic table",
-  },
-  {
-    id: 4,
-    subject: "Biology",
-    date: "2026-03-28",
-    color: "hsl(142,60%,50%)",
-    notes: "Cell structure and genetics",
-  },
-];
+const initialExams: Exam[] = [];
 
 const getCountdown = (dateStr: string) => {
   const now = new Date();

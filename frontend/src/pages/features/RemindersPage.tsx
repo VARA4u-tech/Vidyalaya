@@ -13,32 +13,7 @@ interface Reminder {
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const initialReminders: Reminder[] = [
-  {
-    id: 1,
-    title: "Morning Study Session",
-    time: "07:00",
-    days: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-    subject: "Mathematics",
-    enabled: true,
-  },
-  {
-    id: 2,
-    title: "Flashcard Review",
-    time: "20:00",
-    days: ["Mon", "Wed", "Fri"],
-    subject: "Physics",
-    enabled: true,
-  },
-  {
-    id: 3,
-    title: "Weekend Revision",
-    time: "10:00",
-    days: ["Sat", "Sun"],
-    subject: "Biology",
-    enabled: false,
-  },
-];
+const initialReminders: Reminder[] = [];
 
 const RemindersPage = () => {
   const [reminders, setReminders] = useState<Reminder[]>(initialReminders);
