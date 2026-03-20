@@ -54,7 +54,30 @@
   * {
     @apply border-border;
     box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: hsla(36, 25%, 90%, 0.2) transparent;
   }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsla(36, 25%, 90%, 0.2);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsla(36, 25%, 90%, 0.4);
+  }
+
   html {
     scroll-behavior: smooth;
   }

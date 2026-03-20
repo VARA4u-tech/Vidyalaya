@@ -3,70 +3,54 @@ import {
   BookOpen,
   Brain,
   Timer,
-  Trophy,
   ArrowRight,
   Flame,
   Target,
   CheckCircle,
+  LucideIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const stats = [
-  {
-    label: "Study Streak",
-    value: "7 days",
-    icon: Flame,
-    color: "hsl(9,70%,54%)",
-  },
-  {
-    label: "Cards Reviewed",
-    value: "142",
-    icon: BookOpen,
-    color: "hsl(185,48%,50%)",
-  },
-  {
-    label: "Quiz Score Avg",
-    value: "84%",
-    icon: Target,
-    color: "hsl(34,60%,55%)",
-  },
-  {
-    label: "Goals Met",
-    value: "12",
-    icon: CheckCircle,
-    color: "hsl(142,60%,50%)",
-  },
-];
+interface RawStatItem {
+  label: string;
+  value: string;
+  color: string;
+}
 
-const quickLinks = [
-  {
-    label: "Study Flashcards",
-    path: "/app/flashcards",
-    icon: BookOpen,
-    color: "hsl(185,48%,50%)",
-  },
-  {
-    label: "Start Pomodoro",
-    path: "/app/pomodoro",
-    icon: Timer,
-    color: "hsl(9,70%,54%)",
-  },
-  {
-    label: "View Progress",
-    path: "/app/progress",
-    icon: Brain,
-    color: "hsl(34,60%,55%)",
-  },
-  {
-    label: "Leaderboard",
-    path: "/app/leaderboard",
-    icon: Trophy,
-    color: "hsl(265,60%,60%)",
-  },
-];
+interface StatItem extends RawStatItem {
+  icon: LucideIcon;
+}
+
+const iconMap: Record<string, LucideIcon> = {
+  "Study Streak": Flame,
+  "Cards Reviewed": BookOpen,
+  "Quiz Score Avg": Target,
+  "Goals Met": CheckCircle,
+};
 
 const DashboardHome = () => {
   const navigate = useNavigate();
+  const [liveStats, setLiveStats] = useState<StatItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/stats")
+      .then((res) => res.json())
+      .then((data: RawStatItem[]) => {
+        const statsWithIcons = data.map((item) => ({
+          ...item,
+          icon: iconMap[item.label] || Target,
+        }));
+        setLiveStats(statsWithIcons);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch stats:", err);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="max-w-6xl mx-auto">
       <motion.div
@@ -83,27 +67,36 @@ const DashboardHome = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-8">
-          {stats.map((s, i) => (
-            <motion.div
-              key={s.label}
-              className="rounded-2xl p-4 md:p-5 border border-[hsla(36,25%,90%,0.07)]"
-              style={{ backgroundColor: "hsla(210,50%,24%,0.5)" }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-            >
-              <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
-                style={{ backgroundColor: s.color + "29" }}
-              >
-                <s.icon size={18} style={{ color: s.color }} />
-              </div>
-              <p className="text-[hsl(36,28%,92%)] font-bold text-xl md:text-2xl font-serif">
-                {s.value}
-              </p>
-              <p className="text-[hsl(36,15%,55%)] text-xs mt-1">{s.label}</p>
-            </motion.div>
-          ))}
+          {loading
+            ? [1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="h-24 rounded-2xl bg-white/5 animate-pulse"
+                />
+              ))
+            : liveStats.map((s, i) => (
+                <motion.div
+                  key={s.label}
+                  className="rounded-2xl p-4 md:p-5 border border-[hsla(36,25%,90%,0.07)]"
+                  style={{ backgroundColor: "hsla(210,50%,24%,0.5)" }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
+                    style={{ backgroundColor: s.color + "29" }}
+                  >
+                    <s.icon size={18} style={{ color: s.color }} />
+                  </div>
+                  <p className="text-[hsl(36,28%,92%)] font-bold text-xl md:text-2xl font-serif">
+                    {s.value}
+                  </p>
+                  <p className="text-[hsl(36,15%,55%)] text-xs mt-1">
+                    {s.label}
+                  </p>
+                </motion.div>
+              ))}
         </div>
 
         {/* Quick Links */}
@@ -111,7 +104,27 @@ const DashboardHome = () => {
           Quick Access
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-8">
-          {quickLinks.map((q, i) => (
+          {[
+            {
+              label: "Study Flashcards",
+              path: "/app/flashcards",
+              icon: BookOpen,
+              color: "hsl(185,48%,50%)",
+            },
+            {
+              label: "Start Pomodoro",
+              path: "/app/pomodoro",
+              icon: Timer,
+              color: "hsl(9,70%,54%)",
+            },
+            {
+              label: "View Progress",
+              path: "/app/progress",
+              icon: Brain,
+              color: "hsl(34,60%,55%)",
+            },
+
+          ].map((q, i) => (
             <motion.button
               key={q.label}
               onClick={() => navigate(q.path)}

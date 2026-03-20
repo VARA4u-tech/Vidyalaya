@@ -9,7 +9,6 @@ import {
   Youtube,
   FolderOpen,
   Users,
-  Trophy,
   Store,
   Bell,
   FileDown,
@@ -21,6 +20,7 @@ import {
   ChevronRight,
   Menu,
   X,
+  LucideIcon,
 } from "lucide-react";
 
 // Feature pages
@@ -31,7 +31,6 @@ import YouTubePage from "./features/YouTubePage";
 import FoldersPage from "./features/FoldersPage";
 import SpacedRepPage from "./features/SpacedRepPage";
 import StudyGroupsPage from "./features/StudyGroupsPage";
-import LeaderboardPage from "./features/LeaderboardPage";
 import MarketplacePage from "./features/MarketplacePage";
 import RemindersPage from "./features/RemindersPage";
 import ExportPage from "./features/ExportPage";
@@ -41,7 +40,13 @@ import HandwritingPage from "./features/HandwritingPage";
 import ExamCountdownPage from "./features/ExamCountdownPage";
 import DashboardHome from "./features/DashboardHome";
 
-const navItems = [
+interface NavItem {
+  label: string;
+  icon: LucideIcon;
+  path: string;
+}
+
+const navItems: NavItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, path: "" },
   { label: "Flashcards", icon: BookOpen, path: "flashcards" },
   { label: "Progress", icon: Brain, path: "progress" },
@@ -50,7 +55,6 @@ const navItems = [
   { label: "Folders", icon: FolderOpen, path: "folders" },
   { label: "Spaced Repetition", icon: Calendar, path: "spaced-rep" },
   { label: "Study Groups", icon: Users, path: "groups" },
-  { label: "Leaderboard", icon: Trophy, path: "leaderboard" },
   { label: "Marketplace", icon: Store, path: "marketplace" },
   { label: "Reminders", icon: Bell, path: "reminders" },
   { label: "PDF Export", icon: FileDown, path: "export" },
@@ -65,7 +69,7 @@ const Dashboard = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
 
-  const Sidebar = ({ mobile = false }) => (
+  const Sidebar = ({ mobile = false }: { mobile?: boolean }) => (
     <aside
       className={`flex flex-col h-full bg-[hsl(210,48%,20%)] border-r border-[hsla(36,25%,90%,0.07)] transition-all duration-300 ${
         mobile ? "w-72" : collapsed ? "w-20" : "w-64"
@@ -193,7 +197,6 @@ const Dashboard = () => {
             <Route path="folders" element={<FoldersPage />} />
             <Route path="spaced-rep" element={<SpacedRepPage />} />
             <Route path="groups" element={<StudyGroupsPage />} />
-            <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="marketplace" element={<MarketplacePage />} />
             <Route path="reminders" element={<RemindersPage />} />
             <Route path="export" element={<ExportPage />} />
