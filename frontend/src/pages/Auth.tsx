@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { insforge } from "@/lib/insforge";
+import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
@@ -43,6 +45,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Sync state with URL if needed, or just use state
   useEffect(() => {
@@ -60,14 +63,57 @@ const Auth = () => {
     password: "",
   });
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    navigate("/app");
+  const handleOAuthLogin = async (provider: 'google' | 'github') => {
+    setLoading(true);
+    try {
+      const { data, error } = await insforge.auth.signInWithOAuth({
+        provider,
+        redirectTo: window.location.origin + "/app",
+      });
+      if (error) throw error;
+      // In web mode, signInWithOAuth usually redirects the browser automatically.
+    } catch (err: unknown) {
+      toast.error(`${provider} login failed: ${(err as Error).message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSignupSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/app");
+    setLoading(true);
+    try {
+      const { data, error } = await insforge.auth.signInWithPassword({
+        email: loginData.email,
+        password: loginData.password,
+      });
+      if (error) throw error;
+      toast.success("Welcome back!");
+      navigate("/app");
+    } catch (err: unknown) {
+      toast.error(`Login failed: ${(err as Error).message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignupSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { data, error } = await insforge.auth.signUp({
+        email: signupData.email,
+        password: signupData.password,
+        name: signupData.name,
+      });
+      if (error) throw error;
+      toast.success("Account created successfully!");
+      navigate("/app");
+    } catch (err: unknown) {
+      toast.error(`Signup failed: ${(err as Error).message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const toggleAuth = () => {
@@ -355,6 +401,7 @@ const Auth = () => {
 
                             <Button
                               type="submit"
+                              disabled={loading}
                               className="w-full h-12 font-sans font-bold uppercase tracking-widest rounded-full transition-all duration-300 shadow-xl mt-2"
                               style={{
                                 backgroundColor: "hsl(9, 70%, 54%)",
@@ -471,6 +518,7 @@ const Auth = () => {
                             <div className="pt-1">
                               <Button
                                 type="submit"
+                                disabled={loading}
                                 className="w-full h-12 font-sans font-bold uppercase tracking-widest rounded-full transition-all duration-300 shadow-xl"
                                 style={{
                                   backgroundColor: "hsl(185, 48%, 50%)",
@@ -509,12 +557,16 @@ const Auth = () => {
                     <div className="grid grid-cols-2 gap-3">
                       <Button
                         variant="outline"
+                        disabled={loading}
+                        onClick={() => handleOAuthLogin('google')}
                         className="h-10 border-[hsla(36,25%,90%,0.15)] bg-transparent text-[hsl(36,25%,85%)] hover:bg-white/5 rounded-xl transition-all text-xs"
                       >
                         <Chrome className="mr-2 w-4 h-4" /> Google
                       </Button>
                       <Button
                         variant="outline"
+                        disabled={loading}
+                        onClick={() => handleOAuthLogin('github')}
                         className="h-10 border-[hsla(36,25%,90%,0.15)] bg-transparent text-[hsl(36,25%,85%)] hover:bg-white/5 rounded-xl transition-all text-xs"
                       >
                         <Github className="mr-2 w-4 h-4" /> GitHub

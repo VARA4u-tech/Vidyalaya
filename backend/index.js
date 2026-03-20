@@ -3,6 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const OpenAI = require("openai");
 
+const { insforge } = require("./lib/insforge");
+
+// ... (top of the file)
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -18,17 +21,37 @@ app.use(express.json());
 
 // Basic Route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Vidyalaya AI Backend API" });
+  res.json({ message: "Welcome to Vidyalaya AI Backend API (InsForge Integrated)" });
 });
 
-// Mock Dashboard Stats
-app.get("/api/stats", (req, res) => {
-  res.json([
-    { label: "Study Streak", value: "8 days", color: "hsl(9,70%,54%)" },
-    { label: "Cards Reviewed", value: "256", color: "hsl(185,48%,50%)" },
-    { label: "Quiz Score Avg", value: "88%", color: "hsl(34,60%,55%)" },
-    { label: "Goals Met", value: "15", color: "hsl(142,60%,50%)" },
-  ]);
+// Stats Route with InsForge Database integration
+app.get("/api/stats", async (req, res) => {
+  try {
+    const { data: stats, error } = await insforge.database
+      .from("dashboard_stats")
+      .select("*")
+      .order("label", { ascending: true });
+
+    if (error || !stats || stats.length === 0) {
+      console.warn("Falling back to mock stats:", error?.message);
+      return res.json([
+        { label: "Study Streak", value: "8 days", color: "hsl(9,70%,54%)" },
+        { label: "Cards Reviewed", value: "256", color: "hsl(185,48%,50%)" },
+        { label: "Quiz Score Avg", value: "88%", color: "hsl(34,60%,55%)" },
+        { label: "Goals Met", value: "15", color: "hsl(142,60%,50%)" },
+      ]);
+    }
+    
+    res.json(stats);
+  } catch (err) {
+    console.error("InsForge Stats Fetch Error:", err);
+    res.json([
+      { label: "Study Streak", value: "8 days", color: "hsl(9,70%,54%)" },
+      { label: "Cards Reviewed", value: "256", color: "hsl(185,48%,50%)" },
+      { label: "Quiz Score Avg", value: "88%", color: "hsl(34,60%,55%)" },
+      { label: "Goals Met", value: "15", color: "hsl(142,60%,50%)" },
+    ]);
+  }
 });
 
 // AI Summarization Route with OpenRouter
@@ -54,6 +77,19 @@ app.post("/api/summarize", async (req, res) => {
 
     const responseContent = JSON.parse(completion.choices[0].message.content);
     
+    // Log the request to InsForge (fire and forget)
+    insforge.database.from("ai_logs").insert([
+      {
+        input_text: text,
+        summary: responseContent.summary,
+        concepts: responseContent.concepts,
+        model: process.env.OPENROUTER_MODEL,
+        timestamp: new Date()
+      }
+    ]).then(({ error }) => {
+      if (error) console.error("InsForge logging failed:", error.message);
+    });
+
     // We expect the LLM to return a JSON with { summary, concepts }
     res.json({
       summary: responseContent.summary || "Summary generation failure.",
