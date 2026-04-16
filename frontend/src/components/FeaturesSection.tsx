@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { BookOpen, Brain, ClipboardList, CalendarDays } from "lucide-react";
+import AnimatedIcon from "./AnimatedIcon";
 
 const features = [
   {
@@ -208,10 +209,12 @@ const FeaturesSection = () => {
                   className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
                   style={{ backgroundColor: feature.accent }}
                 >
-                  <feature.icon
-                    className="w-7 h-7"
-                    style={{ color: "hsl(210, 48%, 18%)" }}
-                    strokeWidth={1.8}
+                  <AnimatedIcon
+                    icon={feature.icon}
+                    size={28}
+                    color="hsl(210, 48%, 18%)"
+                    animationType={i % 2 === 0 ? "float" : "tilt"}
+                    delay={i * 0.2}
                   />
                 </div>
 

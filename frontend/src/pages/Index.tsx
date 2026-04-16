@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { Sparkles, Brain, Book, Rocket } from "lucide-react";
+import AnimatedIcon from "@/components/AnimatedIcon";
 import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import FooterSection from "@/components/FooterSection";
 import NavBar from "@/components/NavBar";
-import StatsSection from "@/components/StatsSection";
+
 import TechStackSection from "@/components/TechStackSection";
 import TeamSection from "@/components/TeamSection";
 import ProblemStatementSection from "@/components/ProblemStatementSection";
@@ -119,6 +121,41 @@ const Index = () => {
           animate={{ rotate: [-22, -20, -22] }}
           transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
         />
+
+        {/* ── BACKGROUND FLOATING ICONS ── */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
+          <AnimatedIcon 
+            icon={Sparkles} 
+            size={40} 
+            color="hsla(185, 48%, 50%, 0.2)" 
+            animationType="float" 
+            className="absolute top-[15%] left-[5%]"
+          />
+          <AnimatedIcon 
+            icon={Brain} 
+            size={60} 
+            color="hsla(9, 70%, 54%, 0.15)" 
+            animationType="tilt" 
+            className="absolute top-[65%] left-[85%]"
+            delay={1}
+          />
+          <AnimatedIcon 
+            icon={Book} 
+            size={35} 
+            color="hsla(36, 28%, 90%, 0.1)" 
+            animationType="bounce" 
+            className="absolute top-[80%] left-[40%]"
+            delay={0.5}
+          />
+          <AnimatedIcon 
+            icon={Rocket} 
+            size={50} 
+            color="hsla(185, 48%, 50%, 0.1)" 
+            animationType="pulse" 
+            className="absolute top-[20%] left-[75%]"
+            delay={2}
+          />
+        </div>
 
         {/* Grain on right bands too */}
         <div
@@ -357,7 +394,7 @@ const Index = () => {
       ═══════════════════════════════════════ */}
       <ProblemStatementSection />
       <FeaturesSection />
-      <StatsSection />
+
       <HowItWorksSection />
       <TechStackSection />
       <TeamSection />

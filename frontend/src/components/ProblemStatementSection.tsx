@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { AlertTriangle, TrendingDown, Clock, Lightbulb } from "lucide-react";
+import AnimatedIcon from "./AnimatedIcon";
 
 const problems = [
   {
@@ -163,7 +164,13 @@ const ProblemStatementSection = () => (
               className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
               style={{ backgroundColor: p.color + "20" }}
             >
-              <p.icon size={22} style={{ color: p.color }} />
+              <AnimatedIcon
+                icon={p.icon}
+                size={22}
+                color={p.color}
+                animationType="pulse"
+                delay={i * 0.4}
+              />
             </div>
             <h3
               className="font-serif font-bold mb-3"
@@ -200,7 +207,12 @@ const ProblemStatementSection = () => (
           className="w-14 h-14 rounded-2xl flex items-center justify-center"
           style={{ backgroundColor: "hsla(185,48%,50%,0.15)" }}
         >
-          <Lightbulb size={26} style={{ color: "hsl(185,48%,55%)" }} />
+          <AnimatedIcon
+            icon={Lightbulb}
+            size={28}
+            color="hsl(185,48%,55%)"
+            animationType="float"
+          />
         </div>
         <p
           className="font-serif font-bold"

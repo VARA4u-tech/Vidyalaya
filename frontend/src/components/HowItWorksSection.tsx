@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Upload, Cpu, Sparkles, ArrowRight } from "lucide-react";
+import AnimatedIcon from "./AnimatedIcon";
 
 const steps = [
   {
@@ -195,10 +196,12 @@ const HowItWorksSection = () => {
                           className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-500 group-hover:rotate-[10deg]"
                           style={{ backgroundColor: step.color }}
                         >
-                          <step.icon
-                            className="w-7 h-7"
-                            style={{ color: "hsl(210, 48%, 15%)" }}
-                            strokeWidth={2}
+                          <AnimatedIcon
+                            icon={step.icon}
+                            size={28}
+                            color="hsl(210, 48%, 15%)"
+                            animationType="bounce"
+                            delay={i * 0.3}
                           />
                         </div>
                         <span
