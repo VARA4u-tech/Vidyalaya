@@ -17,22 +17,21 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         const { data: user } = await insforge.auth.getCurrentUser();
         
         if (!user) {
-          // Show the beautiful notification
-          toast.error("Access Protected", {
-            description: "Please sign in with Google to access your dashboard.",
-            duration: 5000,
-            style: {
-              background: "hsl(210, 48%, 20%)",
-              border: "1px solid hsla(9, 70%, 54%, 0.4)",
-              color: "hsl(36, 28%, 95%)",
-              borderRadius: "1.5rem",
-              padding: "1rem",
-            },
-          });
-          navigate("/login");
+          throw new Error("User not found");
         }
       } catch (error) {
-        console.error("Auth check failed:", error);
+        // Show the beautiful notification
+        toast.error("Access Protected", {
+          description: "Please sign in with Google to access your dashboard.",
+          duration: 5000,
+          style: {
+            background: "hsl(210, 48%, 20%)",
+            border: "1px solid hsla(9, 70%, 54%, 0.4)",
+            color: "hsl(36, 28%, 95%)",
+            borderRadius: "1.5rem",
+            padding: "1rem",
+          },
+        });
         navigate("/login");
       } finally {
         setIsChecking(false);
@@ -41,6 +40,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     checkAuth();
   }, [navigate]);
+
 
   if (isChecking) {
     return (

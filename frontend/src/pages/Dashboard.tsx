@@ -72,11 +72,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data } = await insforge.auth.getCurrentUser();
-      if (data) setUser(data);
+      try {
+        const { data } = await insforge.auth.getCurrentUser();
+        if (data) setUser(data);
+      } catch (err) {
+        console.log("Dashboard auth check failed");
+      }
     };
     fetchUser();
   }, []);
+
 
   const handleSignOut = async () => {
     try {

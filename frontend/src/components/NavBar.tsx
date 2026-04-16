@@ -16,11 +16,25 @@ const NavBar = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data } = await insforge.auth.getCurrentUser();
-      if (data) setUser(data);
+      // Avoid poking the SDK if there's no evidence of a session
+      const hasSessionFlag = Object.keys(localStorage).some(key => 
+        (key.includes('insforge') || key.includes('sb-')) && key.includes('auth-token')
+      );
+      if (!hasSessionFlag) return;
+
+      try {
+        const { data } = await insforge.auth.getCurrentUser();
+        if (data) setUser(data);
+      } catch (err) {
+        // Silently fail for landing page
+      }
     };
     fetchUser();
   }, []);
+
+
+
+
 
   const links = [
     { label: "Home", href: "/#home" },
