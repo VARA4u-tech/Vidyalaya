@@ -6,14 +6,31 @@ const DynamicScrollBot = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content:
+        "Hello there! I'm your AI study guide. How can I help you navigate Vidyalaya today?",
+    },
+  ]);
+  const [inputText, setInputText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (isChatOpen) {
+      scrollToBottom();
+    }
+  }, [messages, isChatOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Set scrolling state
       setIsScrolling(true);
-
-      // Calculate progress
       const winScroll =
         document.body.scrollTop || document.documentElement.scrollTop;
       const height =
@@ -22,12 +39,10 @@ const DynamicScrollBot = () => {
       const scrolled = (winScroll / height) * 100;
       setScrollProgress(scrolled);
 
-      // Reset timeout
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-
       scrollTimeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 1500); // Wait 1.5s after stop to transform
+      }, 1500);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -36,6 +51,49 @@ const DynamicScrollBot = () => {
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
   }, []);
+
+  const handleSendMessage = async () => {
+    if (!inputText.trim() || isLoading) return;
+
+    const userMessage = { role: "user", content: inputText };
+    setMessages((prev) => [...prev, userMessage]);
+    setInputText("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [...messages, userMessage].map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      });
+
+      const data = await response.json();
+      if (data.message) {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: data.message },
+        ]);
+      } else {
+        throw new Error("No response message");
+      }
+    } catch (error) {
+      console.error("Chat Error:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "Sorry, I'm having trouble connecting. Please try again.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="fixed right-6 bottom-6 z-[100] flex flex-col items-center">
@@ -115,30 +173,72 @@ const DynamicScrollBot = () => {
 
                   {/* Messages Area */}
                   <div className="flex-grow p-6 space-y-4 overflow-y-auto font-sans scrollbar-hide">
-                    <div className="flex gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-coral/20 flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="text-coral w-4 h-4" />
+                    {messages.map((msg, i) => (
+                      <div
+                        key={i}
+                        className={`flex gap-3 ${
+                          msg.role === "user" ? "flex-row-reverse" : ""
+                        }`}
+                      >
+                        {msg.role === "assistant" && (
+                          <div className="w-8 h-8 rounded-lg bg-coral/20 flex items-center justify-center flex-shrink-0">
+                            <Sparkles className="text-coral w-4 h-4" />
+                          </div>
+                        )}
+                        <div
+                          className={`rounded-2xl p-4 text-sm leading-relaxed text-left ${
+                            msg.role === "user"
+                              ? "bg-coral text-white rounded-tr-none"
+                              : "bg-white/5 text-[hsl(36,25%,85%)] rounded-tl-none"
+                          }`}
+                        >
+                          {msg.content}
+                        </div>
                       </div>
-                      <div className="bg-white/5 rounded-2xl rounded-tl-none p-4 text-sm text-[hsl(36,25%,85%)] leading-relaxed text-left">
-                        Hello there! I'm your AI study guide. How can I help you
-                        navigate Vidyalaya today?
+                    ))}
+                    {isLoading && (
+                      <div className="flex gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-coral/20 flex items-center justify-center flex-shrink-0">
+                          <Sparkles className="text-coral w-4 h-4" />
+                        </div>
+                        <div className="bg-white/5 rounded-2xl rounded-tl-none p-4 text-sm text-[hsl(36,25%,85%)]">
+                          <div className="flex gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce [animation-delay:0.2s]" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce [animation-delay:0.4s]" />
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    )}
+                    <div ref={messagesEndRef} />
                   </div>
 
                   {/* Input Area */}
                   <div className="p-4 bg-black/20 border-t border-white/5">
-                    <div className="relative flex items-center">
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleSendMessage();
+                      }}
+                      className="relative flex items-center"
+                    >
                       <input
                         type="text"
+                        value={inputText}
+                        onChange={(e) => setInputText(e.target.value)}
                         placeholder="Ask about features, pricing..."
                         className="w-full bg-white/5 border border-white/10 rounded-full py-3 px-5 pr-12 text-sm text-white focus:outline-none focus:border-coral/50 transition-all placeholder:text-white/20"
                       />
-                      <button className="absolute right-2 p-2 bg-coral rounded-full text-white shadow-lg hover:bg-coral/80 transition-all">
+                      <button
+                        type="submit"
+                        disabled={isLoading || !inputText.trim()}
+                        className="absolute right-2 p-2 bg-coral rounded-full text-white shadow-lg hover:bg-coral/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
                         <Send size={16} />
                       </button>
-                    </div>
+                    </form>
                   </div>
+
                 </motion.div>
               )}
             </AnimatePresence>

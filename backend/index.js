@@ -62,12 +62,11 @@ app.post("/api/summarize", async (req, res) => {
           content: `Please summarize the following educational content and identify the key concepts:\n\n${text}`,
         },
       ],
-      response_format: { type: "json_object" }, // Many OpenRouter models support this
+      response_format: { type: "json_object" },
     });
 
     const responseContent = JSON.parse(completion.choices[0].message.content);
     
-    // Log the request to InsForge (fire and forget)
     insforge.database.from("ai_logs").insert([
       {
         input_text: text,
@@ -80,7 +79,6 @@ app.post("/api/summarize", async (req, res) => {
       if (error) console.error("InsForge logging failed:", error.message);
     });
 
-    // We expect the LLM to return a JSON with { summary, concepts }
     res.json({
       summary: responseContent.summary || "Summary generation failure.",
       concepts: responseContent.concepts || [],
@@ -88,11 +86,55 @@ app.post("/api/summarize", async (req, res) => {
   } catch (error) {
     console.error("OpenRouter Error:", error);
     res.status(500).json({ 
-      error: "AI summarization failed. Check your API key and quota.",
+      error: "AI summarization failed.",
       details: error.message 
     });
   }
 });
+
+// General Chat Route with OpenRouter (Vidya Guru)
+app.post("/api/chat", async (req, res) => {
+  const { messages } = req.body;
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ error: "Invalid messages format" });
+  }
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-001",
+      messages: [
+        {
+          role: "system",
+          content: "You are 'Vidya Guru', the official AI study guide for Vidyalaya. Vidyalaya is an AI-powered study platform that helps students upload notes, get AI summaries, generate smart quizzes, and plan exams. Your tone is helpful, encouraging, and knowledgeable. Answer questions about the platform and provide general study advice. Keep your responses concise (under 3 sentences unless asked for more details).",
+        },
+        ...messages,
+      ],
+    });
+
+    const responseText = completion.choices[0].message.content;
+
+    insforge.database.from("chat_logs").insert([
+      {
+        conversation: messages,
+        response: responseText,
+        model: process.env.OPENROUTER_MODEL,
+        timestamp: new Date()
+      }
+    ]).then(({ error }) => {
+      if (error) console.error("InsForge chat logging failed:", error.message);
+    });
+
+    res.json({ message: responseText });
+  } catch (error) {
+    console.error("OpenRouter Chat Error:", error);
+    res.status(500).json({
+      error: "Chat failed. Please try again later.",
+      details: error.message
+    });
+  }
+});
+
+
 
 // Health Check
 app.get("/api/health", (req, res) => {
