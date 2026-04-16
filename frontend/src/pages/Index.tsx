@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Sparkles, Brain, Book, Rocket } from "lucide-react";
@@ -54,8 +55,22 @@ const GrainOverlay = ({
   </>
 );
 
+import { insforge } from "@/lib/insforge";
+
 const Index = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // If the user reaches the landing page but is already logged in, send them to the app
+    const checkExistingSession = async () => {
+      const { data: user } = await insforge.auth.getCurrentUser();
+      if (user) {
+        navigate("/app");
+      }
+    };
+    checkExistingSession();
+  }, [navigate]);
+
   return (
     <div style={{ backgroundColor: "hsl(34, 35%, 82%)" }}>
       <NavBar />

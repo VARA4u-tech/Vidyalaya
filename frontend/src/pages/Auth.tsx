@@ -45,10 +45,21 @@ const Auth = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // If the user reaches this page but is already logged in, send them back to the app
+    const checkExistingSession = async () => {
+      const { data: user } = await insforge.auth.getCurrentUser();
+      if (user) {
+        navigate("/app");
+      }
+    };
+    checkExistingSession();
+  }, [navigate]);
+
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
-      const { data, error } = await insforge.auth.signInWithOAuth({
+      const { error } = await insforge.auth.signInWithOAuth({
         provider: 'google',
         redirectTo: window.location.origin + "/app",
       });

@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { insforge } from "@/lib/insforge";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { LogIn, Mail, Lock, ArrowRight, Github, Chrome } from "lucide-react";
@@ -29,14 +31,43 @@ const GrainOverlay = () => (
   </>
 );
 
-const Login = () => {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // If user is already logged in, redirect to app
+    const checkUser = async () => {
+      const { data } = await insforge.auth.getCurrentUser();
+      if (data) navigate("/app");
+    };
+    checkUser();
+  }, [navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/app");
+    setLoading(true);
+
+    try {
+      const { data, error } = await insforge.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      if (data) {
+        toast.success("Welcome Back", {
+          description: "Login successful. Redirecting to your dashboard.",
+          duration: 3000,
+        });
+        navigate("/app");
+      }
+    } catch (err: unknown) {
+      toast.error("Login Failed", {
+        description: (err as Error).message || "Invalid credentials. Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -166,13 +197,20 @@ const Login = () => {
 
                 <Button
                   type="submit"
+                  disabled={loading}
                   className="w-full h-14 font-sans font-bold uppercase tracking-widest rounded-full transition-all duration-300 shadow-xl"
                   style={{
                     backgroundColor: "hsl(9, 70%, 54%)",
                     color: "white",
                   }}
                 >
-                  Sign In <ArrowRight className="ml-2 w-5 h-5" />
+                  {loading ? (
+                    <div className="w-5 h-5 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      Sign In <ArrowRight className="ml-2 w-5 h-5" />
+                    </>
+                  )}
                 </Button>
               </form>
 

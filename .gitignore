@@ -37,4 +37,8 @@ build/
 .DS_Store
 Thumbs.db
 index.js
-
+
+backend/package.json
+backend/index.js
+frontend/src/pages/Auth.tsx
+frontend/src/pages/Index.tsx

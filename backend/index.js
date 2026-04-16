@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const OpenAI = require("openai");
+const rateLimit = require("express-rate-limit");
 
 const { insforge } = require("./lib/insforge");
 
@@ -9,15 +10,28 @@ const { insforge } = require("./lib/insforge");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// OpenRouter configuration
-const openai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY,
+// Rate Limiting Configuration
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: {
+    error: "Too many requests from this IP, please try again after 15 minutes",
+    status: 429
+  }
 });
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/api", apiLimiter); // Apply rate limiter to all /api routes
+
+// OpenRouter configuration
+const openai = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
 
 // Basic Route
 app.get("/", (req, res) => {

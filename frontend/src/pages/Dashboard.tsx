@@ -247,8 +247,8 @@ const Dashboard = () => {
                  isProfileOpen ? "bg-white/10 border-white/20" : "bg-white/5 border-white/5"
                }`}
              >
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center font-black text-sm shadow-lg ring-2 ring-white/10 group-hover:ring-coral-500/50 transition-all">
-                  {user?.user_metadata?.full_name?.charAt(0) || user?.email?.charAt(0).toUpperCase() || "S"}
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center font-black text-sm text-white shadow-lg ring-2 ring-white/10 group-hover:ring-coral-500/50 transition-all">
+                  {user?.user_metadata?.full_name?.charAt(0) || user?.user_metadata?.name?.charAt(0) || user?.email?.charAt(0).toUpperCase() || "S"}
                 </div>
                 <div className="hidden sm:flex flex-col items-start leading-none gap-1">
                    <span className="text-xs font-bold text-white/90">My Profile</span>
@@ -660,11 +660,11 @@ const Dashboard = () => {
                         </div>
                         <div className="flex items-center gap-6 relative z-10">
                            <div className="w-20 h-20 rounded-[2rem] bg-white flex items-center justify-center text-[hsl(9,70%,54%)] text-3xl font-black shadow-2xl border-4 border-white/20">
-                              {user?.user_metadata?.full_name?.charAt(0) || user?.email?.charAt(0).toUpperCase() || "S"}
+                              {user?.user_metadata?.full_name?.charAt(0) || user?.user_metadata?.name?.charAt(0) || user?.email?.charAt(0).toUpperCase() || "S"}
                            </div>
                            <div className="space-y-1">
                               <h4 className="text-2xl font-serif font-bold text-white pr-4 leading-tight">
-                                 {user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Active Student"}
+                                 {user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || "Active Student"}
                               </h4>
                               <p className="text-sm font-medium text-white/70">{user?.email}</p>
                            </div>
