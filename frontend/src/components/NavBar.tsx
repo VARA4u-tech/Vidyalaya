@@ -24,7 +24,7 @@ const NavBar = () => {
 
       try {
         const { data } = await insforge.auth.getCurrentUser();
-        if (data) setUser(data);
+        if (data?.user) setUser(data.user);
       } catch (err) {
         // Silently fail for landing page
       }

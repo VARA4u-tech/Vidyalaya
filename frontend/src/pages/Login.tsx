@@ -31,13 +31,21 @@ const GrainOverlay = () => (
   </>
 );
 
+const Login = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     // If user is already logged in, redirect to app
     const checkUser = async () => {
+      // Local check to reduce 401 noise
+      const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
+      if (!hasToken) return;
+
       const { data } = await insforge.auth.getCurrentUser();
-      if (data) navigate("/app");
+      if (data?.user) navigate("/app");
     };
     checkUser();
   }, [navigate]);

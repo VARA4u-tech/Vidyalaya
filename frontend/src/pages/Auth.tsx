@@ -48,8 +48,12 @@ const Auth = () => {
   useEffect(() => {
     // If the user reaches this page but is already logged in, send them back to the app
     const checkExistingSession = async () => {
+      // Small check to avoid 401 noise
+      const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
+      if (!hasToken) return;
+
       const { data: user } = await insforge.auth.getCurrentUser();
-      if (user) {
+      if (user?.user) {
         navigate("/app");
       }
     };

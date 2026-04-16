@@ -42,13 +42,17 @@ export const aiService = {
    * Fetches all documents from history for the current user
    */
   async getHistory() {
-    const { data: user } = await insforge.auth.getCurrentUser();
-    if (!user) return [];
+    // Local check to reduce 401 noise
+    const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
+    if (!hasToken) return [];
 
-    const { data: docs, error } = await insforge.database
+    const { data: user } = await insforge.auth.getCurrentUser();
+    if (!user?.user?.id) return [];
+   
+    const { data: userData, error } = await insforge.database
       .from("user_documents")
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id", user.user.id)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -56,7 +60,7 @@ export const aiService = {
       return [];
     }
 
-    return (docs || []).map((doc: any) => ({
+    return (userData || []).map((doc: { id: string, name: string, created_at: string, status?: string, size?: string }) => ({
       id: doc.id,
       name: doc.name,
       date: new Date(doc.created_at).toLocaleDateString('en-US', { 
@@ -73,8 +77,12 @@ export const aiService = {
    * PDF text extraction and storage
    */
   async uploadAndExtract(file: File): Promise<{ text: string, documentId: string }> {
+    // Local check to reduce 401 noise
+    const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
+    if (!hasToken) throw new Error("Authentication required");
+
     const { data: user } = await insforge.auth.getCurrentUser();
-    if (!user) throw new Error("Authentication required");
+    if (!user?.user) throw new Error("Authentication required");
 
     const text = `This is extracted text from ${file.name}. It contains information about biology and science fundamentals...`;
     const size = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
@@ -83,7 +91,7 @@ export const aiService = {
       .from("user_documents")
       .insert([
         {
-          user_id: user.id,
+          user_id: user.user.id,
           name: file.name,
           content: text,
           size: size,

@@ -46,10 +46,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      // Local check to reduce 401 noise
+      const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
+      if (!hasToken) return;
+
       try {
         const { data } = await insforge.auth.getCurrentUser();
-        if (data) setUser(data);
-        loadHistory();
+        if (data?.user) {
+          setUser(data.user);
+          loadHistory();
+        }
       } catch (err) {
         console.log("Dashboard auth check failed");
       }

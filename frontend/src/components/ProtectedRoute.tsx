@@ -13,11 +13,19 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
+      // Local check to reduce 401 noise when definitely not logged in
+      const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
+      if (!hasToken) {
+        setIsChecking(false);
+        navigate("/login");
+        return;
+      }
+
       try {
-        const { data: user } = await insforge.auth.getCurrentUser();
+        const { data } = await insforge.auth.getCurrentUser();
         
-        if (!user) {
-          throw new Error("User not found");
+        if (!data?.user) {
+          throw new Error("User not authenticated");
         }
       } catch (error) {
         // Show the beautiful notification

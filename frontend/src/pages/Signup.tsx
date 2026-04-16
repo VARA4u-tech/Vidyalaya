@@ -40,13 +40,24 @@ const GrainOverlay = () => (
   </>
 );
 
+const Signup = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   useEffect(() => {
     // If user is already logged in, redirect to app
     const checkUser = async () => {
+      // Local check to reduce 401 noise
+      const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
+      if (!hasToken) return;
+
       const { data } = await insforge.auth.getCurrentUser();
-      if (data) navigate("/app");
+      if (data?.user) navigate("/app");
     };
     checkUser();
   }, [navigate]);
@@ -56,7 +67,12 @@ const GrainOverlay = () => (
     setLoading(true);
 
     try {
-      const { data, error } = await insforge.auth.signUp({
+      // Use a more specific type than any to comply with lint rules
+      const { data, error } = await (insforge.auth.signUp as (args: {
+        email: string;
+        password: string;
+        options?: { data?: Record<string, unknown>; emailRedirectTo?: string };
+      }) => Promise<{ data: unknown; error: Error | null }>)({
         email: formData.email,
         password: formData.password,
         options: {
