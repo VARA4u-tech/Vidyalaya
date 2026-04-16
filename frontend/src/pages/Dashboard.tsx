@@ -1,72 +1,10 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  LayoutDashboard,
-  BookOpen,
-  Brain,
-  Timer,
-  Youtube,
-  FolderOpen,
-  Users,
-  Store,
-  Bell,
-  FileDown,
-  GitBranch,
-  Mic,
-  Camera,
-  Calendar,
-  ChevronLeft,
-  ChevronRight,
-  Menu,
-  X,
-  LucideIcon,
-  LogOut,
-} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { LogOut, LayoutDashboard, ChevronLeft } from "lucide-react";
 import { insforge, User } from "@/lib/insforge";
 
-// Feature pages
-import FlashcardPage from "./features/FlashcardPage";
-import ProgressPage from "./features/ProgressPage";
-import PomodoroPage from "./features/PomodoroPage";
-import FoldersPage from "./features/FoldersPage";
-import SpacedRepPage from "./features/SpacedRepPage";
-import StudyGroupsPage from "./features/StudyGroupsPage";
-import MarketplacePage from "./features/MarketplacePage";
-import RemindersPage from "./features/RemindersPage";
-import ExportPage from "./features/ExportPage";
-import MindMapPage from "./features/MindMapPage";
-import AudioNotesPage from "./features/AudioNotesPage";
-import HandwritingPage from "./features/HandwritingPage";
-import ExamCountdownPage from "./features/ExamCountdownPage";
-import DashboardHome from "./features/DashboardHome";
-
-interface NavItem {
-  label: string;
-  icon: LucideIcon;
-  path: string;
-}
-
-const navItems: NavItem[] = [
-  { label: "Dashboard", icon: LayoutDashboard, path: "" },
-  { label: "Flashcards", icon: BookOpen, path: "flashcards" },
-  { label: "Progress", icon: Brain, path: "progress" },
-  { label: "Pomodoro Timer", icon: Timer, path: "pomodoro" },
-  { label: "Folders", icon: FolderOpen, path: "folders" },
-  { label: "Spaced Repetition", icon: Calendar, path: "spaced-rep" },
-  { label: "Study Groups", icon: Users, path: "groups" },
-  { label: "Marketplace", icon: Store, path: "marketplace" },
-  { label: "Reminders", icon: Bell, path: "reminders" },
-  { label: "PDF Export", icon: FileDown, path: "export" },
-  { label: "Mind Map", icon: GitBranch, path: "mindmap" },
-  { label: "Audio Notes", icon: Mic, path: "audio-notes" },
-  { label: "Handwriting OCR", icon: Camera, path: "handwriting" },
-  { label: "Exam Countdown", icon: Calendar, path: "exam-countdown" },
-];
-
 const Dashboard = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
@@ -82,203 +20,75 @@ const Dashboard = () => {
     fetchUser();
   }, []);
 
-
   const handleSignOut = async () => {
     try {
       await insforge.auth.signOut();
     } catch (err) {
       console.error("Unexpected error signing out:", err);
     } finally {
-      // Clear front-end storage aggressively to 
-      // ensure we dump any stale auth tokens.
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key?.includes('auth') || key?.includes('insforge') || key?.includes('token')) {
           localStorage.removeItem(key);
         }
       }
-      
-      // Full page reload to clear any in-memory user states in NavBar/App
       window.location.href = "/";
     }
   };
 
-  const Sidebar = ({ mobile = false }: { mobile?: boolean }) => (
-    <aside
-      className={`flex flex-col h-full bg-[hsl(210,48%,20%)] border-r border-[hsla(36,25%,90%,0.07)] transition-all duration-300 ${
-        mobile ? "w-72" : collapsed ? "w-20" : "w-64"
-      }`}
-    >
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-4 py-5 border-b border-[hsla(36,25%,90%,0.07)]">
-        <img
-          src="/logo.png"
-          alt="Vidyalaya"
-          className="w-10 h-10 object-contain flex-shrink-0"
-        />
-        {(!collapsed || mobile) && (
-          <span className="font-serif font-bold text-[hsl(36,28%,92%)] text-lg">
-            Vidyalaya
-          </span>
-        )}
-        {!mobile && (
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="ml-auto text-[hsl(36,20%,65%)] hover:text-[hsl(36,28%,92%)] transition-colors"
-          >
-            {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-          </button>
-        )}
-      </div>
-
-      {/* Nav Items */}
-      <nav className="flex-1 overflow-y-auto py-4 flex flex-col gap-1 px-2">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path === "" ? "/app" : `/app/${item.path}`}
-            end={item.path === ""}
-            onClick={() => setMobileOpen(false)}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                isActive
-                  ? "bg-[hsl(9,70%,54%)] text-white shadow-lg"
-                  : "text-[hsl(36,20%,65%)] hover:bg-[hsla(36,25%,90%,0.06)] hover:text-[hsl(36,28%,90%)]"
-              }`
-            }
-          >
-            <item.icon size={18} className="flex-shrink-0" />
-            {(!collapsed || mobile) && <span>{item.label}</span>}
-          </NavLink>
-        ))}
-      </nav>
-
-      {/* User Info & Actions */}
-      <div className="p-3 border-t border-[hsla(36,25%,90%,0.07)] flex flex-col gap-2">
-        {user && (!collapsed || mobile) && (
-          <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 mb-1">
-            <div className="w-8 h-8 rounded-full bg-[hsl(9,70%,54%)] flex items-center justify-center text-white font-bold text-sm shadow-md flex-shrink-0">
-              {user.user_metadata?.full_name?.charAt(0) ||
-                user.user_metadata?.name?.charAt(0) ||
-                "U"}
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-sm font-bold text-white truncate">
-                {user.user_metadata?.full_name?.split(" ")[0] ||
-                  user.user_metadata?.name ||
-                  "Student"}
-              </span>
-              <span className="text-[10px] text-[hsl(36,20%,65%)] truncate">
-                {user.email}
-              </span>
-            </div>
-          </div>
-        )}
-        {user && collapsed && !mobile && (
-          <div className="flex justify-center mb-1">
-            <div className="w-8 h-8 rounded-full bg-[hsl(9,70%,54%)] flex items-center justify-center text-white font-bold text-sm shadow-md flex-shrink-0">
-              {user.user_metadata?.full_name?.charAt(0) ||
-                user.user_metadata?.name?.charAt(0) ||
-                "U"}
-            </div>
-          </div>
-        )}
-        <button
-          onClick={handleSignOut}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[hsl(9,70%,64%)] hover:bg-[hsla(9,70%,54%,0.1)] transition-all"
-        >
-          <LogOut size={18} className="flex-shrink-0 text-[hsl(9,70%,54%)]" />
-          {(!collapsed || mobile) && (
-            <span className="font-semibold text-[hsl(9,70%,64%)]">
-              Sign Out
-            </span>
-          )}
-        </button>
-        <button
-          onClick={() => navigate("/")}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[hsl(36,20%,55%)] hover:text-[hsl(36,28%,90%)] hover:bg-[hsla(36,25%,90%,0.06)] transition-all"
-        >
-          <ChevronLeft size={18} className="flex-shrink-0" />
-          {(!collapsed || mobile) && <span>Back to Home</span>}
-        </button>
-      </div>
-    </aside>
-  );
-
   return (
-    <div
-      className="flex h-screen overflow-hidden"
-      style={{ backgroundColor: "hsl(210, 48%, 15%)" }}
-    >
-      {/* Desktop Sidebar */}
-      <div className="hidden md:flex flex-shrink-0">
-        <Sidebar />
-      </div>
-
-      {/* Mobile Sidebar Overlay */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <>
-            <motion.div
-              className="fixed inset-0 bg-black/60 z-40 md:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setMobileOpen(false)}
-            />
-            <motion.div
-              className="fixed left-0 top-0 h-full z-50 md:hidden"
-              initial={{ x: -300 }}
-              animate={{ x: 0 }}
-              exit={{ x: -300 }}
-              transition={{ type: "spring", damping: 25 }}
-            >
-              <Sidebar mobile />
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Mobile topbar */}
-        <div className="md:hidden flex items-center gap-3 px-4 py-3 border-b border-[hsla(36,25%,90%,0.07)] bg-[hsl(210,48%,20%)]">
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="text-[hsl(36,28%,90%)] hover:text-white transition-colors"
-          >
-            <Menu size={22} />
-          </button>
-          <img
-            src="/logo.png"
-            alt="Vidyalaya"
-            className="w-8 h-8 object-contain"
-          />
-          <span className="font-serif font-bold text-[hsl(36,28%,92%)]">
-            Vidyalaya
-          </span>
+    <div className="flex h-screen w-full overflow-hidden bg-[hsl(210,48%,12%)] text-[hsl(36,25%,90%)]">
+      {/* 
+          CLEAN BASE FOR REDESIGN 
+          This is the primary container for the new dashboard structure.
+      */}
+      <aside className="w-64 border-r border-white/5 bg-[hsl(210,48%,16%)] flex flex-col p-6">
+        <div className="flex items-center gap-3 mb-10">
+          <div className="w-8 h-8 rounded-lg bg-[hsl(9,70%,54%)]" />
+          <span className="font-serif font-bold text-xl">Vidyalaya</span>
         </div>
+        
+        <nav className="flex-1 space-y-2">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/5 text-white">
+            <LayoutDashboard size={18} />
+            <span className="text-sm font-medium">Dashboard Base</span>
+          </div>
+        </nav>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-          <Routes>
-            <Route index element={<DashboardHome />} />
-            <Route path="flashcards" element={<FlashcardPage />} />
-            <Route path="progress" element={<ProgressPage />} />
-            <Route path="pomodoro" element={<PomodoroPage />} />
-            <Route path="folders" element={<FoldersPage />} />
-            <Route path="spaced-rep" element={<SpacedRepPage />} />
-            <Route path="groups" element={<StudyGroupsPage />} />
-            <Route path="marketplace" element={<MarketplacePage />} />
-            <Route path="reminders" element={<RemindersPage />} />
-            <Route path="export" element={<ExportPage />} />
-            <Route path="mindmap" element={<MindMapPage />} />
-            <Route path="audio-notes" element={<AudioNotesPage />} />
-            <Route path="handwriting" element={<HandwritingPage />} />
-            <Route path="exam-countdown" element={<ExamCountdownPage />} />
-          </Routes>
-        </main>
-      </div>
+        <div className="pt-6 border-t border-white/5 space-y-2">
+          <button 
+            onClick={() => navigate("/")}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all"
+          >
+            <ChevronLeft size={18} />
+            <span>Back to Home</span>
+          </button>
+          <button 
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[hsl(9,70%,60%)] hover:bg-[hsl(9,70%,54%,0.1)] transition-all"
+          >
+            <LogOut size={18} />
+            <span className="font-medium">Sign Out</span>
+          </button>
+        </div>
+      </aside>
+
+      <main className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md"
+        >
+          <h1 className="text-4xl font-serif font-bold mb-4">Dashboard Rebirth</h1>
+          <p className="text-[hsl(36,15%,65%)] leading-relaxed mb-8">
+            The platform is ready for its reconstruction. All legacy structures have been cleared to make way for a premium, high-fidelity experience.
+          </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-mono text-[hsl(185,48%,50%)]">
+            <span className="w-2 h-2 rounded-full bg-[hsl(185,48%,50%)] animate-pulse" />
+            STANDBY FOR NEW REQUIREMENTS
+          </div>
+        </motion.div>
+      </main>
     </div>
   );
 };
