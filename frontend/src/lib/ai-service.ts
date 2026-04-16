@@ -24,25 +24,73 @@ export interface StudyPlanItem {
   objective: string;
 }
 
+export interface DocumentRecord {
+  id: string;
+  name: string;
+  date: string;
+  status: string;
+  size: string;
+}
+
+const MOCK_DB = {
+  documents: [] as DocumentRecord[],
+  analysis: {} as Record<string, AnalysisResult>,
+  quizzes: {} as Record<string, QuizQuestion[]>,
+  plans: {} as Record<string, { items: StudyPlanItem[], totalDuration: string }>,
+};
+
 export const aiService = {
+  /**
+   * Simulates saving a document to history
+   */
+  async saveToHistory(file: File, id: string) {
+    MOCK_DB.documents.unshift({
+      id,
+      name: file.name,
+      date: new Date().toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      status: 'Completed',
+      size: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
+    });
+  },
+
+  /**
+   * Fetches all documents from history
+   */
+  async getHistory() {
+     return new Promise<DocumentRecord[]>((resolve) => {
+       setTimeout(() => resolve(MOCK_DB.documents), 500);
+     });
+  },
+
   /**
    * Simulates PDF text extraction and initial analysis
    */
-  async uploadAndExtract(file: File): Promise<string> {
+  async uploadAndExtract(file: File): Promise<{ text: string, documentId: string }> {
+    const id = Math.random().toString(36).substring(7);
+    await this.saveToHistory(file, id);
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(`This is extracted text from ${file.name}. It contains information about biology, cellular structures, and the process of photosynthesis...`);
-      }, 2000);
+        resolve({
+          text: `This is extracted text from ${file.name}. It contains information about biology...`,
+          documentId: id
+        });
+      }, 1500);
     });
   },
 
   /**
    * Simulates AI analysis/summarization
    */
-  async generateAnalysis(text: string): Promise<AnalysisResult> {
+  async generateAnalysis(text: string, documentId?: string): Promise<AnalysisResult> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({
+        const result = {
           summary: "This document explores the fundamental mechanisms of photosynthesis in green plants. It explains how light energy is converted into chemical energy, specifically focusing on the Light-Dependent reactions occurring in the thylakoid membranes and the Calvin cycle in the stroma.",
           concepts: [
             "Photosynthesis",
@@ -51,19 +99,25 @@ export const aiService = {
             "Calvin Cycle",
             "Electron Transport Chain"
           ],
-          difficulty: "Intermediate"
-        });
-      }, 3000);
+          difficulty: "Intermediate" as const
+        };
+        if(documentId) MOCK_DB.analysis[documentId] = result;
+        resolve(result);
+      }, 2000);
     });
   },
+  
+  async getCachedAnalysis(id: string) { return MOCK_DB.analysis[id] || null; },
+  async getCachedQuiz(id: string) { return MOCK_DB.quizzes[id] || null; },
+  async getCachedPlan(id: string) { return MOCK_DB.plans[id] || null; },
 
   /**
    * Simulates AI quiz generation
    */
-  async generateQuiz(text: string): Promise<QuizQuestion[]> {
+  async generateQuiz(text: string, documentId?: string): Promise<QuizQuestion[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve([
+        const result = [
           {
             id: "1",
             question: "Where do the light-dependent reactions of photosynthesis take place?",
@@ -77,26 +131,21 @@ export const aiService = {
             options: ["Oxygen", "Carbon Dioxide", "ATP and NADPH", "Glucose"],
             correctAnswer: 2,
             explanation: "ATP and NADPH are produced during the light reactions and provide energy for the Calvin cycle."
-          },
-          {
-            id: "3",
-            question: "Which molecule is responsible for absorbing light energy in plants?",
-            options: ["Carotene", "Xanthophyll", "Chlorophyll", "Melanin"],
-            correctAnswer: 2,
-            explanation: "Chlorophyll is the primary pigment that captures light energy for photosynthesis."
           }
-        ]);
-      }, 2500);
+        ];
+        if(documentId) MOCK_DB.quizzes[documentId] = result;
+        resolve(result);
+      }, 2000);
     });
   },
 
   /**
    * Simulates AI study planner generation
    */
-  async generateStudyPlan(text: string): Promise<{ items: StudyPlanItem[], totalDuration: string }> {
+  async generateStudyPlan(text: string, documentId?: string): Promise<{ items: StudyPlanItem[], totalDuration: string }> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({
+        const result = {
           totalDuration: "12 Hours",
           items: [
             {
@@ -110,22 +159,12 @@ export const aiService = {
               topic: "The Light Reactions",
               duration: "4 Hours",
               objective: "Master the electron transport chain and ATP synthesis process."
-            },
-            {
-              session: "Session 3",
-              topic: "Dark Reactions / Calvin Cycle",
-              duration: "4 Hours",
-              objective: "Understand carbon fixation and glucose production stages."
-            },
-            {
-              session: "Session 4",
-              topic: "Review & Quiz",
-              duration: "2 Hours",
-              objective: "Test knowledge with generated quizzes and revise weak areas."
             }
           ]
-        });
-      }, 2800);
+        };
+        if(documentId) MOCK_DB.plans[documentId] = result;
+        resolve(result);
+      }, 2000);
     });
   }
 };
