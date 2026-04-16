@@ -16,17 +16,11 @@ const NavBar = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      // Avoid poking the SDK if there's no evidence of a session
-      const hasSessionFlag = Object.keys(localStorage).some(key => 
-        (key.includes('insforge') || key.includes('sb-')) && key.includes('auth-token')
-      );
-      if (!hasSessionFlag) return;
-
       try {
         const { data } = await insforge.auth.getCurrentUser();
         if (data?.user) setUser(data.user);
-      } catch (err) {
-        // Silently fail for landing page
+      } catch {
+        // No session, show login buttons
       }
     };
     fetchUser();

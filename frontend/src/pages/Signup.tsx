@@ -52,15 +52,45 @@ const Signup = () => {
   useEffect(() => {
     // If user is already logged in, redirect to app
     const checkUser = async () => {
-      // Local check to reduce 401 noise
-      const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
-      if (!hasToken) return;
-
-      const { data } = await insforge.auth.getCurrentUser();
-      if (data?.user) navigate("/app");
+      try {
+        const { data } = await insforge.auth.getCurrentUser();
+        if (data?.user) navigate("/app");
+      } catch {
+        // No session
+      }
     };
     checkUser();
   }, [navigate]);
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      const { error } = await insforge.auth.signInWithOAuth({
+        provider: 'google',
+        redirectTo: window.location.origin + "/app",
+      });
+      if (error) throw error;
+    } catch (err: unknown) {
+      toast.error(`Google login failed: ${(err as Error).message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGithubLogin = async () => {
+    setLoading(true);
+    try {
+      const { error } = await insforge.auth.signInWithOAuth({
+        provider: 'github',
+        redirectTo: window.location.origin + "/app",
+      });
+      if (error) throw error;
+    } catch (err: unknown) {
+      toast.error(`GitHub login failed: ${(err as Error).message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -295,12 +325,16 @@ const Signup = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <Button
                     variant="outline"
+                    onClick={handleGoogleLogin}
+                    disabled={loading}
                     className="h-12 border-[hsla(36,25%,90%,0.15)] bg-transparent text-[hsl(36,25%,85%)] hover:bg-white/5 rounded-2xl transition-all"
                   >
                     <Chrome className="mr-2 w-5 h-5" /> Google
                   </Button>
                   <Button
                     variant="outline"
+                    onClick={handleGithubLogin}
+                    disabled={loading}
                     className="h-12 border-[hsla(36,25%,90%,0.15)] bg-transparent text-[hsl(36,25%,85%)] hover:bg-white/5 rounded-2xl transition-all"
                   >
                     <Github className="mr-2 w-5 h-5" /> GitHub

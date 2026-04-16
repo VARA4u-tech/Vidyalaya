@@ -48,27 +48,38 @@ const Auth = () => {
   useEffect(() => {
     // If the user reaches this page but is already logged in, send them back to the app
     const checkExistingSession = async () => {
-      // Small check to avoid 401 noise
-      const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
-      if (!hasToken) return;
-
-      const { data: user } = await insforge.auth.getCurrentUser();
-      if (user?.user) {
-        navigate("/app");
+      try {
+        const { data } = await insforge.auth.getCurrentUser();
+        if (data?.user) {
+          navigate("/app");
+        }
+      } catch {
+        // No session, stay on auth page
       }
     };
     checkExistingSession();
   }, [navigate]);
 
   const handleGoogleLogin = async () => {
+    console.log("Starting Google Login...");
     setLoading(true);
     try {
+      const redirectUrl = window.location.origin + "/app";
+      console.log("Redirect URL:", redirectUrl);
+      
       const { error } = await insforge.auth.signInWithOAuth({
         provider: 'google',
-        redirectTo: window.location.origin + "/app",
+        redirectTo: redirectUrl,
       });
-      if (error) throw error;
+      
+      if (error) {
+        console.error("OAuth error response:", error);
+        throw error;
+      }
+      
+      console.log("OAuth redirect initiated...");
     } catch (err: unknown) {
+      console.error("Caught login exception:", err);
       toast.error(`Google login failed: ${(err as Error).message}`);
     } finally {
       setLoading(false);

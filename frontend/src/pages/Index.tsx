@@ -63,13 +63,13 @@ const Index = () => {
   useEffect(() => {
     // If the user reaches the landing page but is already logged in, send them to the app
     const checkExistingSession = async () => {
-      // Small check to avoid 401 noise
-      const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
-      if (!hasToken) return;
-
-      const { data } = await insforge.auth.getCurrentUser();
-      if (data?.user) {
-        navigate("/app");
+      try {
+        const { data } = await insforge.auth.getCurrentUser();
+        if (data?.user) {
+          navigate("/app");
+        }
+      } catch {
+        // No session, stay on landing page
       }
     };
     checkExistingSession();

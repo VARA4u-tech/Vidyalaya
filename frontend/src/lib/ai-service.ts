@@ -42,13 +42,9 @@ export const aiService = {
    * Fetches all documents from history for the current user
    */
   async getHistory() {
-    // Local check to reduce 401 noise
-    const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
-    if (!hasToken) return [];
-
     const { data: user } = await insforge.auth.getCurrentUser();
     if (!user?.user?.id) return [];
-   
+
     const { data: userData, error } = await insforge.database
       .from("user_documents")
       .select("*")
@@ -77,10 +73,6 @@ export const aiService = {
    * PDF text extraction and storage
    */
   async uploadAndExtract(file: File): Promise<{ text: string, documentId: string }> {
-    // Local check to reduce 401 noise
-    const hasToken = Object.keys(localStorage).some(k => k.includes('auth-token'));
-    if (!hasToken) throw new Error("Authentication required");
-
     const { data: user } = await insforge.auth.getCurrentUser();
     if (!user?.user) throw new Error("Authentication required");
 
