@@ -44,3 +44,5 @@ frontend/src/pages/Auth.tsx
 frontend/src/pages/Index.tsx
 frontend/package-lock.json
 frontend/package.json
+frontend/src/components/ui/command.tsx
+frontend/src/components/ui/textarea.tsx
