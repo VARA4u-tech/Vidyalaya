@@ -697,9 +697,9 @@ const Dashboard = () => {
                             <div className="space-y-4">
                               <button
                                 onClick={handleGenerateQuiz}
-                                className="w-full h-16 rounded-[1.5rem] bg-white text-coral-600 font-black text-[11px] uppercase tracking-[0.2em] flex items-center justify-center gap-4 hover:scale-[1.04] active:scale-95 transition-all shadow-xl"
+                                className="w-full h-16 rounded-[1.5rem] bg-white text-[hsl(210,48%,10%)] font-black text-[12px] uppercase tracking-[0.3em] flex items-center justify-center gap-4 hover:scale-[1.04] active:scale-95 transition-all shadow-2xl"
                               >
-                                Begin Quiz <CheckCircle2 size={18} />
+                                Begin Quiz <CheckCircle2 size={18} className="text-coral-600" />
                               </button>
                               <button
                                 onClick={handleGeneratePlan}
