@@ -1,8 +1,20 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Sparkles, Loader2, ListChecks, CheckCircle2 } from "lucide-react";
+import {
+  Brain,
+  Sparkles,
+  Loader2,
+  ListChecks,
+  CheckCircle2,
+} from "lucide-react";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "./ui/card";
 import { Textarea } from "./ui/textarea";
 import { Badge } from "./ui/badge";
 import { toast } from "sonner";
@@ -56,14 +68,20 @@ export const SmartSummarizer = () => {
             <Brain size={24} />
           </div>
           <div>
-            <CardTitle className="text-xl font-serif text-[hsl(36,28%,94%)]">Vidyalaya AI Assistant</CardTitle>
-            <CardDescription className="text-[hsl(36,15%,65%)]">Powered by OpenRouter</CardDescription>
+            <CardTitle className="text-xl font-serif text-[hsl(36,28%,94%)]">
+              Vidyalaya AI Assistant
+            </CardTitle>
+            <CardDescription className="text-[hsl(36,15%,65%)]">
+              Powered by OpenRouter
+            </CardDescription>
           </div>
         </div>
       </CardHeader>
       <CardContent className="pt-6 space-y-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-[hsl(36,25%,85%)]">Your Study Material</label>
+          <label className="text-sm font-medium text-[hsl(36,25%,85%)]">
+            Your Study Material
+          </label>
           <Textarea
             placeholder="Paste your notes or some text you want summarized..."
             className="min-h-[140px] bg-black/20 border-[hsla(36,25%,90%,0.1)] text-[hsl(36,28%,90%)] placeholder:text-[hsla(36,25%,90%,0.2)] focus-visible:ring-blue-500/50"
@@ -72,8 +90,8 @@ export const SmartSummarizer = () => {
           />
         </div>
 
-        <Button 
-          onClick={handleSummarize} 
+        <Button
+          onClick={handleSummarize}
           disabled={loading}
           className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-6 rounded-xl transition-all shadow-lg group"
         >
@@ -108,9 +126,9 @@ export const SmartSummarizer = () => {
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {result.concepts.map((concept, i) => (
-                    <Badge 
-                      key={i} 
-                      variant="outline" 
+                    <Badge
+                      key={i}
+                      variant="outline"
                       className="bg-indigo-500/10 border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/20 transition-colors py-1 px-3"
                     >
                       {concept}

@@ -7,7 +7,7 @@ require("dotenv").config();
 const insforge = createClient({
   baseUrl: process.env.INSFORGE_URL || "http://localhost:7130",
   anonKey: process.env.INSFORGE_ANON_KEY || "",
-  isServerMode: true // Recommended for Node.js backends
+  isServerMode: true, // Recommended for Node.js backends
 });
 
 module.exports = { insforge };

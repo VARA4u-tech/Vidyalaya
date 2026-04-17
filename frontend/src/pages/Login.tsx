@@ -54,7 +54,7 @@ const Login = () => {
     setLoading(true);
     try {
       const { error } = await insforge.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         redirectTo: window.location.origin + "/app",
       });
       if (error) throw error;
@@ -69,7 +69,7 @@ const Login = () => {
     setLoading(true);
     try {
       const { error } = await insforge.auth.signInWithOAuth({
-        provider: 'github',
+        provider: "github",
         redirectTo: window.location.origin + "/app",
       });
       if (error) throw error;
@@ -101,7 +101,8 @@ const Login = () => {
       }
     } catch (err: unknown) {
       toast.error("Login Failed", {
-        description: (err as Error).message || "Invalid credentials. Please try again.",
+        description:
+          (err as Error).message || "Invalid credentials. Please try again.",
       });
     } finally {
       setLoading(false);

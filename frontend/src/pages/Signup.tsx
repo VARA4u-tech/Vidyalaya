@@ -66,7 +66,7 @@ const Signup = () => {
     setLoading(true);
     try {
       const { error } = await insforge.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         redirectTo: window.location.origin + "/app",
       });
       if (error) throw error;
@@ -81,7 +81,7 @@ const Signup = () => {
     setLoading(true);
     try {
       const { error } = await insforge.auth.signInWithOAuth({
-        provider: 'github',
+        provider: "github",
         redirectTo: window.location.origin + "/app",
       });
       if (error) throw error;
@@ -98,11 +98,16 @@ const Signup = () => {
 
     try {
       // Use a more specific type than any to comply with lint rules
-      const { data, error } = await (insforge.auth.signUp as (args: {
-        email: string;
-        password: string;
-        options?: { data?: Record<string, unknown>; emailRedirectTo?: string };
-      }) => Promise<{ data: unknown; error: Error | null }>)({
+      const { data, error } = await (
+        insforge.auth.signUp as (args: {
+          email: string;
+          password: string;
+          options?: {
+            data?: Record<string, unknown>;
+            emailRedirectTo?: string;
+          };
+        }) => Promise<{ data: unknown; error: Error | null }>
+      )({
         email: formData.email,
         password: formData.password,
         options: {
@@ -116,14 +121,17 @@ const Signup = () => {
 
       if (data) {
         toast.success("Account Created!", {
-          description: "Welcome to Vidyalaya. Your learning journey begins now.",
+          description:
+            "Welcome to Vidyalaya. Your learning journey begins now.",
           duration: 5000,
         });
         navigate("/app");
       }
     } catch (err: unknown) {
       toast.error("Registration Failed", {
-        description: (err as Error).message || "An unexpected error occurred during signup.",
+        description:
+          (err as Error).message ||
+          "An unexpected error occurred during signup.",
       });
     } finally {
       setLoading(false);

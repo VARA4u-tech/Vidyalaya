@@ -238,7 +238,6 @@ const DynamicScrollBot = () => {
                       </button>
                     </form>
                   </div>
-
                 </motion.div>
               )}
             </AnimatePresence>

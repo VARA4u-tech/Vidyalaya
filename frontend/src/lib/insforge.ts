@@ -1,6 +1,7 @@
 import { createClient } from "@insforge/sdk";
 
-const insforgeUrl = import.meta.env.VITE_INSFORGE_URL || "http://localhost:7130";
+const insforgeUrl =
+  import.meta.env.VITE_INSFORGE_URL || "http://localhost:7130";
 const insforgeAnonKey = import.meta.env.VITE_INSFORGE_ANON_KEY || "";
 
 export interface User {
@@ -19,5 +20,5 @@ export interface User {
 export const insforge = createClient({
   baseUrl: insforgeUrl,
   anonKey: insforgeAnonKey,
-  isServerMode: false // Web mode for automatic session management
+  isServerMode: false, // Web mode for automatic session management
 });

@@ -31,34 +31,40 @@ const NavBar = () => {
   }, [location]);
 
   // Scroll to section — works from any route
-  const scrollToSection = useCallback((section: string) => {
-    setMenuOpen(false);
+  const scrollToSection = useCallback(
+    (section: string) => {
+      setMenuOpen(false);
 
-    const doScroll = () => {
-      const el = document.getElementById(section);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      const doScroll = () => {
+        const el = document.getElementById(section);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      };
+
+      // If we're not on home page, navigate first then scroll
+      if (location.pathname !== "/") {
+        navigate("/");
+        // Small delay to let React render the page before scrolling
+        setTimeout(doScroll, 300);
+      } else {
+        doScroll();
       }
-    };
-
-    // If we're not on home page, navigate first then scroll
-    if (location.pathname !== "/") {
-      navigate("/");
-      // Small delay to let React render the page before scrolling
-      setTimeout(doScroll, 300);
-    } else {
-      doScroll();
-    }
-  }, [location.pathname, navigate]);
+    },
+    [location.pathname, navigate],
+  );
 
   return (
     <>
       <motion.header
         className="fixed top-0 left-0 right-0 z-[999] transition-all duration-500"
         style={{
-          backgroundColor: scrolled || menuOpen ? "hsla(210, 55%, 22%, 0.97)" : "transparent",
+          backgroundColor:
+            scrolled || menuOpen ? "hsla(210, 55%, 22%, 0.97)" : "transparent",
           backdropFilter: scrolled || menuOpen ? "blur(16px)" : "none",
-          borderBottom: scrolled ? "1px solid hsla(36, 23%, 93%, 0.08)" : "none",
+          borderBottom: scrolled
+            ? "1px solid hsla(36, 23%, 93%, 0.08)"
+            : "none",
           boxShadow: scrolled ? "0 4px 24px hsla(210, 60%, 10%, 0.3)" : "none",
         }}
         initial={{ y: -80, opacity: 0 }}
@@ -81,13 +87,22 @@ const NavBar = () => {
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-2 lg:gap-4 justify-end">
             {NAV_LINKS.map((link, idx) => (
-              <div key={link.label} className="flex items-center gap-2 lg:gap-4">
+              <div
+                key={link.label}
+                className="flex items-center gap-2 lg:gap-4"
+              >
                 <button
                   onClick={() => scrollToSection(link.section)}
                   className="font-sans font-bold uppercase tracking-widest text-[0.65rem] lg:text-[0.75rem] transition-all duration-300 focus:outline-none whitespace-nowrap"
                   style={{ color: "hsl(36, 23%, 85%)" }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "hsl(36, 23%, 100%)")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "hsl(36, 23%, 85%)")}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLButtonElement).style.color =
+                      "hsl(36, 23%, 100%)")
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLButtonElement).style.color =
+                      "hsl(36, 23%, 85%)")
+                  }
                 >
                   {link.label}
                 </button>
@@ -98,19 +113,27 @@ const NavBar = () => {
             ))}
 
             <div className="h-8 w-px bg-white/25 mx-2 lg:mx-4 hidden lg:block" />
-            
+
             {user ? (
               <a
                 href="/app"
-                style={{ 
-                  backgroundColor: "hsl(9, 73%, 56%)", 
-                  color: "white", 
+                style={{
+                  backgroundColor: "hsl(9, 73%, 56%)",
+                  color: "white",
                   padding: "0.5rem 1rem",
-                  fontSize: "0.75rem" 
+                  fontSize: "0.75rem",
                 }}
                 className="font-sans font-semibold rounded-full transition-all duration-300 lg:text-sm lg:px-6 lg:py-2.5 shadow-[0_0_20px_hsla(9,70%,54%,0.3)] whitespace-nowrap"
-                onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = "hsl(9, 68%, 48%)")}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = "hsl(9, 73%, 56%)")}
+                onMouseEnter={(e) =>
+                  ((
+                    e.currentTarget as HTMLAnchorElement
+                  ).style.backgroundColor = "hsl(9, 68%, 48%)")
+                }
+                onMouseLeave={(e) =>
+                  ((
+                    e.currentTarget as HTMLAnchorElement
+                  ).style.backgroundColor = "hsl(9, 73%, 56%)")
+                }
               >
                 Dashboard
               </a>
@@ -120,22 +143,36 @@ const NavBar = () => {
                   href="/login"
                   className="font-sans font-bold uppercase tracking-widest text-[0.7rem] lg:text-sm transition-all duration-300 whitespace-nowrap"
                   style={{ color: "hsl(36, 23%, 85%)" }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "hsl(36, 23%, 100%)")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "hsl(36, 23%, 85%)")}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color =
+                      "hsl(36, 23%, 100%)")
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color =
+                      "hsl(36, 23%, 85%)")
+                  }
                 >
                   Sign In
                 </a>
                 <a
                   href="/login"
-                  style={{ 
-                    backgroundColor: "hsl(9, 73%, 56%)", 
-                    color: "white", 
+                  style={{
+                    backgroundColor: "hsl(9, 73%, 56%)",
+                    color: "white",
                     padding: "0.5rem 1rem",
-                    fontSize: "0.75rem"
+                    fontSize: "0.75rem",
                   }}
                   className="font-sans font-semibold rounded-full transition-all duration-300 lg:text-sm lg:px-6 lg:py-2.5 whitespace-nowrap"
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = "hsl(9, 68%, 48%)")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = "hsl(9, 73%, 56%)")}
+                  onMouseEnter={(e) =>
+                    ((
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = "hsl(9, 68%, 48%)")
+                  }
+                  onMouseLeave={(e) =>
+                    ((
+                      e.currentTarget as HTMLAnchorElement
+                    ).style.backgroundColor = "hsl(9, 73%, 56%)")
+                  }
                 >
                   Get Started
                 </a>
@@ -182,7 +219,10 @@ const NavBar = () => {
                     <a
                       href="/app"
                       className="w-full text-center font-sans font-bold text-sm py-3.5 rounded-2xl"
-                      style={{ backgroundColor: "hsl(9, 73%, 56%)", color: "white" }}
+                      style={{
+                        backgroundColor: "hsl(9, 73%, 56%)",
+                        color: "white",
+                      }}
                       onClick={() => setMenuOpen(false)}
                     >
                       Go To Dashboard →
@@ -200,7 +240,10 @@ const NavBar = () => {
                       <a
                         href="/login"
                         className="w-full text-center font-sans font-bold text-sm py-3.5 rounded-2xl"
-                        style={{ backgroundColor: "hsl(9, 73%, 56%)", color: "white" }}
+                        style={{
+                          backgroundColor: "hsl(9, 73%, 56%)",
+                          color: "white",
+                        }}
                         onClick={() => setMenuOpen(false)}
                       >
                         Get Started →

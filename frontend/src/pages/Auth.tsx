@@ -61,17 +61,17 @@ const Auth = () => {
     try {
       const redirectUrl = window.location.origin + "/app";
       console.log("Redirect URL:", redirectUrl);
-      
+
       const { error } = await insforge.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         redirectTo: redirectUrl,
       });
-      
+
       if (error) {
         console.error("OAuth error response:", error);
         throw error;
       }
-      
+
       console.log("OAuth redirect initiated...");
     } catch (err: unknown) {
       console.error("Caught login exception:", err);
@@ -230,7 +230,7 @@ const Auth = () => {
                       className="w-full h-16 md:h-20 rounded-full bg-white text-black hover:bg-[hsl(36,28%,90%)] transition-all duration-500 shadow-[0_0_30px_rgba(255,255,255,0.15)] group relative overflow-hidden"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                      
+
                       <div className="flex items-center justify-center gap-4 relative z-10 w-full">
                         {loading ? (
                           <div className="w-6 h-6 border-4 border-black/20 border-t-black rounded-full animate-spin" />
@@ -252,7 +252,8 @@ const Auth = () => {
                     className="mt-8 font-sans font-medium text-xs md:text-sm max-w-[280px] mx-auto leading-relaxed"
                     style={{ color: "hsl(36, 15%, 55%)" }}
                   >
-                    By signing in, you agree to our Terms of Service and Privacy Policy.
+                    By signing in, you agree to our Terms of Service and Privacy
+                    Policy.
                   </p>
                 </div>
               </div>

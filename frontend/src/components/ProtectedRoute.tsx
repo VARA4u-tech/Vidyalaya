@@ -6,7 +6,7 @@ import { toast } from "sonner";
 /**
  * Higher-order component/Wrapper to protect dashboard routes.
  * Checks for an active session with InsForge.
- * 
+ *
  * NOTE: The InsForge SDK uses httpOnly cookies for session refresh and
  * sessionStorage for PKCE verifiers. Do NOT use localStorage checks here —
  * getCurrentUser() already handles waiting for pending OAuth callbacks internally.
@@ -18,7 +18,9 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!isLoading && !user && !hasRedirected) {
-      console.warn("ProtectedRoute: No valid session found, redirecting to login.");
+      console.warn(
+        "ProtectedRoute: No valid session found, redirecting to login.",
+      );
       setHasRedirected(true);
       toast.error("Session Expired", {
         description: "Please sign in again to access your dashboard.",
@@ -33,7 +35,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       });
       navigate("/login");
     } else if (user) {
-       console.log("ProtectedRoute: Session valid for", user.email);
+      console.log("ProtectedRoute: Session valid for", user.email);
     }
   }, [isLoading, user, navigate, hasRedirected]);
 

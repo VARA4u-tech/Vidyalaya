@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { 
-  Zap, 
-  Palette, 
-  Wind, 
-  Monitor, 
-  Database, 
-  ShieldCheck, 
+import {
+  Zap,
+  Palette,
+  Wind,
+  Monitor,
+  Database,
+  ShieldCheck,
   LineChart,
   Navigation,
   RefreshCcw,
@@ -13,7 +13,7 @@ import {
   Terminal,
   Container,
   Globe,
-  Layers
+  Layers,
 } from "lucide-react";
 
 const allTags = [
@@ -34,11 +34,9 @@ const allTags = [
   { name: "REST APIs", icon: Globe, color: "hsl(185, 48%, 50%)" },
 ];
 
-const TechTag = ({ item }: { item: typeof allTags[0] }) => (
-  <div 
-    className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/40 border border-white/60 backdrop-blur-md shadow-sm whitespace-nowrap group hover:bg-white transition-all duration-300 mx-3 cursor-pointer shrink-0"
-  >
-    <div 
+const TechTag = ({ item }: { item: (typeof allTags)[0] }) => (
+  <div className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/40 border border-white/60 backdrop-blur-md shadow-sm whitespace-nowrap group hover:bg-white transition-all duration-300 mx-3 cursor-pointer shrink-0">
+    <div
       className="p-1.5 rounded-lg bg-white/50 group-hover:bg-coral-500/10 transition-colors duration-300"
       style={{ color: item.color }}
     >
@@ -50,17 +48,25 @@ const TechTag = ({ item }: { item: typeof allTags[0] }) => (
   </div>
 );
 
-const MarqueeRow = ({ items, reverse = false, duration = 30 }: { items: typeof allTags, reverse?: boolean, duration?: number }) => {
+const MarqueeRow = ({
+  items,
+  reverse = false,
+  duration = 30,
+}: {
+  items: typeof allTags;
+  reverse?: boolean;
+  duration?: number;
+}) => {
   return (
     <div className="flex overflow-hidden py-2 select-none group">
-      <motion.div 
+      <motion.div
         className="flex shrink-0 min-w-full"
         animate={{ x: reverse ? ["-100%", "0%"] : ["0%", "-100%"] }}
-        transition={{ 
-          duration, 
-          repeat: Infinity, 
+        transition={{
+          duration,
+          repeat: Infinity,
           ease: "linear",
-          repeatType: "loop"
+          repeatType: "loop",
         }}
         style={{ gap: "1.5rem" }}
       >
@@ -72,16 +78,16 @@ const MarqueeRow = ({ items, reverse = false, duration = 30 }: { items: typeof a
           <TechTag key={`${item.name}-mirror-${idx}`} item={item} />
         ))}
       </motion.div>
-      
+
       {/* Secondary Row to Bridge the Gap */}
-      <motion.div 
+      <motion.div
         className="flex shrink-0 min-w-full"
         animate={{ x: reverse ? ["-100%", "0%"] : ["0%", "-100%"] }}
-        transition={{ 
-          duration, 
-          repeat: Infinity, 
+        transition={{
+          duration,
+          repeat: Infinity,
           ease: "linear",
-          repeatType: "loop"
+          repeatType: "loop",
         }}
         style={{ gap: "1.5rem" }}
       >
@@ -98,10 +104,10 @@ const MarqueeRow = ({ items, reverse = false, duration = 30 }: { items: typeof a
 };
 
 const TechStackSection = () => {
-    // Row combinations
-    const row1 = [...allTags.slice(0, 8)];
-    const row2 = [...allTags.slice(5, 12)];
-    const row3 = [...allTags.slice(9, 15), ...allTags.slice(0, 3)];
+  // Row combinations
+  const row1 = [...allTags.slice(0, 8)];
+  const row2 = [...allTags.slice(5, 12)];
+  const row3 = [...allTags.slice(9, 15), ...allTags.slice(0, 3)];
 
   return (
     <section
@@ -141,55 +147,70 @@ const TechStackSection = () => {
             }}
           >
             Powered by the <br />
-            <span className="italic text-coral-500 underline decoration-coral-500/20 underline-offset-8">Best in Class</span> Technologies
+            <span className="italic text-coral-500 underline decoration-coral-500/20 underline-offset-8">
+              Best in Class
+            </span>{" "}
+            Technologies
           </h2>
         </motion.div>
 
         {/* Floating Marquee Rows */}
         <div className="flex flex-col gap-6 relative py-10">
-            {/* Improved Gradient Masks */}
-            <div className="absolute inset-y-0 left-0 w-[20%] bg-gradient-to-r from-[hsl(34,32%,84%)] to-transparent z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-[20%] bg-gradient-to-l from-[hsl(34,32%,84%)] to-transparent z-10 pointer-events-none" />
-          
-            <MarqueeRow items={row1} duration={40} />
-            <MarqueeRow items={row2} reverse duration={35} />
-            <MarqueeRow items={row3} duration={45} />
+          {/* Improved Gradient Masks */}
+          <div className="absolute inset-y-0 left-0 w-[20%] bg-gradient-to-r from-[hsl(34,32%,84%)] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-[20%] bg-gradient-to-l from-[hsl(34,32%,84%)] to-transparent z-10 pointer-events-none" />
+
+          <MarqueeRow items={row1} duration={40} />
+          <MarqueeRow items={row2} reverse duration={35} />
+          <MarqueeRow items={row3} duration={45} />
         </div>
 
         {/* Footer Stats Row */}
         <motion.div
-            className="mt-20 pt-10 border-t border-black/5 flex flex-wrap items-center justify-center md:justify-between gap-8"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+          className="mt-20 pt-10 border-t border-black/5 flex flex-wrap items-center justify-center md:justify-between gap-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
         >
-            <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full border border-black/5 bg-white/40 flex items-center justify-center shadow-inner">
-                    <ShieldCheck size={20} className="text-coral-500" />
-                </div>
-                <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-[hsl(210,20%,50%)]">Development</p>
-                    <p className="text-sm font-bold text-[hsl(210,48%,20%)]">TypeScript Strict Mode</p>
-                </div>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full border border-black/5 bg-white/40 flex items-center justify-center shadow-inner">
+              <ShieldCheck size={20} className="text-coral-500" />
             </div>
-            <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full border border-black/5 bg-white/40 flex items-center justify-center shadow-inner">
-                    <Zap size={20} className="text-cyan-500" />
-                </div>
-                <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-[hsl(210,20%,50%)]">Performance</p>
-                    <p className="text-sm font-bold text-[hsl(210,48%,20%)]">Vite Optimized Build</p>
-                </div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[hsl(210,20%,50%)]">
+                Development
+              </p>
+              <p className="text-sm font-bold text-[hsl(210,48%,20%)]">
+                TypeScript Strict Mode
+              </p>
             </div>
-            <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full border border-black/5 bg-white/40 flex items-center justify-center shadow-inner">
-                    <Layers size={20} className="text-purple-500" />
-                </div>
-                <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-[hsl(210,20%,50%)]">Architecture</p>
-                    <p className="text-sm font-bold text-[hsl(210,48%,20%)]">Component-Driven</p>
-                </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full border border-black/5 bg-white/40 flex items-center justify-center shadow-inner">
+              <Zap size={20} className="text-cyan-500" />
             </div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[hsl(210,20%,50%)]">
+                Performance
+              </p>
+              <p className="text-sm font-bold text-[hsl(210,48%,20%)]">
+                Vite Optimized Build
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full border border-black/5 bg-white/40 flex items-center justify-center shadow-inner">
+              <Layers size={20} className="text-purple-500" />
+            </div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[hsl(210,20%,50%)]">
+                Architecture
+              </p>
+              <p className="text-sm font-bold text-[hsl(210,48%,20%)]">
+                Component-Driven
+              </p>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>
