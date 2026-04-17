@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const VintageGrain = ({ zBase = 2 }: { zBase?: number }) => (
   <>
@@ -22,10 +23,24 @@ const VintageGrain = ({ zBase = 2 }: { zBase?: number }) => (
 );
 
 const FooterSection = () => {
-  const links: Record<string, string[]> = {
-    Product: ["Upload Notes", "AI Summaries", "Smart Quizzes", "Exam Planner"],
-    Company: ["About Us", "Blog", "Careers", "Contact"],
-    Support: ["Help Center", "Privacy Policy", "Terms of Service"],
+  const links: Record<string, { label: string; href: string }[]> = {
+    Product: [
+      { label: "Upload Notes", href: "#features" },
+      { label: "AI Summaries", href: "#features" },
+      { label: "Smart Quizzes", href: "#features" },
+      { label: "Exam Planner", href: "#features" }
+    ],
+    Company: [
+      { label: "About Us", href: "#" },
+      { label: "Blog", href: "#" },
+      { label: "Careers", href: "#" },
+      { label: "Contact", href: "#" }
+    ],
+    Support: [
+      { label: "Help Center", href: "#" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms and Conditions", href: "/terms" }
+    ],
   };
 
   return (
@@ -137,25 +152,17 @@ const FooterSection = () => {
               </h4>
               <ul className="flex flex-col gap-3">
                 {items.map((item) => (
-                  <li key={item}>
-                    <a
-                      href="#"
+                  <li key={item.label}>
+                    <Link
+                      to={item.href}
                       className="font-sans font-semibold transition-colors duration-200"
                       style={{
                         color: "hsl(210, 48%, 28%)",
                         fontSize: "0.95rem",
                       }}
-                      onMouseEnter={(e) =>
-                        ((e.currentTarget as HTMLAnchorElement).style.color =
-                          "hsl(9, 70%, 54%)")
-                      }
-                      onMouseLeave={(e) =>
-                        ((e.currentTarget as HTMLAnchorElement).style.color =
-                          "hsl(210, 48%, 28%)")
-                      }
                     >
-                      {item}
-                    </a>
+                      {item.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
