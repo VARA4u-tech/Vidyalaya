@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { BookOpen, Brain, ClipboardList, CalendarDays } from "lucide-react";
-import AnimatedIcon from "./AnimatedIcon";
 
 const features = [
   {
@@ -33,28 +32,6 @@ const features = [
   },
 ];
 
-/* Inline multi-layer grain overlay */
-const VintageGrain = ({ zBase = 2 }: { zBase?: number }) => (
-  <>
-    <div
-      className="absolute inset-0 pointer-events-none grain-coarse"
-      style={{ opacity: 0.08, mixBlendMode: "multiply", zIndex: zBase }}
-    />
-    <div
-      className="absolute inset-0 pointer-events-none grain-fine"
-      style={{ opacity: 0.12, mixBlendMode: "overlay", zIndex: zBase + 1 }}
-    />
-    <div
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        background:
-          "linear-gradient(160deg,hsla(34,60%,55%,0.04) 0%,transparent 50%,hsla(34,60%,45%,0.05) 100%)",
-        zIndex: zBase + 2,
-      }}
-    />
-  </>
-);
-
 const FeaturesSection = () => {
   return (
     <section
@@ -62,21 +39,25 @@ const FeaturesSection = () => {
       className="relative py-32 overflow-hidden"
       style={{ backgroundColor: "hsl(34, 32%, 84%)" }}
     >
-      <VintageGrain zBase={1} />
+      {/* Single lightweight grain layer */}
+      <div
+        className="absolute inset-0 pointer-events-none grain-coarse"
+        style={{ opacity: 0.06, mixBlendMode: "multiply", zIndex: 1 }}
+      />
 
-      {/* Radial vignette */}
+      {/* Radial vignette — CSS only, no JS */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
             "radial-gradient(ellipse at center, transparent 55%, hsla(30,25%,12%,0.08) 100%)",
-          zIndex: 5,
+          zIndex: 2,
         }}
       />
 
-      {/* Decorative diagonal bands */}
-      <motion.div
-        className="absolute"
+      {/* Diagonal bands — static, no animation (performance fix) */}
+      <div
+        className="absolute hidden md:block"
         style={{
           backgroundColor: "hsl(9, 70%, 54%)",
           opacity: 0.13,
@@ -87,11 +68,9 @@ const FeaturesSection = () => {
           transform: "rotate(-22deg)",
           zIndex: 0,
         }}
-        animate={{ rotate: [-22, -19, -22] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div
-        className="absolute"
+      <div
+        className="absolute hidden md:block"
         style={{
           backgroundColor: "hsl(185, 48%, 50%)",
           opacity: 0.1,
@@ -102,8 +81,6 @@ const FeaturesSection = () => {
           transform: "rotate(-22deg)",
           zIndex: 0,
         }}
-        animate={{ rotate: [-22, -18, -22] }}
-        transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
@@ -163,59 +140,32 @@ const FeaturesSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: i * 0.1 }}
-              whileHover={{ y: -6, transition: { duration: 0.3 } }}
+              // Removed whileHover for mobile performance — use CSS hover instead
             >
-              {/* Grain on each card */}
+              {/* Static accent circle — no JS animation, pure CSS */}
               <div
-                className="absolute inset-0 pointer-events-none grain-coarse rounded-3xl"
-                style={{ opacity: 0.12, mixBlendMode: "multiply", zIndex: 1 }}
-              />
-              <div
-                className="absolute inset-0 pointer-events-none grain-fine rounded-3xl"
-                style={{ opacity: 0.1, mixBlendMode: "overlay", zIndex: 2 }}
-              />
-              <div
-                className="absolute inset-0 pointer-events-none rounded-3xl"
-                style={{
-                  background:
-                    "linear-gradient(145deg,hsla(34,55%,50%,0.04) 0%,transparent 60%)",
-                  zIndex: 3,
-                }}
-              />
-
-              {/* Accent circle */}
-              <motion.div
-                className="absolute rounded-full"
+                className="absolute rounded-full pointer-events-none"
                 style={{
                   backgroundColor: feature.accent,
-                  opacity: 0.18,
+                  opacity: 0.15,
                   width: "180px",
                   height: "180px",
                   top: "-40px",
                   right: "-40px",
                   zIndex: 1,
-                }}
-                animate={{ scale: [1, 1.15, 1] }}
-                transition={{
-                  duration: 8 + i * 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
+                  // CSS-only pulse using filter brightness
+                  transition: "opacity 0.3s ease",
                 }}
               />
 
               {/* Content */}
               <div className="relative" style={{ zIndex: 10 }}>
+                {/* Icon box — plain div, no AnimatedIcon loop */}
                 <div
                   className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
                   style={{ backgroundColor: feature.accent }}
                 >
-                  <AnimatedIcon
-                    icon={feature.icon}
-                    size={28}
-                    color="hsl(210, 48%, 18%)"
-                    animationType={i % 2 === 0 ? "float" : "tilt"}
-                    delay={i * 0.2}
-                  />
+                  <feature.icon size={28} color="hsl(210, 48%, 18%)" />
                 </div>
 
                 <h3
