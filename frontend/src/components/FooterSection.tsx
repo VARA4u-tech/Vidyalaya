@@ -30,16 +30,16 @@ const FooterSection = () => {
       { label: "Smart Quizzes", href: "#features" },
       { label: "Exam Planner", href: "#features" }
     ],
-    Company: [
-      { label: "About Us", href: "#" },
-      { label: "Blog", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Contact", href: "#" }
+    Project: [
+      { label: "Source Code", href: "https://github.com" },
+      { label: "Documentation", href: "/README.md" },
+      { label: "Team Varanasi", href: "#team" },
+      { label: "Send Feedback", href: "mailto:support@vidyalaya.ai" }
     ],
-    Support: [
-      { label: "Help Center", href: "#" },
+    Legal: [
       { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms and Conditions", href: "/terms" }
+      { label: "Terms of Use", href: "/terms" },
+      { label: "Hackathon Project", href: "#" }
     ],
   };
 
@@ -170,43 +170,47 @@ const FooterSection = () => {
           ))}
         </motion.div>
 
+        {/* Team Varanasi Signature */}
+        <motion.div
+          className="text-center py-8 mb-4"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="font-sans text-sm md:text-base font-medium tracking-wide flex flex-wrap items-center justify-center gap-1.5" style={{ color: "hsl(210, 48%, 28%)" }}>
+            Designed and Engineered with <span className="text-coral-500 animate-pulse">❤️</span> for Students by <span className="font-bold border-b-2 border-coral-500/30 pb-0.5" style={{ color: "hsl(210, 48%, 20%)" }}>Team Varanasi</span>
+          </p>
+        </motion.div>
+
         {/* Divider */}
         <div
           className="w-full h-px mb-8"
-          style={{ backgroundColor: "hsl(34, 20%, 68%)" }}
+          style={{ backgroundColor: "hsl(34, 20%, 68%)", opacity: 0.4 }}
         />
 
         {/* Bottom bar */}
         <motion.div
-          className="flex flex-col md:flex-row items-center justify-between gap-4"
+          className="flex flex-col md:flex-row items-center justify-between gap-6"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <p
-            className="font-sans font-bold text-sm"
-            style={{ color: "hsl(210, 48%, 22%)" }}
+            className="font-sans font-bold text-xs md:text-sm text-center md:text-left order-2 md:order-1"
+            style={{ color: "hsl(210, 48%, 22%)", opacity: 0.7 }}
           >
-            &copy; 2026 Vidyalaya. All rights reserved.
+            &copy; {new Date().getFullYear()} Vidyalaya. All rights reserved.
           </p>
-          <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="" className="w-12 h-12 object-contain" />
-            <span
-              className="font-serif font-bold"
-              style={{ color: "hsl(210, 48%, 25%)", fontSize: "1rem" }}
-            >
-              Vidyalaya
-            </span>
-            <span
-              className="font-sans font-bold text-xs uppercase"
-              style={{
-                color: "hsl(210, 48%, 30%)",
-                letterSpacing: "0.15em",
-              }}
-            >
-              &nbsp;· AI Powered Study Platform
-            </span>
+          <div className="flex items-center gap-3 order-1 md:order-2">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shadow-lg overflow-hidden">
+               <img src="/favicon.png" alt="Vidyalaya Logo" className="w-full h-full object-cover" />
+            </div>
+            <div className="flex flex-col items-start leading-none">
+              <span className="font-serif font-black text-lg" style={{ color: "hsl(210, 48%, 22%)" }}>Vidyalaya</span>
+              <span className="font-sans font-black text-[8px] uppercase tracking-[0.2em] opacity-30">AI Powered Platform</span>
+            </div>
           </div>
         </motion.div>
       </div>
