@@ -946,24 +946,6 @@ const Dashboard = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="mt-8 pt-8 border-t border-white/20 flex items-center justify-between">
-                      <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">
-                          Last Active
-                        </span>
-                        <span className="text-xs font-bold text-white flex items-center gap-2">
-                          <Clock size={12} /> {new Date().toLocaleDateString()}{" "}
-                          at{" "}
-                          {new Date().toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </span>
-                      </div>
-                      <div className="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                        Premium Member
-                      </div>
-                    </div>
                   </div>
 
                   {/* Recent Activity Mini-List */}
