@@ -20,17 +20,6 @@
 
 ---
 
-<div align="center">
-
-## 🏆 Achievement
-
-### **🥉 Secured 3rd Prize at Hackathon 2024**
-**Developed with Passion by Team Varanasi**
-
-*Vidyalaya AI was recognized for its innovative approach to student productivity, securing the 3rd position among 50+ competing teams for its seamless integration of AI in academic workflows.*
-
----
-
 </div>
 
 ## 📋 Table of Contents
