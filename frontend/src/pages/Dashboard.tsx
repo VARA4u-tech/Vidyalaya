@@ -396,6 +396,12 @@ const Dashboard = () => {
                                      <button className="p-2.5 rounded-xl bg-white/5 text-white/40 hover:text-coral-400 hover:bg-coral-500/10 active:scale-90 transition-all">
                                         <ExternalLink size={16} />
                                      </button>
+                                     <button 
+                                       onClick={(e) => { e.stopPropagation(); handleDeleteDocument(doc.id); }}
+                                       className="p-2.5 rounded-xl bg-white/5 text-white/40 hover:text-red-500 hover:bg-red-500/10 active:scale-90 transition-all"
+                                     >
+                                        <Trash2 size={16} />
+                                     </button>
                                    </div>
                                 </div>
                                 
