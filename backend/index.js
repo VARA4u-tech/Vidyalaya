@@ -1,10 +1,9 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const OpenAI = require("openai");
-const rateLimit = require("express-rate-limit");
-
-const { insforge } = require("./lib/insforge");
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import OpenAI from "openai";
+import { rateLimit } from "express-rate-limit";
+import { insforge } from "./lib/insforge.js";
 
 // ... (top of the file)
 const app = express();
