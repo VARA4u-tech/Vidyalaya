@@ -359,14 +359,30 @@ vidyalaya/
 
 ---
 
-## 👥 Team
+## 👥 Team Contributions
 
-| Role                          | Contributor |
-|-------------------------------|-------------|
-| 👨‍💻 **Full Stack Developer**   | DV Prasad   |
-| 🎨 **UI/UX Design**           | DV Prasad   |
-| 🤖 **AI Integration**         | DV Prasad   |
-| 🗄️ **Database Architecture**  | DV Prasad   |
+Vidyalaya is the result of dedicated collaboration by **Team Varanasi**, combining expertise in UI design, system architecture, and AI integration.
+
+<table width="100%">
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🎨 Frontend & Database</h3>
+      <ul>
+        <li><strong>P. Durga Vara Prasad</strong></li>
+        <li><strong>T. Revanth Sai</strong></li>
+      </ul>
+      <p><small><em>UI/UX implementation, State Management, and Database Schema Orchestration.</em></small></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>⚙️ Backend Development</h3>
+      <ul>
+        <li><strong>R. Jayaveer</strong></li>
+        <li><strong>S. Girish</strong></li>
+      </ul>
+      <p><small><em>AI Pipeline Integration, API Server Logic, and Secure Authentication flow.</em></small></p>
+    </td>
+  </tr>
+</table>
 
 ---
 
