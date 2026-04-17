@@ -228,6 +228,12 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "UP", timestamp: new Date() });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// For local development
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+// Export the app for Vercel
+module.exports = app;
