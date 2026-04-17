@@ -60,8 +60,9 @@ const DynamicScrollBot = () => {
     setInputText("");
     setIsLoading(true);
 
+    const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
     try {
-      const response = await fetch("http://localhost:5000/api/chat", {
+      const response = await fetch(`${BACKEND_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
