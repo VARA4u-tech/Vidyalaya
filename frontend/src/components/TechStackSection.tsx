@@ -35,7 +35,7 @@ const allTags = [
 ];
 
 const TechTag = ({ item }: { item: (typeof allTags)[0] }) => (
-  <div className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/40 border border-white/60 backdrop-blur-md shadow-sm whitespace-nowrap group hover:bg-white transition-all duration-300 mx-3 cursor-pointer shrink-0">
+  <div className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/40 border border-white/60 shadow-sm whitespace-nowrap group hover:bg-white transition-all duration-300 mx-3 cursor-pointer shrink-0">
     <div
       className="p-1.5 rounded-lg bg-white/50 group-hover:bg-coral-500/10 transition-colors duration-300"
       style={{ color: item.color }}
@@ -115,9 +115,9 @@ const TechStackSection = () => {
       className="relative py-24 md:py-32 overflow-hidden"
       style={{ backgroundColor: "hsl(34, 32%, 84%)" }}
     >
-      {/* Background Decorative Elements */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/30 blur-[130px] rounded-full -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-coral-500/5 blur-[130px] rounded-full translate-y-1/2 -translate-x-1/2" />
+      {/* Background Decorative Blobs — desktop only (blur is expensive on mobile) */}
+      <div className="hidden md:block absolute top-0 right-0 w-[600px] h-[600px] bg-white/30 blur-[130px] rounded-full -translate-y-1/2 translate-x-1/2" />
+      <div className="hidden md:block absolute bottom-0 left-0 w-[600px] h-[600px] bg-coral-500/5 blur-[130px] rounded-full translate-y-1/2 -translate-x-1/2" />
 
       {/* Grain */}
       <div
@@ -162,7 +162,10 @@ const TechStackSection = () => {
 
           <MarqueeRow items={row1} duration={40} />
           <MarqueeRow items={row2} reverse duration={35} />
-          <MarqueeRow items={row3} duration={45} />
+          {/* 3rd row hidden on mobile to reduce paint work */}
+          <div className="hidden md:block">
+            <MarqueeRow items={row3} duration={45} />
+          </div>
         </div>
 
         {/* Footer Stats Row */}

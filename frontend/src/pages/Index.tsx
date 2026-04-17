@@ -88,48 +88,53 @@ const Index = () => {
 
         {/* ── RIGHT SIDE DIAGONAL BANDS ── */}
 
-        {/* Coral / Red main band */}
-        <motion.div
-          className="absolute w-[180vw] md:w-[70vw] lg:w-[52vw] h-[150vh] md:h-[180vh] -top-[10vh] md:-top-[40vh] -right-[60vw] md:-right-[8vw]"
+        {/* Coral / Red main band — static on mobile, animated on md+ */}
+        <div
+          className="absolute w-[180vw] md:w-[70vw] lg:w-[52vw] h-[150vh] md:h-[180vh] -top-[10vh] md:-top-[40vh] -right-[60vw] md:-right-[8vw] hidden md:block"
           style={{
             backgroundColor: "hsl(9, 70%, 54%)",
             transform: "rotate(-22deg)",
             transformOrigin: "top right",
             zIndex: 2,
           }}
-          animate={{ rotate: [-22, -19.5, -22] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Mobile-only static coral band (no animation) */}
+        <div
+          className="absolute w-[180vw] h-[150vh] -top-[10vh] -right-[60vw] md:hidden"
+          style={{
+            backgroundColor: "hsl(9, 70%, 54%)",
+            transform: "rotate(-22deg)",
+            transformOrigin: "top right",
+            zIndex: 2,
+          }}
         />
 
-        {/* Cyan band — on top of coral */}
-        <motion.div
-          className="absolute w-[60vw] md:w-[30vw] lg:w-[18vw] h-[150vh] md:h-[180vh] -top-[10vh] md:-top-[40vh] right-[10vw] md:right-[28vw]"
+        {/* Cyan band — hidden on mobile */}
+        <div
+          className="absolute hidden md:block w-[30vw] lg:w-[18vw] h-[180vh] -top-[40vh] right-[28vw]"
           style={{
             backgroundColor: "hsl(185, 48%, 50%)",
             transform: "rotate(-22deg)",
             transformOrigin: "top right",
             zIndex: 3,
           }}
-          animate={{ rotate: [-22, -18.5, -22] }}
-          transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Slate / gray thin strip */}
-        <motion.div
-          className="absolute w-[25vw] md:w-[15vw] lg:w-[9vw] h-[150vh] md:h-[180vh] -top-[10vh] md:-top-[40vh] right-[65vw] md:right-[44vw]"
+        {/* Slate / gray strip — hidden on mobile */}
+        <div
+          className="absolute hidden md:block w-[15vw] lg:w-[9vw] h-[180vh] -top-[40vh] right-[44vw]"
           style={{
             backgroundColor: "hsl(210, 12%, 60%)",
             transform: "rotate(-22deg)",
             transformOrigin: "top right",
             zIndex: 4,
           }}
-          animate={{ rotate: [-22, -20, -22] }}
-          transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* ── BACKGROUND FLOATING ICONS ── */}
+
+        {/* ── BACKGROUND FLOATING ICONS — desktop only for performance ── */}
         <div
-          className="absolute inset-0 overflow-hidden pointer-events-none"
+          className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block"
           style={{ zIndex: 1 }}
         >
           <AnimatedIcon
@@ -164,6 +169,7 @@ const Index = () => {
             delay={2}
           />
         </div>
+
 
         {/* Grain on right bands too */}
         <div
