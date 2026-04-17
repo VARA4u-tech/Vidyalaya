@@ -42,3 +42,5 @@ backend/package.json
 backend/index.js
 frontend/src/pages/Auth.tsx
 frontend/src/pages/Index.tsx
+frontend/package-lock.json
+frontend/package.json
