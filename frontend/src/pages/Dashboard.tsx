@@ -718,53 +718,53 @@ const Dashboard = () => {
 
               {/* ── STEP: QUIZ ── */}
               {activeStep === "quiz" && (
-                <div className="max-w-4xl mx-auto py-10">
-                  <header className="text-center mb-20">
-                    <div className="w-20 h-20 rounded-3xl bg-coral-500/10 flex items-center justify-center text-coral-500 mx-auto mb-8 border border-coral-500/20 shadow-2xl">
-                      <CheckCircle2 size={40} />
+                <div className="max-w-4xl mx-auto py-6 md:py-10">
+                  <header className="text-center mb-12 md:mb-20 px-4">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl bg-coral-500/10 flex items-center justify-center text-coral-500 mx-auto mb-6 md:mb-8 border border-coral-500/20 shadow-2xl">
+                      <CheckCircle2 size={32} className="md:size-[40px]" />
                     </div>
-                    <h2 className="text-5xl font-serif font-bold mb-4 tracking-tight">
+                    <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4 tracking-tight">
                       Active Recall Challenge
                     </h2>
-                    <p className="text-white/40 max-w-lg mx-auto font-medium text-lg leading-relaxed">
-                      Neural reinforcement through customized questions. Don't
+                    <p className="text-white/40 max-w-lg mx-auto font-medium text-base md:text-lg leading-relaxed px-2">
+                       Neural reinforcement through customized questions. Don't
                       look at the text!
                     </p>
                   </header>
 
                   {quiz ? (
-                    <div className="space-y-10 pb-32 px-4">
+                    <div className="space-y-6 md:space-y-10 pb-32 px-4">
                       {quiz.map((q, idx) => (
                         <motion.div
                           key={idx}
                           initial={{ opacity: 0, x: -30 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: idx * 0.15 + 0.3 }}
-                          className="p-10 rounded-[3.5rem] bg-white/[0.04] border border-white/5 space-y-10 shadow-2xl relative"
+                          className="p-6 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] bg-white/[0.04] border border-white/5 space-y-6 md:space-y-10 shadow-2xl relative"
                         >
-                          <div className="flex gap-8">
-                            <span className="w-12 h-12 rounded-2xl bg-coral-500/10 text-coral-500 font-black flex items-center justify-center shrink-0 border border-coral-500/30 text-lg shadow-inner">
+                          <div className="flex gap-4 md:gap-8">
+                            <span className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-coral-500/10 text-coral-500 font-black flex items-center justify-center shrink-0 border border-coral-500/30 text-base md:text-lg shadow-inner">
                               {idx + 1}
                             </span>
-                            <h4 className="text-2xl font-bold pr-6 leading-snug">
+                            <h4 className="text-lg md:text-2xl font-bold pr-2 md:pr-6 leading-snug">
                               {q.question}
                             </h4>
                           </div>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-20">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 sm:pl-16 md:pl-20">
                             {q.options.map((opt, i) => (
                               <button
                                 key={i}
-                                className="group flex items-center justify-between text-left px-8 py-5 rounded-3xl bg-white/[0.03] border border-white/5 hover:border-coral-500/60 hover:bg-coral-500/10 active:scale-95 transition-all text-sm font-bold text-white/50 hover:text-white shadow-sm"
+                                className="group flex items-center justify-between text-left px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl bg-white/[0.03] border border-white/5 hover:border-coral-500/60 hover:bg-coral-500/10 active:scale-95 transition-all text-xs md:text-sm font-bold text-white/50 hover:text-white shadow-sm"
                               >
                                 <span className="max-w-[85%]">{opt}</span>
-                                <div className="w-5 h-5 rounded-full border-2 border-white/10 group-hover:border-coral-500 transition-colors shrink-0" />
+                                <div className="w-4 h-4 md:w-5 md:h-5 rounded-full border-2 border-white/10 group-hover:border-coral-500 transition-colors shrink-0" />
                               </button>
                             ))}
                           </div>
                         </motion.div>
                       ))}
-                      <div className="flex justify-center pt-16">
-                        <button className="px-16 py-6 rounded-[2.5rem] bg-coral-500 text-white font-black text-xs uppercase tracking-[0.4em] shadow-[0_25px_50px_rgba(244,63,94,0.4)] hover:scale-105 active:scale-95 transition-all">
+                      <div className="flex justify-center pt-10 md:pt-16">
+                        <button className="w-full sm:w-auto px-12 md:px-16 py-5 md:py-6 rounded-[2rem] md:rounded-[2.5rem] bg-coral-500 text-white font-black text-[10px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.4em] shadow-[0_25px_50px_rgba(244,63,94,0.4)] hover:scale-105 active:scale-95 transition-all">
                           Submit Assessment
                         </button>
                       </div>
