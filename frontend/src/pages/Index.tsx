@@ -342,7 +342,7 @@ const Index = () => {
                 </a>
                 <button
                   id="hero-cta-launch"
-                  onClick={() => navigate("/app")}
+                  onClick={() => navigate(user ? "/app" : "/login")}
                   className="inline-flex items-center font-sans font-bold rounded-full transition-all duration-300 w-full sm:w-auto justify-center"
                   style={{
                     backgroundColor: "hsl(9, 70%, 54%)",
@@ -362,7 +362,7 @@ const Index = () => {
                     ).style.backgroundColor = "hsl(9, 70%, 54%)";
                   }}
                 >
-                  🚀 Launch App
+                  {user ? "Dashboard Access" : "🚀 Launch App"}
                 </button>
               </motion.div>
             </div>
