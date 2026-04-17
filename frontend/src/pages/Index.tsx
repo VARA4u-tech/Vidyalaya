@@ -86,6 +86,36 @@ const Index = () => {
           }}
         />
 
+        {/* ── ANIMATED GLOW ORB — CSS-only, GPU-accelerated ── */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: "520px",
+            height: "520px",
+            top: "50%",
+            left: "30%",
+            transform: "translate(-50%, -50%)",
+            background: "radial-gradient(circle, hsla(185,48%,50%,0.12) 0%, transparent 70%)",
+            borderRadius: "50%",
+            zIndex: 6,
+            animation: "orbPulse 6s ease-in-out infinite",
+          }}
+        />
+        {/* Coral accent orb bottom-right */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: "340px",
+            height: "340px",
+            bottom: "10%",
+            right: "8%",
+            background: "radial-gradient(circle, hsla(9,70%,54%,0.18) 0%, transparent 70%)",
+            borderRadius: "50%",
+            zIndex: 6,
+            animation: "orbPulse 8s ease-in-out infinite reverse",
+          }}
+        />
+
         {/* ── RIGHT SIDE DIAGONAL BANDS ── */}
 
         {/* Coral / Red main band — static on mobile, animated on md+ */}
@@ -225,13 +255,41 @@ const Index = () => {
 
             {/* ── Text content ── */}
             <div className="relative" style={{ zIndex: 10 }}>
+
+              {/* Live badge chip */}
+              <motion.div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6"
+                style={{
+                  background: "hsla(9,70%,54%,0.15)",
+                  border: "1px solid hsla(9,70%,54%,0.35)",
+                }}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+              >
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{
+                    backgroundColor: "hsl(9,70%,64%)",
+                    boxShadow: "0 0 6px hsla(9,70%,54%,0.8)",
+                    animation: "orbPulse 2s ease-in-out infinite",
+                  }}
+                />
+                <span
+                  className="font-sans font-bold uppercase tracking-widest"
+                  style={{ color: "hsl(9,70%,74%)", fontSize: "0.6rem" }}
+                >
+                  AI-Powered · Hackathon 2026
+                </span>
+              </motion.div>
+
               {/* Big serif title */}
               <motion.h1
                 className="font-serif font-bold leading-[1.05] tracking-tight"
                 style={{
                   color: "hsl(36, 28%, 95%)",
                   fontSize: "clamp(3rem, 12vw, 9rem)",
-                  textShadow: "2px 4px 12px hsla(210,60%,8%,0.2)",
+                  textShadow: "0 0 80px hsla(185,48%,50%,0.25), 2px 4px 12px hsla(210,60%,8%,0.2)",
                 }}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
