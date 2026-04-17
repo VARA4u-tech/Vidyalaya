@@ -782,59 +782,60 @@ const Dashboard = () => {
 
               {/* ── STEP: PLANNER ── */}
               {activeStep === "planner" && (
-                <div className="space-y-16 pb-32">
-                  <header className="flex flex-col md:flex-row md:items-end justify-between gap-10 pb-12 border-b border-white/10">
-                    <div className="max-w-2xl">
-                      <h2 className="text-6xl font-serif font-bold mb-6 tracking-tighter">
+                <div className="space-y-12 md:space-y-16 pb-32">
+                  <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-10 pb-8 md:pb-12 border-b border-white/10">
+                    <div className="max-w-2xl px-2">
+                      <h2 className="text-4xl md:text-6xl font-serif font-bold mb-4 md:mb-6 tracking-tighter">
                         Strategic Path.
                       </h2>
-                      <p className="text-white/40 text-xl font-medium leading-relaxed">
+                      <p className="text-white/40 text-lg md:text-xl font-medium leading-relaxed">
                         AI-calculated study nodes optimized for long-term memory
                         encoding and exam readiness.
                       </p>
                     </div>
-                    <div className="p-10 rounded-[3.5rem] bg-white/5 border border-white/10 flex flex-col items-center shadow-2xl relative overflow-hidden group">
+                    <div className="w-full md:w-auto p-6 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] bg-white/5 border border-white/10 flex flex-col items-center shadow-2xl relative overflow-hidden group">
                       <div className="absolute inset-0 bg-coral-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                       <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 mb-3 relative">
                         Neural Budget
                       </span>
-                      <span className="text-4xl font-black text-coral-400 relative tracking-tighter">
+                      <span className="text-3xl md:text-4xl font-black text-coral-400 relative tracking-tighter">
                         {studyPlan?.totalDuration || "--"}
                       </span>
                     </div>
                   </header>
 
                   {studyPlan ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                      <div className="lg:col-span-2 space-y-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+                      <div className="lg:col-span-2 space-y-6 md:space-y-8">
                         {studyPlan.items.map((item, idx) => (
                           <motion.div
                             key={idx}
                             initial={{ opacity: 0, x: -40 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: idx * 0.15 + 0.2 }}
-                            className="p-10 rounded-[3.5rem] bg-white/[0.04] border border-white/5 flex gap-10 group hover:bg-white/[0.08] transition-all relative overflow-hidden shadow-2xl"
+                            className="p-8 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] bg-white/[0.04] border border-white/5 flex flex-col sm:flex-row gap-6 md:gap-10 group hover:bg-white/[0.08] transition-all relative overflow-hidden shadow-2xl"
                           >
-                            <div className="flex flex-col items-center">
-                              <div className="w-14 h-14 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-base font-black text-white/20 group-hover:text-coral-500 group-hover:border-coral-500/40 group-hover:bg-coral-500/5 transition-all duration-500">
+                            <div className="flex sm:flex-col items-center gap-4 sm:gap-0">
+                              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl md:rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-sm md:text-base font-black text-white/20 group-hover:text-coral-500 group-hover:border-coral-500/40 group-hover:bg-coral-500/5 transition-all duration-500">
                                 {idx + 1}
                               </div>
-                              <div className="flex-1 w-0.5 bg-gradient-to-b from-white/20 to-transparent mt-6" />
+                              <div className="hidden sm:block flex-1 w-0.5 bg-gradient-to-b from-white/20 to-transparent mt-6" />
+                              <div className="sm:hidden flex-1 h-px bg-white/10" />
                             </div>
                             <div className="flex-1 space-y-4">
-                              <div className="flex items-center justify-between">
-                                <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-coral-500/80">
+                              <div className="flex items-center justify-between gap-4">
+                                <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-coral-500/80">
                                   {item.session}
                                 </h4>
-                                <div className="flex items-center gap-3 px-4 py-1.5 rounded-xl bg-black/40 text-[10px] font-black text-white/40 tracking-[0.2em] border border-white/5">
-                                  <Clock size={14} className="text-coral-400" />{" "}
+                                <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 rounded-xl bg-black/40 text-[9px] md:text-[10px] font-black text-white/40 tracking-[0.2em] border border-white/5 whitespace-nowrap">
+                                  <Clock size={12} className="md:size-14 text-coral-400" />{" "}
                                   {item.duration}
                                 </div>
                               </div>
-                              <h3 className="text-3xl font-serif font-bold tracking-tight">
+                              <h3 className="text-2xl md:text-3xl font-serif font-bold tracking-tight">
                                 {item.topic}
                               </h3>
-                              <p className="text-base text-white/50 leading-relaxed font-medium max-w-lg">
+                              <p className="text-sm md:text-base text-white/50 leading-relaxed font-medium max-w-lg">
                                 {item.objective}
                               </p>
                             </div>
