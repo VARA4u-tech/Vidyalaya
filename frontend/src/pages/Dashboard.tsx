@@ -20,7 +20,8 @@ import {
   ExternalLink,
   ChevronRight,
   User as UserIcon,
-  X
+  X,
+  Trash2
 } from "lucide-react";
 import { insforge, User } from "@/lib/insforge";
 import { aiService, AnalysisResult, QuizQuestion, StudyPlanItem, DocumentRecord } from "@/lib/ai-service";
@@ -140,6 +141,18 @@ const Dashboard = () => {
       console.error(err);
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleDeleteDocument = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this document from your library?")) return;
+    try {
+      const success = await aiService.deleteDocument(id);
+      if (success) {
+        await loadHistory();
+      }
+    } catch (err) {
+      console.error("Delete failed:", err);
     }
   };
 

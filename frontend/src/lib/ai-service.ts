@@ -249,5 +249,21 @@ export const aiService = {
     }
 
     return result;
+  },
+
+  /**
+   * Deletes a document from history
+   */
+  async deleteDocument(id: string): Promise<boolean> {
+    const { error } = await insforge.database
+      .from("user_documents")
+      .delete()
+      .eq("id", id);
+    
+    if (error) {
+      console.error("Error deleting document:", error.message);
+      return false;
+    }
+    return true;
   }
 };
