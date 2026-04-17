@@ -55,25 +55,13 @@ const GrainOverlay = ({
   </>
 );
 
-import { insforge } from "@/lib/insforge";
+import { useAuth } from "@/hooks/useAuth";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { data: user } = useAuth();
 
-  useEffect(() => {
-    // If the user reaches the landing page but is already logged in, send them to the app
-    const checkExistingSession = async () => {
-      try {
-        const { data } = await insforge.auth.getCurrentUser();
-        if (data?.user) {
-          navigate("/app");
-        }
-      } catch {
-        // No session, stay on landing page
-      }
-    };
-    checkExistingSession();
-  }, [navigate]);
+
 
   return (
     <div style={{ backgroundColor: "hsl(34, 35%, 82%)" }}>

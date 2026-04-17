@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   LogOut, 
@@ -173,12 +173,19 @@ const Dashboard = () => {
       <aside 
         className={`${isSidebarOpen ? "w-72" : "w-0 md:w-20"} transition-all duration-300 border-r border-white/5 bg-[hsl(210,48%,14%)] flex flex-col overflow-hidden relative shadow-2xl z-30`}
       >
-        <div className="flex items-center gap-3 p-6 mb-8 whitespace-nowrap">
-          <div className="w-10 h-10 rounded-xl bg-[hsl(9,70%,54%)] flex items-center justify-center shadow-lg shadow-coral-500/20">
+        <Link 
+          to="/" 
+          className="flex items-center gap-3 p-6 mb-8 whitespace-nowrap group/logo hover:opacity-80 transition-all active:scale-95"
+        >
+          <div className="w-10 h-10 rounded-xl bg-[hsl(9,70%,54%)] flex items-center justify-center shadow-lg shadow-coral-500/20 group-hover/logo:shadow-coral-500/40 transition-shadow">
             <Sparkles className="text-white" size={20} />
           </div>
-          {isSidebarOpen && <span className="font-serif font-bold text-2xl tracking-tight">Vidyalaya</span>}
-        </div>
+          {isSidebarOpen && (
+            <span className="font-serif font-bold text-2xl tracking-tight text-white group-hover/logo:text-coral-400 transition-colors">
+              Vidyalaya
+            </span>
+          )}
+        </Link>
 
         <nav className="flex-1 px-4 space-y-2">
           {navItems.map((item) => (
@@ -223,6 +230,19 @@ const Dashboard = () => {
             <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-lg hover:bg-white/5 text-white/60">
               <Menu size={20} />
             </button>
+            {/* Vidyalaya Logo → Home */}
+            <Link
+              to="/"
+              className="flex items-center gap-2.5 group/hlogo hover:opacity-80 transition-all active:scale-95"
+            >
+              <div className="w-8 h-8 rounded-xl bg-[hsl(9,70%,54%)] flex items-center justify-center shadow-md group-hover/hlogo:shadow-coral-500/40 transition-shadow">
+                <Sparkles className="text-white" size={15} />
+              </div>
+              <span className="font-serif font-bold text-lg tracking-tight text-white group-hover/hlogo:text-[hsl(9,70%,70%)] transition-colors hidden sm:block">
+                Vidyalaya
+              </span>
+            </Link>
+            <div className="w-px h-6 bg-white/10" />
             <h2 className="text-xl font-serif font-bold text-white/90 capitalize tracking-tight">
               {navItems.find(n => n.id === activeStep)?.label}
             </h2>

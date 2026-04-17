@@ -41,24 +41,19 @@ const GrainOverlay = () => (
   </>
 );
 
+import { useAuth } from "@/hooks/useAuth";
+
 const Auth = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { data: user } = useAuth();
 
   useEffect(() => {
     // If the user reaches this page but is already logged in, send them back to the app
-    const checkExistingSession = async () => {
-      try {
-        const { data } = await insforge.auth.getCurrentUser();
-        if (data?.user) {
-          navigate("/app");
-        }
-      } catch {
-        // No session, stay on auth page
-      }
-    };
-    checkExistingSession();
-  }, [navigate]);
+    if (user) {
+      navigate("/app");
+    }
+  }, [user, navigate]);
 
   const handleGoogleLogin = async () => {
     console.log("Starting Google Login...");

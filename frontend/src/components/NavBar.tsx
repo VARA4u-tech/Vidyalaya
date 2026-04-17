@@ -1,29 +1,17 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User as UserIcon } from "lucide-react";
-import { insforge, User } from "@/lib/insforge";
+import { useAuth } from "@/hooks/useAuth";
 
 const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const { data: user } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const { data } = await insforge.auth.getCurrentUser();
-        if (data?.user) setUser(data.user);
-      } catch {
-        // No session, show login buttons
-      }
-    };
-    fetchUser();
   }, []);
 
 
@@ -85,14 +73,6 @@ const NavBar = () => {
           ))}
           {user ? (
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-[hsl(9,70%,54%)] flex items-center justify-center text-white border-2 border-white/10 shadow-lg">
-                  <UserIcon size={16} />
-                </div>
-                <span className="font-sans font-medium text-sm text-[hsl(36,28%,90%)] hidden md:block">
-                  {user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name || 'Student'}
-                </span>
-              </div>
               <a
                 href="/app"
                 className="font-sans font-semibold rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_hsla(9,70%,54%,0.3)]"
@@ -203,14 +183,6 @@ const NavBar = () => {
             ))}
             {user ? (
               <div className="pt-4 border-t border-white/10 flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[hsl(9,70%,54%)] flex items-center justify-center text-white border border-white/20">
-                    <UserIcon size={16} />
-                  </div>
-                  <span className="font-sans font-medium text-sm text-[hsl(36,28%,90%)]">
-                    {user.user_metadata?.full_name || user.user_metadata?.name || 'Student Info'}
-                  </span>
-                </div>
                 <a
                   href="/app"
                   className="font-sans font-bold uppercase tracking-widest text-sm text-[hsl(9,73%,56%)]"
