@@ -79,25 +79,36 @@ const NavBar = () => {
           </button>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link.label}
-                onClick={() => scrollToSection(link.section)}
-                className="font-sans font-bold uppercase tracking-widest text-sm transition-all duration-300 focus:outline-none"
-                style={{ color: "hsl(36, 23%, 85%)" }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "hsl(36, 23%, 100%)")}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "hsl(36, 23%, 85%)")}
-              >
-                {link.label}
-              </button>
+          <nav className="hidden md:flex items-center gap-2 lg:gap-4 justify-end">
+            {NAV_LINKS.map((link, idx) => (
+              <div key={link.label} className="flex items-center gap-2 lg:gap-4">
+                <button
+                  onClick={() => scrollToSection(link.section)}
+                  className="font-sans font-bold uppercase tracking-widest text-[0.65rem] lg:text-[0.75rem] transition-all duration-300 focus:outline-none whitespace-nowrap"
+                  style={{ color: "hsl(36, 23%, 85%)" }}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "hsl(36, 23%, 100%)")}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "hsl(36, 23%, 85%)")}
+                >
+                  {link.label}
+                </button>
+                {idx < NAV_LINKS.length - 1 && (
+                  <span className="h-3 w-px bg-white/50" />
+                )}
+              </div>
             ))}
 
+            <div className="h-8 w-px bg-white/25 mx-2 lg:mx-4 hidden lg:block" />
+            
             {user ? (
               <a
                 href="/app"
-                className="font-sans font-semibold rounded-full transition-all duration-300 text-sm shadow-[0_0_20px_hsla(9,70%,54%,0.3)]"
-                style={{ backgroundColor: "hsl(9, 73%, 56%)", color: "white", padding: "0.55rem 1.5rem" }}
+                style={{ 
+                  backgroundColor: "hsl(9, 73%, 56%)", 
+                  color: "white", 
+                  padding: "0.5rem 1rem",
+                  fontSize: "0.75rem" 
+                }}
+                className="font-sans font-semibold rounded-full transition-all duration-300 lg:text-sm lg:px-6 lg:py-2.5 shadow-[0_0_20px_hsla(9,70%,54%,0.3)] whitespace-nowrap"
                 onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = "hsl(9, 68%, 48%)")}
                 onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = "hsl(9, 73%, 56%)")}
               >
@@ -107,7 +118,7 @@ const NavBar = () => {
               <>
                 <a
                   href="/login"
-                  className="font-sans font-bold uppercase tracking-widest text-sm transition-all duration-300"
+                  className="font-sans font-bold uppercase tracking-widest text-[0.7rem] lg:text-sm transition-all duration-300 whitespace-nowrap"
                   style={{ color: "hsl(36, 23%, 85%)" }}
                   onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "hsl(36, 23%, 100%)")}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "hsl(36, 23%, 85%)")}
@@ -116,8 +127,13 @@ const NavBar = () => {
                 </a>
                 <a
                   href="/login"
-                  className="font-sans font-semibold rounded-full transition-all duration-300 text-sm"
-                  style={{ backgroundColor: "hsl(9, 73%, 56%)", color: "white", padding: "0.55rem 1.5rem" }}
+                  style={{ 
+                    backgroundColor: "hsl(9, 73%, 56%)", 
+                    color: "white", 
+                    padding: "0.5rem 1rem",
+                    fontSize: "0.75rem"
+                  }}
+                  className="font-sans font-semibold rounded-full transition-all duration-300 lg:text-sm lg:px-6 lg:py-2.5 whitespace-nowrap"
                   onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = "hsl(9, 68%, 48%)")}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = "hsl(9, 73%, 56%)")}
                 >
