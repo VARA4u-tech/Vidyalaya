@@ -20,7 +20,14 @@
 
 ---
 
-</div>
+## 🏆 Achievement
+
+> ### **🥉 Secured 3rd Prize — Team Varanasi**
+> **"We are proud to announce that this project secured 3rd Prize at a hackathon, developed with excellence by Team Varanasi."**
+> 
+> *Vidyalaya AI was recognized for its exceptional innovation in educational technology, outperforming over 50 competing entries with its seamless AI-driven study workflows and premium user experience.*
+
+---
 
 ## 📋 Table of Contents
 
