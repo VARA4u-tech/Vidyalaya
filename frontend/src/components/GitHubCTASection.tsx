@@ -106,7 +106,7 @@ const GitHubCTASection = () => {
           transition={{ delay: 0.3 }}
         >
           <a
-            href="https://github.com"
+            href="https://github.com/VARA4u-tech/Vidyalaya"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-3 px-7 py-3.5 rounded-2xl font-semibold text-white text-base transition-all hover:brightness-110 hover:scale-105 w-full sm:w-auto justify-center"

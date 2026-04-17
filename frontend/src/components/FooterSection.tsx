@@ -31,7 +31,7 @@ const FooterSection = () => {
       { label: "Exam Planner", href: "#features" }
     ],
     Project: [
-      { label: "Source Code", href: "https://github.com" },
+      { label: "Source Code", href: "https://github.com/VARA4u-tech/Vidyalaya" },
       { label: "Documentation", href: "/README.md" },
       { label: "Team Varanasi", href: "#team" },
       { label: "Send Feedback", href: "mailto:support@vidyalaya.ai" }
