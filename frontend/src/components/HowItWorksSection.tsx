@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Upload, Cpu, Sparkles, ArrowRight } from "lucide-react";
-import AnimatedIcon from "./AnimatedIcon";
 
 const steps = [
   {
@@ -32,27 +31,6 @@ const steps = [
   },
 ];
 
-const VintageGrain = ({ zBase = 2 }: { zBase?: number }) => (
-  <>
-    <div
-      className="absolute inset-0 pointer-events-none grain-coarse"
-      style={{ opacity: 0.1, mixBlendMode: "multiply", zIndex: zBase }}
-    />
-    <div
-      className="absolute inset-0 pointer-events-none grain-fine"
-      style={{ opacity: 0.15, mixBlendMode: "overlay", zIndex: zBase + 1 }}
-    />
-    {/* Texture paper overlay */}
-    <div
-      className="absolute inset-0 pointer-events-none opacity-[0.03]"
-      style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-        zIndex: zBase + 0,
-      }}
-    />
-  </>
-);
-
 const HowItWorksSection = () => {
   return (
     <section
@@ -60,9 +38,13 @@ const HowItWorksSection = () => {
       className="relative py-36 md:py-48 overflow-hidden"
       style={{ backgroundColor: "hsl(210, 48%, 20%)" }}
     >
-      <VintageGrain zBase={1} />
+      {/* Light Grain — simplified for performance */}
+      <div
+        className="absolute inset-0 pointer-events-none grain-coarse"
+        style={{ opacity: 0.06, mixBlendMode: "multiply", zIndex: 1 }}
+      />
 
-      {/* Deep Vignette */}
+      {/* Deep Vignette — CSS only */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -72,8 +54,8 @@ const HowItWorksSection = () => {
         }}
       />
 
-      {/* Decorative large circles */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+      {/* Decorative large circles — desktop only (heavy blur) */}
+      <div className="hidden md:block absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div
           className="absolute -top-[20%] -left-[10%] w-[60%] aspect-square rounded-full blur-[120px]"
           style={{
@@ -171,22 +153,17 @@ const HowItWorksSection = () => {
 
                 {/* Content Side */}
                 <div className="w-full md:w-[45%]">
-                  <motion.div
+                  <div
                     className="relative group p-8 md:p-10 rounded-[2.5rem] overflow-hidden transition-all duration-500 border border-[hsla(36,25%,90%,0.05)]"
                     style={{
                       backgroundColor: "hsla(210, 50%, 24%, 0.4)",
-                      backdropFilter: "blur(10px)",
+                      // Removed backdropFilter for mobile performance
                       boxShadow: `0 20px 40px -20px hsla(210, 60%, 5%, 0.4), 0 0 0 1px hsla(36,25%,95%,0.03)`,
                     }}
-                    whileHover={{
-                      y: -10,
-                      backgroundColor: "hsla(210, 50%, 28%, 0.5)",
-                      borderColor: "hsla(36,25%,90%,0.15)",
-                    }}
                   >
-                    {/* Unique step glow */}
+                    {/* Unique step glow — hidden on mobile */}
                     <div
-                      className="absolute -top-1/2 -left-1/2 w-full h-full rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                      className="hidden md:block absolute -top-1/2 -left-1/2 w-full h-full rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"
                       style={{ backgroundColor: step.glow }}
                     />
 
@@ -196,13 +173,8 @@ const HowItWorksSection = () => {
                           className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-500 group-hover:rotate-[10deg]"
                           style={{ backgroundColor: step.color }}
                         >
-                          <AnimatedIcon
-                            icon={step.icon}
-                            size={28}
-                            color="hsl(210, 48%, 15%)"
-                            animationType="bounce"
-                            delay={i * 0.3}
-                          />
+                          {/* Static Icon — performance fix */}
+                          <step.icon size={28} color="hsl(210, 48%, 15%)" />
                         </div>
                         <span
                           className="font-serif italic text-4xl leading-none opacity-20"
@@ -246,7 +218,7 @@ const HowItWorksSection = () => {
                         />
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 </div>
 
                 {/* Empty Side (For desktop staggered effect) */}
