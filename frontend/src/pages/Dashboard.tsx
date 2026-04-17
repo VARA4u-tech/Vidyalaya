@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { insforge, User } from "@/lib/insforge";
 import { aiService, AnalysisResult, QuizQuestion, StudyPlanItem, DocumentRecord } from "@/lib/ai-service";
+import { toast } from "sonner";
 
 type DashboardStep = "upload" | "analysis" | "quiz" | "planner" | "history";
 
@@ -80,6 +81,23 @@ const Dashboard = () => {
   // ── HANDLERS ──
 
   const handleFileUpload = async (file: File) => {
+    // 10MB Limit Check
+    const MAX_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+    if (file.size > MAX_SIZE) {
+      toast.error("File Too Large", {
+        description: "Please upload a PDF smaller than 10MB for optimal analysis.",
+        duration: 4000,
+        style: {
+          background: "hsl(210, 48%, 20%)",
+          border: "1px solid hsla(9, 70%, 54%, 0.4)",
+          color: "hsl(36, 28%, 95%)",
+          borderRadius: "1.5rem",
+          padding: "1rem",
+        },
+      });
+      return;
+    }
+
     setIsProcessing(true);
     try {
       const { text, documentId } = await aiService.uploadAndExtract(file);

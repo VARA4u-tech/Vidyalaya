@@ -8,15 +8,24 @@ export function useAuth() {
       console.log("useAuth: Checking session...");
       try {
         const { data, error } = await insforge.auth.getCurrentUser();
-        if (error) {
-          console.error("useAuth: Session error:", error.message);
+        
+        // If not authenticated, try a forced session refresh
+        if (error || !data?.user) {
+          console.log("useAuth: Initial check failed, attempting session refresh...");
+          const refreshRes = await insforge.auth.refreshSession();
+          if (!refreshRes.error && refreshRes.data?.user) {
+             console.log("useAuth: Session refreshed successfully.");
+             return refreshRes.data.user;
+          }
+          if (error) console.error("useAuth: Session error:", error.message);
           return null;
         }
+
         if (data?.user) {
           console.log("useAuth: Session found for", data.user.email);
           return data.user;
         }
-        console.warn("useAuth: No session in data.");
+        
         return null;
       } catch (err) {
         console.error("useAuth: Unexpected error:", err);

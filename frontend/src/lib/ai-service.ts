@@ -178,13 +178,14 @@ export const aiService = {
             difficulty: result.difficulty
           };
           
-          const { data: existing } = await insforge.database.from("ai_analysis").select("id").eq("document_id", documentId).single();
+          const { data: existingData } = await insforge.database.from("ai_analysis").select("id").eq("document_id", documentId);
+          const existing = existingData && existingData.length > 0 ? existingData[0] : null;
           
           if (existing) {
             await insforge.database.from("ai_analysis").update(analysisData).eq("id", existing.id);
           } else {
             const { error: insertErr } = await insforge.database.from("ai_analysis").insert([analysisData]);
-            if (insertErr) console.error("Could not insert analysis (FK or schema error?):", insertErr.message);
+            if (insertErr) console.error("Could not insert analysis:", insertErr.message);
           }
         } catch (dbErr) {
           console.error("Database save failed for analysis:", dbErr);
@@ -253,7 +254,8 @@ export const aiService = {
             document_id: documentId,
             questions: questions
           };
-          const { data: existing } = await insforge.database.from("ai_quizzes").select("id").eq("document_id", documentId).single();
+          const { data: existingData } = await insforge.database.from("ai_quizzes").select("id").eq("document_id", documentId);
+          const existing = existingData && existingData.length > 0 ? existingData[0] : null;
           if (existing) {
             await insforge.database.from("ai_quizzes").update(quizData).eq("id", existing.id);
           } else {
@@ -291,7 +293,8 @@ export const aiService = {
             document_id: documentId,
             plan_data: result
           };
-          const { data: existing } = await insforge.database.from("ai_plans").select("id").eq("document_id", documentId).single();
+          const { data: existingData } = await insforge.database.from("ai_plans").select("id").eq("document_id", documentId);
+          const existing = existingData && existingData.length > 0 ? existingData[0] : null;
           if (existing) {
             await insforge.database.from("ai_plans").update(planData).eq("id", existing.id);
           } else {
