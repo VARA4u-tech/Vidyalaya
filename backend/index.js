@@ -79,7 +79,19 @@ app.post("/api/summarize", async (req, res) => {
       response_format: { type: "json_object" },
     });
 
-    const responseContent = JSON.parse(completion.choices[0].message.content);
+    let responseContent;
+    try {
+      const rawContent = completion.choices[0].message.content;
+      console.log("Raw AI Response:", rawContent);
+      responseContent = JSON.parse(rawContent);
+    } catch (parseErr) {
+      console.error("AI returned invalid JSON:", completion.choices[0].message.content);
+      // Fallback for missing/bad JSON
+      responseContent = {
+        summary: completion.choices[0].message.content || "AI summary generation failed.",
+        concepts: []
+      };
+    }
     
     insforge.database.from("ai_logs").insert([
       {
@@ -98,11 +110,72 @@ app.post("/api/summarize", async (req, res) => {
       concepts: responseContent.concepts || [],
     });
   } catch (error) {
-    console.error("OpenRouter Error:", error);
+    console.error("OpenRouter Error Details:", error.response?.data || error.message);
     res.status(500).json({ 
-      error: "AI summarization failed.",
+      error: "AI summarization failed. Check API key and quota.",
       details: error.message 
     });
+  }
+});
+
+// AI Quiz Generation Route
+app.post("/api/quiz", async (req, res) => {
+  const { text } = req.body;
+  if (!text) return res.status(400).json({ error: "No text provided" });
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-001",
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert educator. Create a quiz based on the provided text. Return your response in JSON format as an array of objects. Each object should have: 'question' (string), 'options' (array of 4 strings), 'correctAnswer' (number, 0-3), and 'explanation' (string).",
+        },
+        {
+          role: "user",
+          content: `Create a 5-question quiz for the following content:\n\n${text}`,
+        },
+      ],
+      response_format: { type: "json_object" },
+    });
+
+    const responseContent = JSON.parse(completion.choices[0].message.content);
+    // OpenRouter might return { "quiz": [...] } or just the array depending on the model
+    const questions = responseContent.quiz || responseContent.questions || (Array.isArray(responseContent) ? responseContent : []);
+
+    res.json(questions);
+  } catch (error) {
+    console.error("Quiz Generation Error:", error);
+    res.status(500).json({ error: "Failed to generate quiz" });
+  }
+});
+
+// AI Study Plan Generation Route
+app.post("/api/plan", async (req, res) => {
+  const { text } = req.body;
+  if (!text) return res.status(400).json({ error: "No text provided" });
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-001",
+      messages: [
+        {
+          role: "system",
+          content: "You are a study strategist. Create a structured study plan based on the provided text. Return your response in JSON format with 'totalDuration' (string) and 'items' (array of objects). Each object should have: 'session' (string), 'topic' (string), 'duration' (string), and 'objective' (string).",
+        },
+        {
+          role: "user",
+          content: `Create a comprehensive study plan for the following content:\n\n${text}`,
+        },
+      ],
+      response_format: { type: "json_object" },
+    });
+
+    const responseContent = JSON.parse(completion.choices[0].message.content);
+    res.json(responseContent);
+  } catch (error) {
+    console.error("Plan Generation Error:", error);
+    res.status(500).json({ error: "Failed to generate study plan" });
   }
 });
 

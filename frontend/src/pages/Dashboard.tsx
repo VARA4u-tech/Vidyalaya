@@ -9,6 +9,7 @@ import {
   Brain, 
   CheckCircle2, 
   Calendar,
+  GraduationCap,
   Sparkles,
   ArrowRight,
   ShieldCheck,
@@ -182,16 +183,26 @@ const Dashboard = () => {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[hsl(210,48%,10%)] text-[hsl(36,25%,90%)] font-sans">
+      {/* Sidebar Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[40] lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside 
-        className={`${isSidebarOpen ? "w-72" : "w-0 md:w-20"} transition-all duration-300 border-r border-white/5 bg-[hsl(210,48%,14%)] flex flex-col overflow-hidden relative shadow-2xl z-30`}
+        className={`${
+          isSidebarOpen ? "w-64 translate-x-0" : "-translate-x-full lg:translate-x-0 w-0 lg:w-20"
+        } fixed lg:relative h-full transition-all duration-500 border-r border-white/5 bg-[hsl(210,48%,14%)] flex flex-col overflow-hidden shadow-2xl z-[50]`}
       >
         <Link 
           to="/" 
           className="flex items-center gap-3 p-6 mb-8 whitespace-nowrap group/logo hover:opacity-80 transition-all active:scale-95"
         >
-          <div className="w-10 h-10 rounded-xl bg-[hsl(9,70%,54%)] flex items-center justify-center shadow-lg shadow-coral-500/20 group-hover/logo:shadow-coral-500/40 transition-shadow">
-            <Sparkles className="text-white" size={20} />
+          <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center shadow-lg shadow-coral-500/10 group-hover/logo:shadow-coral-500/30 transition-shadow overflow-hidden">
+            <img src="/favicon.png" alt="Vidyalaya Logo" className="w-full h-full object-cover" />
           </div>
           {isSidebarOpen && (
             <span className="font-serif font-bold text-2xl tracking-tight text-white group-hover/logo:text-coral-400 transition-colors">
@@ -238,25 +249,25 @@ const Dashboard = () => {
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col h-full bg-[hsl(210,48%,10%)] relative overflow-hidden">
         {/* Header */}
-        <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-[hsl(210,48%,12%)]/80 backdrop-blur-xl sticky top-0 z-20 shadow-lg">
-          <div className="flex items-center gap-4">
+        <header className="h-20 border-b border-white/5 flex items-center justify-between px-4 md:px-8 bg-[hsl(210,48%,12%)]/80 backdrop-blur-xl sticky top-0 z-20 shadow-lg">
+          <div className="flex items-center gap-2 md:gap-4">
             <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-lg hover:bg-white/5 text-white/60">
               <Menu size={20} />
             </button>
-            {/* Vidyalaya Logo → Home */}
+            {/* Vidyalaya Logo → Home (Hidden on larger screens where sidebar is enough) */}
             <Link
               to="/"
-              className="flex items-center gap-2.5 group/hlogo hover:opacity-80 transition-all active:scale-95"
+              className="flex lg:hidden items-center gap-2.5 group/hlogo hover:opacity-80 transition-all active:scale-95"
             >
-              <div className="w-8 h-8 rounded-xl bg-[hsl(9,70%,54%)] flex items-center justify-center shadow-md group-hover/hlogo:shadow-coral-500/40 transition-shadow">
-                <Sparkles className="text-white" size={15} />
+              <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center shadow-md overflow-hidden">
+                <img src="/favicon.png" alt="Vidyalaya Logo" className="w-full h-full object-cover" />
               </div>
-              <span className="font-serif font-bold text-lg tracking-tight text-white group-hover/hlogo:text-[hsl(9,70%,70%)] transition-colors hidden sm:block">
+              <span className="font-serif font-bold text-lg tracking-tight text-white hidden sm:block">
                 Vidyalaya
               </span>
             </Link>
-            <div className="w-px h-6 bg-white/10" />
-            <h2 className="text-xl font-serif font-bold text-white/90 capitalize tracking-tight">
+            <div className="w-px h-6 bg-white/10 hidden lg:block" />
+            <h2 className="text-lg md:text-xl font-serif font-bold text-white/90 capitalize tracking-tight truncate max-w-[100px] sm:max-w-none">
               {navItems.find(n => n.id === activeStep)?.label}
             </h2>
           </div>
@@ -312,7 +323,7 @@ const Dashboard = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         className="text-center mb-16"
                      >
-                       <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 bg-gradient-to-b from-white to-white/30 bg-clip-text text-transparent">
+                       <h1 className="text-4xl md:text-7xl font-serif font-bold mb-6 bg-gradient-to-b from-white to-white/30 bg-clip-text text-transparent">
                          Ignite Your Knowledge.
                        </h1>
                        <p className="text-white/40 text-lg max-w-xl mx-auto leading-relaxed font-medium">
@@ -322,7 +333,7 @@ const Dashboard = () => {
 
                      <div 
                         onClick={() => !isProcessing && document.getElementById('file-upload')?.click()}
-                        className={`relative w-full max-w-2xl aspect-[21/9] rounded-[3rem] border-2 border-dashed transition-all duration-500 flex flex-col items-center justify-center gap-6 group cursor-pointer overflow-hidden ${
+                        className={`relative w-full max-w-2xl aspect-video md:aspect-[21/9] rounded-[3rem] border-2 border-dashed transition-all duration-500 flex flex-col items-center justify-center gap-6 group cursor-pointer overflow-hidden ${
                           isProcessing ? "border-coral-500/50 bg-coral-500/5" : "border-white/10 hover:border-coral-500/40 hover:bg-white/[0.04] active:scale-[0.98]"
                         }`}
                      >
@@ -371,18 +382,18 @@ const Dashboard = () => {
                           <h2 className="text-5xl font-serif font-bold mb-2">Knowledge Library</h2>
                           <p className="text-white/40 font-medium">Revisit and refine your previous study sessions.</p>
                         </div>
-                        <div className="relative group w-full md:w-auto">
+                        <div className="relative group w-full md:w-auto mt-4 md:mt-0">
                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-coral-400 transition-colors" size={18} />
                            <input 
                               type="text" 
-                              placeholder="Find in library..." 
-                              className="pl-12 pr-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-sm focus:outline-none focus:border-coral-500/50 transition-all w-full md:w-80 shadow-2xl"
+                              placeholder="Search..." 
+                              className="pl-12 pr-6 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm focus:outline-none focus:border-coral-500/50 transition-all w-full md:w-64 shadow-2xl"
                            />
                         </div>
                      </div>
 
                      {history.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                            {history.map((doc, i) => (
                              <motion.div 
                                 key={doc.id}

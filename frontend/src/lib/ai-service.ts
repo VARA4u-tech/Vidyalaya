@@ -3,6 +3,10 @@
  * Now integrated with InsForge Database for persistence.
  */
 import { insforge } from "./insforge";
+import * as pdfjsLib from 'pdfjs-dist';
+
+// Use a direct unpkg CDN link without '?' to avoid Vite dynamic import interception
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
 
 const BACKEND_URL = "http://localhost:5000";
 
@@ -76,7 +80,29 @@ export const aiService = {
     const { data: user } = await insforge.auth.getCurrentUser();
     if (!user?.user) throw new Error("Authentication required");
 
-    const text = `This is extracted text from ${file.name}. It contains information about biology and science fundamentals...`;
+    // Extract text from PDF
+    let text = "";
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const pagesToExtract = Math.min(pdf.numPages, 10); // Limit to first 10 pages for demo
+      
+      for (let i = 1; i <= pagesToExtract; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        const pageText = content.items.map(item => ('str' in item ? item.str : "")).join(" ");
+        text += pageText + "\n\n";
+      }
+      text = text.trim();
+      
+      if (!text) {
+        text = `Extracted document text block. No readable content found in ${file.name}.`;
+      }
+    } catch (parseError) {
+      console.error("PDF Parsing failed:", parseError);
+      text = `This is a fallback extracted text for ${file.name} because standard parsing failed...`;
+    }
+
     const size = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
 
     const { data: doc, error } = await insforge.database
@@ -129,17 +155,40 @@ export const aiService = {
         difficulty: "Intermediate" // Default difficulty
       };
 
-      if (documentId) {
-        const { error } = await insforge.database
-          .from("ai_analysis")
-          .insert([{
+      if (documentId && !documentId.startsWith('mock-')) {
+        try {
+          let responseContent;
+          try {
+            responseContent = {
+              summary: result.summary,
+              concepts: result.concepts
+            };
+          } catch (parseErr) {
+            console.error("AI returned invalid JSON");
+            responseContent = {
+              summary: "AI summary generation failed.",
+              concepts: []
+            };
+          }
+          
+          const analysisData = {
             document_id: documentId,
-            summary: result.summary,
-            concepts: result.concepts,
+            summary: responseContent.summary,
+            concepts: responseContent.concepts,
             difficulty: result.difficulty
-          }]);
-        
-        if (error) console.error("Error saving analysis:", error.message);
+          };
+          
+          const { data: existing } = await insforge.database.from("ai_analysis").select("id").eq("document_id", documentId).single();
+          
+          if (existing) {
+            await insforge.database.from("ai_analysis").update(analysisData).eq("id", existing.id);
+          } else {
+            const { error: insertErr } = await insforge.database.from("ai_analysis").insert([analysisData]);
+            if (insertErr) console.error("Could not insert analysis (FK or schema error?):", insertErr.message);
+          }
+        } catch (dbErr) {
+          console.error("Database save failed for analysis:", dbErr);
+        }
       }
 
       return result;
@@ -188,67 +237,76 @@ export const aiService = {
    * AI quiz generation
    */
   async generateQuiz(text: string, documentId?: string): Promise<QuizQuestion[]> {
-    const result = [
-      {
-        id: "1",
-        question: "Where do the light-dependent reactions of photosynthesis take place?",
-        options: ["Stroma", "Thylakoid Membrane", "Mitochondria", "Nucleus"],
-        correctAnswer: 1,
-        explanation: "Light-dependent reactions occur in the thylakoid membranes where chlorophyll absorbs light energy."
-      },
-      {
-        id: "2",
-        question: "What is the primary byproduct of the light-dependent reactions that is used in the Calvin cycle?",
-        options: ["Oxygen", "Carbon Dioxide", "ATP and NADPH", "Glucose"],
-        correctAnswer: 2,
-        explanation: "ATP and NADPH are produced during the light reactions and provide energy for the Calvin cycle."
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/quiz`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) throw new Error("Quiz generation failed");
+      const questions = await response.json();
+
+      if (documentId && !documentId.startsWith('mock-')) {
+        try {
+          const quizData = {
+            document_id: documentId,
+            questions: questions
+          };
+          const { data: existing } = await insforge.database.from("ai_quizzes").select("id").eq("document_id", documentId).single();
+          if (existing) {
+            await insforge.database.from("ai_quizzes").update(quizData).eq("id", existing.id);
+          } else {
+            await insforge.database.from("ai_quizzes").insert([quizData]);
+          }
+        } catch (dbErr) {
+          console.error("Database save failed for quiz:", dbErr);
+        }
       }
-    ];
 
-    if (documentId) {
-      await insforge.database
-        .from("ai_quizzes")
-        .insert([{
-          document_id: documentId,
-          questions: result
-        }]);
+      return questions;
+    } catch (err) {
+      console.error("AI Quiz Error:", err);
+      return [];
     }
-
-    return result;
   },
 
   /**
    * AI study planner generation
    */
   async generateStudyPlan(text: string, documentId?: string): Promise<{ items: StudyPlanItem[], totalDuration: string }> {
-    const result = {
-      totalDuration: "12 Hours",
-      items: [
-        {
-          session: "Session 1",
-          topic: "Fundamental Concepts",
-          duration: "2 Hours",
-          objective: "Grasp the overall equation of photosynthesis and the role of Chlorophyll."
-        },
-        {
-          session: "Session 2",
-          topic: "The Light Reactions",
-          duration: "4 Hours",
-          objective: "Master the electron transport chain and ATP synthesis process."
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/plan`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) throw new Error("Plan generation failed");
+      const result = await response.json();
+
+      if (documentId && !documentId.startsWith('mock-')) {
+        try {
+          const planData = {
+            document_id: documentId,
+            plan_data: result
+          };
+          const { data: existing } = await insforge.database.from("ai_plans").select("id").eq("document_id", documentId).single();
+          if (existing) {
+            await insforge.database.from("ai_plans").update(planData).eq("id", existing.id);
+          } else {
+            await insforge.database.from("ai_plans").insert([planData]);
+          }
+        } catch (dbErr) {
+          console.error("Database save failed for plan:", dbErr);
         }
-      ]
-    };
+      }
 
-    if (documentId) {
-      await insforge.database
-        .from("ai_plans")
-        .insert([{
-          document_id: documentId,
-          plan_data: result
-        }]);
+      return result;
+    } catch (err) {
+      console.error("AI Plan Error:", err);
+      return { totalDuration: "N/A", items: [] };
     }
-
-    return result;
   },
 
   /**
