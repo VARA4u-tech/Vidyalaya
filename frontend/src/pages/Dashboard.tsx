@@ -342,10 +342,10 @@ const Dashboard = () => {
                         className="text-center mb-16"
                      >
                        <h1 className="text-4xl md:text-7xl font-serif font-bold mb-6 bg-gradient-to-b from-white to-white/30 bg-clip-text text-transparent">
-                         Ignite Your Knowledge.
+                         Master Your Subjects.
                        </h1>
                        <p className="text-white/40 text-lg max-w-xl mx-auto leading-relaxed font-medium">
-                         Your study transformation starts here. Drop a PDF to begin the AI deep-dive.
+                         Upload your study material and let AI help you learn faster and better.
                        </p>
                      </motion.div>
 
@@ -359,7 +359,7 @@ const Dashboard = () => {
                        {isProcessing ? (
                          <div className="flex flex-col items-center gap-6">
                             <div className="w-16 h-16 border-4 border-coral-500/10 border-t-coral-500 rounded-full animate-spin shadow-[0_0_20px_rgba(244,63,94,0.2)]" />
-                            <p className="font-black text-coral-500 animate-pulse tracking-[0.3em] text-[10px] uppercase">Powering Up Neural Engines</p>
+                            <p className="font-black text-coral-500 animate-pulse tracking-[0.3em] text-[10px] uppercase">Analyzing Document Text</p>
                          </div>
                        ) : (
                          <>
@@ -376,9 +376,9 @@ const Dashboard = () => {
 
                      <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
                         {[
-                          { icon: ShieldCheck, title: "Private & Secure", desc: "Enterprise-grade encryption for all uploads." },
-                          { icon: Zap, title: "Instant Mastery", desc: "Complex logic broken down into bite-sized bits." },
-                          { icon: Clock, title: "Optimized Path", desc: "Build a plan based on real learning science." },
+                          { icon: ShieldCheck, title: "Secure Storage", desc: "Your data is encrypted and protected at all times." },
+                          { icon: Zap, title: "Simplified Learning", desc: "Complex topics broken down into easy-to-understand points." },
+                          { icon: Clock, title: "Study Planner", desc: "Create a personalized schedule for your exams." },
                         ].map((feat, i) => (
                           <div key={i} className="p-8 rounded-3xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.05] transition-all flex flex-col gap-4">
                              <div className="w-10 h-10 rounded-xl bg-coral-500/10 flex items-center justify-center text-coral-400">
@@ -483,8 +483,8 @@ const Dashboard = () => {
                         <div className="flex flex-col items-center justify-center py-20 gap-8">
                            <div className="w-20 h-20 border-4 border-coral-500/20 border-t-coral-500 rounded-full animate-spin" />
                            <div className="text-center">
-                              <h2 className="text-3xl font-serif font-bold mb-2">Distilling Neural Paths</h2>
-                              <p className="text-white/30 uppercase tracking-[0.4em] text-[10px] font-black">AI is simplifying your content...</p>
+                              <h2 className="text-3xl font-serif font-bold mb-2">Generating Analysis</h2>
+                              <p className="text-white/30 uppercase tracking-[0.4em] text-[10px] font-black">AI is organizing your study notes...</p>
                            </div>
                         </div>
                       ) : analysis && (
@@ -496,7 +496,7 @@ const Dashboard = () => {
                                  </div>
                                  <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-coral-500 mb-10 flex items-center gap-4">
                                    <div className="w-8 h-[1px] bg-coral-500/50" />
-                                   <Sparkles size={16} /> AI Executive Summary
+                                   <Sparkles size={16} /> Key Study Summary
                                  </h3>
                                  <p className="text-2xl md:text-3xl font-serif leading-[1.6] text-white/90 selection:bg-coral-500/30">
                                    {analysis.summary}
