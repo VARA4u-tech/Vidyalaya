@@ -692,15 +692,19 @@ const Dashboard = () => {
                               Level Up.
                             </h3>
                             <p className="text-sm font-medium text-white/80 leading-relaxed mb-10">
-                              Use AI to master this content. Choose your
-                              next study activity.
+                              Use AI to master this content. Choose your next
+                              study activity.
                             </p>
                             <div className="space-y-4">
                               <button
                                 onClick={handleGenerateQuiz}
                                 className="w-full h-16 rounded-[1.5rem] bg-white text-[hsl(210,48%,10%)] font-black text-[12px] uppercase tracking-[0.3em] flex items-center justify-center gap-4 hover:scale-[1.04] active:scale-95 transition-all shadow-2xl"
                               >
-                                Begin Quiz <CheckCircle2 size={18} className="text-coral-600" />
+                                Begin Quiz{" "}
+                                <CheckCircle2
+                                  size={18}
+                                  className="text-coral-600"
+                                />
                               </button>
                               <button
                                 onClick={handleGeneratePlan}
@@ -728,8 +732,8 @@ const Dashboard = () => {
                       Topic Mastery Quiz
                     </h2>
                     <p className="text-white/40 max-w-lg mx-auto font-medium text-base md:text-lg leading-relaxed px-2">
-                       Test your knowledge with customized questions. Don't
-                      look at the text!
+                      Test your knowledge with customized questions. Don't look
+                      at the text!
                     </p>
                   </header>
 
@@ -790,24 +794,33 @@ const Dashboard = () => {
                         Study Roadmap.
                       </h2>
                       <p className="text-white/40 text-lg md:text-xl font-medium leading-relaxed">
-                        AI-generated study schedule optimized for better learning
-                        and exam readiness.
+                        AI-generated study schedule optimized for better
+                        learning and exam readiness.
                       </p>
                     </div>
                     <div className="flex flex-col gap-4">
                       {studyPlan && (
                         <div className="px-6 py-4 rounded-3xl bg-white/5 border border-white/10 flex flex-col gap-2">
-                           <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/30">
-                             <span>Progress</span>
-                             <span>{Math.round((completedSessions.length / (studyPlan.items.length || 1)) * 100)}%</span>
-                           </div>
-                           <div className="w-48 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                             <motion.div 
-                               initial={{ width: 0 }}
-                               animate={{ width: `${(completedSessions.length / (studyPlan.items.length || 1)) * 100}%` }}
-                               className="h-full bg-coral-500"
-                             />
-                           </div>
+                          <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/30">
+                            <span>Progress</span>
+                            <span>
+                              {Math.round(
+                                (completedSessions.length /
+                                  (studyPlan.items.length || 1)) *
+                                  100,
+                              )}
+                              %
+                            </span>
+                          </div>
+                          <div className="w-48 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{
+                                width: `${(completedSessions.length / (studyPlan.items.length || 1)) * 100}%`,
+                              }}
+                              className="h-full bg-coral-500"
+                            />
+                          </div>
                         </div>
                       )}
                       <div className="w-full md:w-auto p-6 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] bg-white/5 border border-white/10 flex flex-col items-center shadow-2xl relative overflow-hidden group">
@@ -833,9 +846,14 @@ const Dashboard = () => {
                             transition={{ delay: idx * 0.15 + 0.2 }}
                             onClick={() => {
                               if (completedSessions.includes(idx)) {
-                                setCompletedSessions(completedSessions.filter(i => i !== idx));
+                                setCompletedSessions(
+                                  completedSessions.filter((i) => i !== idx),
+                                );
                               } else {
-                                setCompletedSessions([...completedSessions, idx]);
+                                setCompletedSessions([
+                                  ...completedSessions,
+                                  idx,
+                                ]);
                               }
                             }}
                             className={`p-8 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] border transition-all relative overflow-hidden shadow-2xl cursor-pointer group flex flex-col sm:flex-row gap-6 md:gap-10 ${
@@ -845,12 +863,18 @@ const Dashboard = () => {
                             }`}
                           >
                             <div className="flex sm:flex-col items-center gap-4 sm:gap-0">
-                              <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl md:rounded-3xl border flex items-center justify-center text-sm md:text-base font-black transition-all duration-500 ${
-                                completedSessions.includes(idx)
-                                  ? "bg-coral-500 text-white border-coral-500 shadow-[0_0_20px_rgba(244,63,94,0.4)]"
-                                  : "bg-white/5 border-white/10 text-white/20 group-hover:text-coral-500 group-hover:border-coral-500/40 group-hover:bg-coral-500/5"
-                              }`}>
-                                {completedSessions.includes(idx) ? <CheckCircle2 size={24} /> : idx + 1}
+                              <div
+                                className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl md:rounded-3xl border flex items-center justify-center text-sm md:text-base font-black transition-all duration-500 ${
+                                  completedSessions.includes(idx)
+                                    ? "bg-coral-500 text-white border-coral-500 shadow-[0_0_20px_rgba(244,63,94,0.4)]"
+                                    : "bg-white/5 border-white/10 text-white/20 group-hover:text-coral-500 group-hover:border-coral-500/40 group-hover:bg-coral-500/5"
+                                }`}
+                              >
+                                {completedSessions.includes(idx) ? (
+                                  <CheckCircle2 size={24} />
+                                ) : (
+                                  idx + 1
+                                )}
                               </div>
                               <div className="hidden sm:block flex-1 w-0.5 bg-gradient-to-b from-white/20 to-transparent mt-6" />
                               <div className="sm:hidden flex-1 h-px bg-white/10" />
@@ -862,21 +886,30 @@ const Dashboard = () => {
                                     {item.session}
                                   </h4>
                                   {item.priority && (
-                                    <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest ${
-                                      item.priority === 'High' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                                      item.priority === 'Medium' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-                                      'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                                    }`}>
+                                    <span
+                                      className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest ${
+                                        item.priority === "High"
+                                          ? "bg-red-500/20 text-red-400 border border-red-500/30"
+                                          : item.priority === "Medium"
+                                            ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                                            : "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                                      }`}
+                                    >
                                       {item.priority}
                                     </span>
                                   )}
                                 </div>
                                 <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 rounded-xl bg-black/40 text-[9px] md:text-[10px] font-black text-white/40 tracking-[0.2em] border border-white/5 whitespace-nowrap">
-                                  <Clock size={12} className="md:size-14 text-coral-400" />{" "}
+                                  <Clock
+                                    size={12}
+                                    className="md:size-14 text-coral-400"
+                                  />{" "}
                                   {item.duration}
                                 </div>
                               </div>
-                              <h3 className={`text-2xl md:text-3xl font-serif font-bold tracking-tight transition-all ${completedSessions.includes(idx) ? "line-through text-white/20" : ""}`}>
+                              <h3
+                                className={`text-2xl md:text-3xl font-serif font-bold tracking-tight transition-all ${completedSessions.includes(idx) ? "line-through text-white/20" : ""}`}
+                              >
                                 {item.topic}
                               </h3>
                               <p className="text-sm md:text-base text-white/50 leading-relaxed font-medium max-w-lg">

@@ -95,7 +95,8 @@ const Index = () => {
             top: "50%",
             left: "30%",
             transform: "translate(-50%, -50%)",
-            background: "radial-gradient(circle, hsla(185,48%,50%,0.12) 0%, transparent 70%)",
+            background:
+              "radial-gradient(circle, hsla(185,48%,50%,0.12) 0%, transparent 70%)",
             borderRadius: "50%",
             zIndex: 6,
             animation: "orbPulse 6s ease-in-out infinite",
@@ -109,7 +110,8 @@ const Index = () => {
             height: "340px",
             bottom: "10%",
             right: "8%",
-            background: "radial-gradient(circle, hsla(9,70%,54%,0.18) 0%, transparent 70%)",
+            background:
+              "radial-gradient(circle, hsla(9,70%,54%,0.18) 0%, transparent 70%)",
             borderRadius: "50%",
             zIndex: 6,
             animation: "orbPulse 8s ease-in-out infinite reverse",
@@ -161,7 +163,6 @@ const Index = () => {
           }}
         />
 
-
         {/* ── BACKGROUND FLOATING ICONS — desktop only for performance ── */}
         <div
           className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block"
@@ -199,7 +200,6 @@ const Index = () => {
             delay={2}
           />
         </div>
-
 
         {/* Grain on right bands too */}
         <div
@@ -255,7 +255,6 @@ const Index = () => {
 
             {/* ── Text content ── */}
             <div className="relative" style={{ zIndex: 10 }}>
-
               {/* Live badge chip */}
               <motion.div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6"
@@ -289,7 +288,8 @@ const Index = () => {
                 style={{
                   color: "hsl(36, 28%, 95%)",
                   fontSize: "clamp(3rem, 12vw, 9rem)",
-                  textShadow: "0 0 80px hsla(185,48%,50%,0.25), 2px 4px 12px hsla(210,60%,8%,0.2)",
+                  textShadow:
+                    "0 0 80px hsla(185,48%,50%,0.25), 2px 4px 12px hsla(210,60%,8%,0.2)",
                 }}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}

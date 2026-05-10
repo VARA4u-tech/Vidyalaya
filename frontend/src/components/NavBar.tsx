@@ -61,7 +61,12 @@ const NavBar = () => {
         style={{
           backgroundColor:
             scrolled || menuOpen ? "hsla(210, 55%, 22%, 0.97)" : "transparent",
-          backdropFilter: scrolled || menuOpen ? (window.innerWidth < 768 ? "blur(8px)" : "blur(16px)") : "none",
+          backdropFilter:
+            scrolled || menuOpen
+              ? window.innerWidth < 768
+                ? "blur(8px)"
+                : "blur(16px)"
+              : "none",
           borderBottom: scrolled
             ? "1px solid hsla(36, 23%, 93%, 0.08)"
             : "none",

@@ -41,15 +41,17 @@ const DynamicScrollBot = () => {
             document.documentElement.scrollHeight -
             document.documentElement.clientHeight;
           const scrolled = (winScroll / height) * 100;
-          
+
           // Only update if change is significant to reduce re-renders
-          setScrollProgress(prev => Math.abs(prev - scrolled) > 0.1 ? scrolled : prev);
+          setScrollProgress((prev) =>
+            Math.abs(prev - scrolled) > 0.1 ? scrolled : prev,
+          );
 
           if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
           scrollTimeoutRef.current = setTimeout(() => {
             setIsScrolling(false);
           }, 1500);
-          
+
           ticking = false;
         });
         ticking = true;
