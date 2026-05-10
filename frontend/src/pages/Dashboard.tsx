@@ -55,6 +55,7 @@ const Dashboard = () => {
     items: StudyPlanItem[];
     totalDuration: string;
   } | null>(null);
+  const [completedSessions, setCompletedSessions] = useState<number[]>([]);
   const [history, setHistory] = useState<DocumentRecord[]>([]);
 
   const navigate = useNavigate();
@@ -645,7 +646,7 @@ const Dashboard = () => {
                             </div>
                             <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-coral-500 mb-10 flex items-center gap-4">
                               <div className="w-8 h-[1px] bg-coral-500/50" />
-                              <Sparkles size={16} /> Key Study Summary
+                              <Sparkles size={16} /> Key Takeaways
                             </h3>
                             <p className="text-2xl md:text-3xl font-serif leading-[1.6] text-white/90 selection:bg-coral-500/30">
                               {analysis.summary}
@@ -655,8 +656,8 @@ const Dashboard = () => {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="p-10 rounded-[3rem] bg-[hsl(185,48%,15%)] border border-[hsl(185,48%,50%,0.2)] shadow-2xl">
                               <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[hsl(185,48%,50%)] mb-8 flex items-center justify-between">
-                                Cognitive Map{" "}
-                                <span>{analysis.concepts.length} nodes</span>
+                                Main Concepts{" "}
+                                <span>{analysis.concepts.length} tags</span>
                               </h4>
                               <div className="flex flex-wrap gap-2.5">
                                 {analysis.concepts.map((c) => (
@@ -688,11 +689,11 @@ const Dashboard = () => {
                         <aside className="w-full lg:w-80 flex flex-col gap-6 sticky top-24">
                           <div className="p-10 rounded-[3rem] bg-gradient-to-br from-coral-500 to-coral-600 shadow-[0_20px_50px_rgba(244,63,94,0.3)]">
                             <h3 className="font-serif font-bold text-3xl mb-4">
-                              Ascend.
+                              Level Up.
                             </h3>
                             <p className="text-sm font-medium text-white/80 leading-relaxed mb-10">
-                              Leverage AI to master this content. Choose your
-                              next cognitive operation.
+                              Use AI to master this content. Choose your
+                              next study activity.
                             </p>
                             <div className="space-y-4">
                               <button
@@ -724,10 +725,10 @@ const Dashboard = () => {
                       <CheckCircle2 size={32} className="md:size-[40px]" />
                     </div>
                     <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4 tracking-tight">
-                      Active Recall Challenge
+                      Topic Mastery Quiz
                     </h2>
                     <p className="text-white/40 max-w-lg mx-auto font-medium text-base md:text-lg leading-relaxed px-2">
-                       Neural reinforcement through customized questions. Don't
+                       Test your knowledge with customized questions. Don't
                       look at the text!
                     </p>
                   </header>
@@ -773,7 +774,7 @@ const Dashboard = () => {
                     <div className="flex flex-col items-center py-20 gap-8 grayscale opacity-10">
                       <Sparkles size={80} />
                       <p className="font-serif text-2xl italic">
-                        Recall mechanisms are locked.
+                        Quiz results are locked.
                       </p>
                     </div>
                   )}
@@ -786,21 +787,38 @@ const Dashboard = () => {
                   <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-10 pb-8 md:pb-12 border-b border-white/10">
                     <div className="max-w-2xl px-2">
                       <h2 className="text-4xl md:text-6xl font-serif font-bold mb-4 md:mb-6 tracking-tighter">
-                        Strategic Path.
+                        Study Roadmap.
                       </h2>
                       <p className="text-white/40 text-lg md:text-xl font-medium leading-relaxed">
-                        AI-calculated study nodes optimized for long-term memory
-                        encoding and exam readiness.
+                        AI-generated study schedule optimized for better learning
+                        and exam readiness.
                       </p>
                     </div>
-                    <div className="w-full md:w-auto p-6 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] bg-white/5 border border-white/10 flex flex-col items-center shadow-2xl relative overflow-hidden group">
-                      <div className="absolute inset-0 bg-coral-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 mb-3 relative">
-                        Neural Budget
-                      </span>
-                      <span className="text-3xl md:text-4xl font-black text-coral-400 relative tracking-tighter">
-                        {studyPlan?.totalDuration || "--"}
-                      </span>
+                    <div className="flex flex-col gap-4">
+                      {studyPlan && (
+                        <div className="px-6 py-4 rounded-3xl bg-white/5 border border-white/10 flex flex-col gap-2">
+                           <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/30">
+                             <span>Progress</span>
+                             <span>{Math.round((completedSessions.length / (studyPlan.items.length || 1)) * 100)}%</span>
+                           </div>
+                           <div className="w-48 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                             <motion.div 
+                               initial={{ width: 0 }}
+                               animate={{ width: `${(completedSessions.length / (studyPlan.items.length || 1)) * 100}%` }}
+                               className="h-full bg-coral-500"
+                             />
+                           </div>
+                        </div>
+                      )}
+                      <div className="w-full md:w-auto p-6 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] bg-white/5 border border-white/10 flex flex-col items-center shadow-2xl relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-coral-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 mb-3 relative">
+                          Total Study Time
+                        </span>
+                        <span className="text-3xl md:text-4xl font-black text-coral-400 relative tracking-tighter">
+                          {studyPlan?.totalDuration || "--"}
+                        </span>
+                      </div>
                     </div>
                   </header>
 
@@ -813,26 +831,52 @@ const Dashboard = () => {
                             initial={{ opacity: 0, x: -40 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: idx * 0.15 + 0.2 }}
-                            className="p-8 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] bg-white/[0.04] border border-white/5 flex flex-col sm:flex-row gap-6 md:gap-10 group hover:bg-white/[0.08] transition-all relative overflow-hidden shadow-2xl"
+                            onClick={() => {
+                              if (completedSessions.includes(idx)) {
+                                setCompletedSessions(completedSessions.filter(i => i !== idx));
+                              } else {
+                                setCompletedSessions([...completedSessions, idx]);
+                              }
+                            }}
+                            className={`p-8 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] border transition-all relative overflow-hidden shadow-2xl cursor-pointer group flex flex-col sm:flex-row gap-6 md:gap-10 ${
+                              completedSessions.includes(idx)
+                                ? "bg-coral-500/10 border-coral-500/30 opacity-60"
+                                : "bg-white/[0.04] border-white/5 hover:bg-white/[0.08]"
+                            }`}
                           >
                             <div className="flex sm:flex-col items-center gap-4 sm:gap-0">
-                              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl md:rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-sm md:text-base font-black text-white/20 group-hover:text-coral-500 group-hover:border-coral-500/40 group-hover:bg-coral-500/5 transition-all duration-500">
-                                {idx + 1}
+                              <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl md:rounded-3xl border flex items-center justify-center text-sm md:text-base font-black transition-all duration-500 ${
+                                completedSessions.includes(idx)
+                                  ? "bg-coral-500 text-white border-coral-500 shadow-[0_0_20px_rgba(244,63,94,0.4)]"
+                                  : "bg-white/5 border-white/10 text-white/20 group-hover:text-coral-500 group-hover:border-coral-500/40 group-hover:bg-coral-500/5"
+                              }`}>
+                                {completedSessions.includes(idx) ? <CheckCircle2 size={24} /> : idx + 1}
                               </div>
                               <div className="hidden sm:block flex-1 w-0.5 bg-gradient-to-b from-white/20 to-transparent mt-6" />
                               <div className="sm:hidden flex-1 h-px bg-white/10" />
                             </div>
                             <div className="flex-1 space-y-4">
                               <div className="flex items-center justify-between gap-4">
-                                <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-coral-500/80">
-                                  {item.session}
-                                </h4>
+                                <div className="flex items-center gap-3">
+                                  <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-coral-500/80">
+                                    {item.session}
+                                  </h4>
+                                  {item.priority && (
+                                    <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest ${
+                                      item.priority === 'High' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+                                      item.priority === 'Medium' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                                      'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                                    }`}>
+                                      {item.priority}
+                                    </span>
+                                  )}
+                                </div>
                                 <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 rounded-xl bg-black/40 text-[9px] md:text-[10px] font-black text-white/40 tracking-[0.2em] border border-white/5 whitespace-nowrap">
                                   <Clock size={12} className="md:size-14 text-coral-400" />{" "}
                                   {item.duration}
                                 </div>
                               </div>
-                              <h3 className="text-2xl md:text-3xl font-serif font-bold tracking-tight">
+                              <h3 className={`text-2xl md:text-3xl font-serif font-bold tracking-tight transition-all ${completedSessions.includes(idx) ? "line-through text-white/20" : ""}`}>
                                 {item.topic}
                               </h3>
                               <p className="text-sm md:text-base text-white/50 leading-relaxed font-medium max-w-lg">
@@ -874,7 +918,7 @@ const Dashboard = () => {
                     <div className="text-center py-32 opacity-5 grayscale">
                       <Calendar size={120} className="mx-auto" />
                       <p className="font-serif mt-10 italic text-3xl">
-                        Strategic pathing is initializing...
+                        Your study roadmap is initializing...
                       </p>
                     </div>
                   )}

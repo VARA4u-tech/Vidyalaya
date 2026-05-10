@@ -160,7 +160,7 @@ app.post("/api/plan", async (req, res) => {
       messages: [
         {
           role: "system",
-          content: "You are a study strategist. Create a structured study plan based on the provided text. Return your response in JSON format with 'totalDuration' (string) and 'items' (array of objects). Each object should have: 'session' (string), 'topic' (string), 'duration' (string), and 'objective' (string).",
+          content: "You are a study strategist. Create a structured study plan based on the provided text. Return your response in JSON format with 'totalDuration' (string) and 'items' (array of objects). Each object should have: 'session' (string), 'topic' (string), 'duration' (string), 'objective' (string), 'priority' (string, one of 'High', 'Medium', 'Low'), and 'status' (string, default to 'Pending').",
         },
         {
           role: "user",

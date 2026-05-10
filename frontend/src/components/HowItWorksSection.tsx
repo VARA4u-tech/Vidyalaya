@@ -16,7 +16,7 @@ const steps = [
     icon: Cpu,
     title: "AI Analysis",
     description:
-      "Vidyalaya's neural engine dissects your material, auto-generating semantic links between concepts and distilling dense information into structured knowledge.",
+      "Vidyalaya's AI analyzes your material, connecting related topics and turning complex information into easy-to-read summaries.",
     color: "hsl(9, 70%, 54%)",
     glow: "hsla(9, 70%, 54%, 0.15)",
   },
@@ -25,7 +25,7 @@ const steps = [
     icon: Sparkles,
     title: "Mastery & Insights",
     description:
-      "Transform static notes into interactive mastery paths. Adaptive quizzes and AI-curated study plans evolve dynamically to bridge your knowledge gaps.",
+      "Turn your notes into interactive study tools. Smart quizzes and personalized study plans adapt to your pace to help you learn faster.",
     color: "hsl(34, 30%, 72%)",
     glow: "hsla(34, 30%, 72%, 0.15)",
   },
@@ -118,7 +118,7 @@ const HowItWorksSection = () => {
             transition={{ duration: 1, delay: 0.3 }}
           >
             Vidyalaya bridges the gap between raw data and true understanding
-            through a seamless three-stage metamorphosis.
+            through a seamless three-stage process.
           </motion.p>
         </div>
 

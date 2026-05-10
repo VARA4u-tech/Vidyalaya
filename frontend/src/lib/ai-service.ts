@@ -29,6 +29,8 @@ export interface StudyPlanItem {
   topic: string;
   duration: string;
   objective: string;
+  priority?: "High" | "Medium" | "Low";
+  status?: string;
 }
 
 export interface DocumentRecord {

@@ -11,7 +11,7 @@ const problems = [
   {
     icon: TrendingDown,
     title: "Ineffective Study Methods",
-    desc: "Passive re-reading and highlighting create an illusion of learning. Without active recall, information doesn't stick.",
+    desc: "Passive re-reading and highlighting create an illusion of learning. Without actually testing yourself, information doesn't stick.",
     color: "hsl(265,60%,60%)",
   },
   {
