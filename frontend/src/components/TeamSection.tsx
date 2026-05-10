@@ -12,7 +12,7 @@ const frontendTeam: TeamMember[] = [
   {
     name: "P. Durga Vara Prasad",
     role: "Lead UI/UX & Database Architect",
-    avatar: "DP",
+    avatar: "DVP",
     skills: ["React", "TypeScript", "UI Design", "Database Orchestration"],
   },
   {
