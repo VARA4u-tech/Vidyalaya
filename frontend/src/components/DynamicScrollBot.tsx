@@ -29,23 +29,34 @@ const DynamicScrollBot = () => {
   }, [messages, isChatOpen]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolling(true);
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      setScrollProgress(scrolled);
+    let ticking = false;
 
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      scrollTimeoutRef.current = setTimeout(() => {
-        setIsScrolling(false);
-      }, 1500);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolling(true);
+          const winScroll =
+            document.body.scrollTop || document.documentElement.scrollTop;
+          const height =
+            document.documentElement.scrollHeight -
+            document.documentElement.clientHeight;
+          const scrolled = (winScroll / height) * 100;
+          
+          // Only update if change is significant to reduce re-renders
+          setScrollProgress(prev => Math.abs(prev - scrolled) > 0.1 ? scrolled : prev);
+
+          if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+          scrollTimeoutRef.current = setTimeout(() => {
+            setIsScrolling(false);
+          }, 1500);
+          
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
@@ -106,7 +117,7 @@ const DynamicScrollBot = () => {
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            className="relative h-48 w-1.5 rounded-full overflow-hidden bg-white/10 backdrop-blur-md border border-white/10"
+            className="relative h-48 w-1.5 rounded-full overflow-hidden bg-white/10 backdrop-blur-[4px] md:backdrop-blur-md border border-white/10"
           >
             <motion.div
               className="absolute bottom-0 left-0 right-0 rounded-full"
