@@ -232,7 +232,7 @@ const FooterSection = () => {
               >
                 Vidyalaya
               </span>
-              <span className="font-sans font-black text-[8px] uppercase tracking-[0.2em] opacity-30">
+              <span className="font-sans font-black text-[8px] uppercase tracking-[0.2em] opacity-60">
                 AI Powered Platform
               </span>
             </div>
