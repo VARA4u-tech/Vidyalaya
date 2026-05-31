@@ -222,8 +222,8 @@ Vidyalaya is a collaborative engineering effort by **Team Varanasi**.
 
 | Member                   | Role                              |
 | :----------------------- | :-------------------------------- |
-| **P. Durga Vara Prasad** | Frontend Architecture & DB Design |
-| **T. Revanth Sai**       | UI/UX & State Management          |
+| **P. Durga Vara Prasad** | Frontend Architecture, UI/UX & DB Design |
+| **T. Revanth Sai**       |  State Management          |
 | **R. Jayaveer**          | AI Pipeline & API Logic           |
 | **S. Girish**            | Auth & Backend Security           |
 
